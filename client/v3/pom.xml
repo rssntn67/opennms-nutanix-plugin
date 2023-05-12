@@ -89,7 +89,7 @@
             <artifactId>javax.annotation-api</artifactId>
             <version>${javax.annotation.version}</version>
         </dependency>
-        <!-- V1 -->
+        <!-- V3-->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
