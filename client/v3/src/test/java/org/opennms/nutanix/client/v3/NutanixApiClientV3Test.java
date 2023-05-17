@@ -5,6 +5,8 @@ import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.opennms.nutanix.client.v3.api.HostsApi;
+import org.opennms.nutanix.client.v3.api.VmsApi;
 import org.opennms.nutanix.client.v3.handler.ApiClient;
 import org.opennms.nutanix.client.v3.handler.ApiException;
 import org.opennms.nutanix.client.v3.model.HostListIntentResponse;
@@ -16,9 +18,9 @@ public class NutanixApiClientV3Test {
 
     private ApiClient getApiClient() {
         ApiClientExtention apiClient = new ApiClientExtention();
-        apiClient.setBasePath("https://localhost:9440/api/nutanix/v3");
-        apiClient.setUsername("nutanix-api");
-        apiClient.setPassword("Nutanix2023!!");
+        apiClient.setBasePath("https://nutanix.arsinfo.it:9440/api/nutanix/v3");
+        apiClient.setUsername("username");
+        apiClient.setPassword("password");
         apiClient.setDebugging(true);
         return apiClient;
 
@@ -33,7 +35,7 @@ public class NutanixApiClientV3Test {
         Set<String> offVms = new HashSet<>();
         int total;
             do {
-                VmsApiExtension vmsApi = new VmsApiExtension(getApiClient());
+                VmsApi vmsApi = new VmsApi(getApiClient());
                 VmListMetadata body = new VmListMetadata().length(lenght).offset(offset);
                 try {
                 VmListIntentResponse vmListIntentResponse = vmsApi.vmsListPost(body);
@@ -66,7 +68,7 @@ public class NutanixApiClientV3Test {
     @Test
     public void testHostApi() {
 
-        HostsApiExtension hostsApi = new HostsApiExtension(getApiClient());
+        HostsApi hostsApi = new HostsApi(getApiClient());
         int offset = 0;
         int lenght = 20;
         Set<String> hostnames = new HashSet<>();
@@ -95,8 +97,8 @@ public class NutanixApiClientV3Test {
         } while (hostnames.size() < total );
 
         System.out.println("total hosts: " + hostnames.size());
-        System.out.println("hiper_converged hosts: " + hiperConvergentHostTypes.size());
-        System.out.println("not hiper_converged hosts: " + notHiperConvergentHostTypes.size());
+        System.out.println("hyper_converged hosts: " + hiperConvergentHostTypes.size());
+        System.out.println("not hyper_converged hosts: " + notHiperConvergentHostTypes.size());
         Assert.assertEquals(hostnames.size(),total);
 
 

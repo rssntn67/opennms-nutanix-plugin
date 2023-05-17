@@ -79,5 +79,17 @@ public class ApiClientExtention extends org.opennms.nutanix.client.v3.handler.Ap
         return builder.build();
     }
 
+    @Override
+    public String selectHeaderContentType(String[] contentTypes) {
+        if (contentTypes.length == 0 || contentTypes[0].equals("*/*")) {
+            return "application/json";
+        }
+        for (String contentType : contentTypes) {
+            if (isJsonMime(contentType)) {
+                return contentType;
+            }
+        }
+        return contentTypes[0];
+    }
 
 }
