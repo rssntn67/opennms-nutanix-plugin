@@ -13,8 +13,8 @@ import org.opennms.integration.api.v1.scv.SecureCredentialsVault;
 import org.opennms.integration.api.v1.scv.immutables.ImmutableCredentials;
 import org.opennms.nutanix.client.api.NutanixApiClient;
 import org.opennms.nutanix.client.api.NutanixApiClientCredentials;
-import org.opennms.nutanix.client.api.NutanixApiClientProvider;
 import org.opennms.nutanix.client.api.NutanixApiException;
+import org.opennms.nutanix.clients.ClientManager;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
@@ -27,14 +27,14 @@ public class ConnectionManager {
 
     private final SecureCredentialsVault vault;
 
-    private final NutanixApiClientProvider clientProvider;
+    private final ClientManager clientManager;
 
     public ConnectionManager(final RuntimeInfo runtimeInfo,
                              final SecureCredentialsVault vault,
-                             final NutanixApiClientProvider clientProvider) {
+                             final ClientManager clientManager) {
         this.runtimeInfo = Objects.requireNonNull(runtimeInfo);
         this.vault = Objects.requireNonNull(vault);
-        this.clientProvider = Objects.requireNonNull(clientProvider);
+        this.clientManager = Objects.requireNonNull(clientManager);
     }
 
     /**
@@ -110,7 +110,7 @@ public class ConnectionManager {
             return Optional.empty();
         }
 
-        return Optional.of(this.clientProvider.client(asNutanixCredentials(connection.get())));
+        return Optional.of(this.clientManager.getClient(asNutanixCredentials(connection.get())));
     }
 
 
