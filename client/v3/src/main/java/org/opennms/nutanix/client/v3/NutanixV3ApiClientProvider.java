@@ -6,6 +6,12 @@ import org.opennms.nutanix.client.api.NutanixApiClientProvider;
 import org.opennms.nutanix.client.api.NutanixApiException;
 
 public class NutanixV3ApiClientProvider implements NutanixApiClientProvider {
+    private final boolean validateSslCertificate;
+
+    public NutanixV3ApiClientProvider(boolean validateSslCertificate) {
+        this.validateSslCertificate=validateSslCertificate;
+    }
+
     @Override
     public NutanixApiClient client(NutanixApiClientCredentials credentials) throws NutanixApiException {
         return null;
