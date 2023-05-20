@@ -22,12 +22,14 @@ public class NutanixApiClientV3Test {
         apiClient.setUsername("username");
         apiClient.setPassword("password");
         apiClient.setDebugging(true);
+        apiClient.setIgnoreSslCertificateValidation(true);
         return apiClient;
 
     }
     @Test
     public void testVmsApi() {
 
+        VmsApi vmsApi = new VmsApi(getApiClient());
         int offset = 0;
         int lenght = 20;
         Set<String> vmnames = new HashSet<>();
@@ -35,7 +37,6 @@ public class NutanixApiClientV3Test {
         Set<String> offVms = new HashSet<>();
         int total;
             do {
-                VmsApi vmsApi = new VmsApi(getApiClient());
                 VmListMetadata body = new VmListMetadata().length(lenght).offset(offset);
                 try {
                 VmListIntentResponse vmListIntentResponse = vmsApi.vmsListPost(body);

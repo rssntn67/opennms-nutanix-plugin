@@ -6,14 +6,18 @@
         <cm:default-properties>
 
             <!-- Whether to check if SSL certificate is to be trusted -->
-            <cm:property name="nutanix.client.certificate.validation" value="true"/>
+            <cm:property name="nutanix.client.ignore.certificate.validation" value="false"/>
+
+            <!-- Number of objects retrieved for bbulk request -->
+            <cm:property name="nutanix.client.length" value="20"/>
 
 
         </cm:default-properties>
     </cm:property-placeholder>
 
     <bean id="clientProvider" class="org.opennms.nutanix.client.v3.NutanixV3ApiClientProvider">
-        <argument value="${nutanix.client.certificate.validation}"/>
+        <argument value="${nutanix.client.ignore.certificate.validation}"/>
+        <argument value="${nutanix.client.length}"/>
     </bean>
 
     <service ref="clientProvider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider"/>

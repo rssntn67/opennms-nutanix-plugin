@@ -4,9 +4,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.client.Client;
@@ -19,7 +17,24 @@ import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
 public class ApiClientExtention extends org.opennms.nutanix.client.v3.handler.ApiClient {
-    protected void performAdditionalClientConfiguration(ClientBuilder clientBuilder) {
+
+
+    private boolean ignoreSslCertificateValidation=false;
+    private int length = 20;
+
+    public void setIgnoreSslCertificateValidation(boolean ignoreSslCertificateValidation) {
+        this.ignoreSslCertificateValidation = ignoreSslCertificateValidation;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    protected void ignoreCertificateValididation(ClientBuilder clientBuilder) {
         SSLContext sslContext = null;
         try {
             sslContext = SSLContext.getInstance("SSL");
@@ -47,11 +62,7 @@ public class ApiClientExtention extends org.opennms.nutanix.client.v3.handler.Ap
 
         clientBuilder.sslContext(sslContext);
         clientBuilder.hostnameVerifier(
-                new HostnameVerifier() {
-                    public boolean verify(String hostname, SSLSession sslSession) {
-                        return true;
-                    }
-                });
+                (hostname, sslSession) -> true);
         }
 
 
@@ -73,7 +84,8 @@ public class ApiClientExtention extends org.opennms.nutanix.client.v3.handler.Ap
             java.util.logging.Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME).setLevel(java.util.logging.Level.ALL);
         }
         ClientBuilder builder =  ClientBuilder.newBuilder();
-        performAdditionalClientConfiguration(builder);
+        if (ignoreSslCertificateValidation)
+            ignoreCertificateValididation(builder);
         performAdditionalClientConfiguration(clientConfig);
         builder.withConfig(clientConfig);
         return builder.build();
