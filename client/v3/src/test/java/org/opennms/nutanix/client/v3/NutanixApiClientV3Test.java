@@ -6,11 +6,13 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opennms.nutanix.client.v3.api.HostsApi;
+import org.opennms.nutanix.client.v3.api.VersionsApi;
 import org.opennms.nutanix.client.v3.api.VmsApi;
 import org.opennms.nutanix.client.v3.handler.ApiClient;
 import org.opennms.nutanix.client.v3.handler.ApiException;
 import org.opennms.nutanix.client.v3.model.HostListIntentResponse;
 import org.opennms.nutanix.client.v3.model.HostListMetadata;
+import org.opennms.nutanix.client.v3.model.Versions;
 import org.opennms.nutanix.client.v3.model.VmListIntentResponse;
 import org.opennms.nutanix.client.v3.model.VmListMetadata;
 
@@ -19,10 +21,10 @@ public class NutanixApiClientV3Test {
     private ApiClient getApiClient() {
         ApiClientExtention apiClient = new ApiClientExtention();
         apiClient.setBasePath("https://nutanix.arsinfo.it:9440/api/nutanix/v3");
-        apiClient.setUsername("username");
-        apiClient.setPassword("password");
+        apiClient.setUsername("srv.OpenNMS@comune.milano.local");
+        apiClient.setPassword("Op3nNMs@2019!");
         apiClient.setDebugging(true);
-        apiClient.setIgnoreSslCertificateValidation(true);
+        apiClient.setIgnoreSslCertificateValidation(false);
         return apiClient;
 
     }
@@ -105,5 +107,16 @@ public class NutanixApiClientV3Test {
 
     }
 
+    @Test
+    public void testVersionsApi() {
+        VersionsApi versionApi = new VersionsApi(getApiClient());
 
-}
+        try {
+            Versions versions= versionApi.versionsGet();
+        } catch (ApiException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    }

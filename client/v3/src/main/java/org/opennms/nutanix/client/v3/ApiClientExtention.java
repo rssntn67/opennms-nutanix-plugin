@@ -15,8 +15,9 @@ import org.glassfish.jersey.client.HttpUrlConnectorProvider;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
+import org.opennms.nutanix.client.v3.handler.ApiClient;
 
-public class ApiClientExtention extends org.opennms.nutanix.client.v3.handler.ApiClient {
+public class ApiClientExtention extends ApiClient {
 
 
     private boolean ignoreSslCertificateValidation=false;
