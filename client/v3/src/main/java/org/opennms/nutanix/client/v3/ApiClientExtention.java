@@ -16,16 +16,22 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.opennms.nutanix.client.v3.handler.ApiClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ApiClientExtention extends ApiClient {
-
-
-    private boolean ignoreSslCertificateValidation=false;
-    private int length = 20;
+    public boolean isIgnoreSslCertificateValidation() {
+        return ignoreSslCertificateValidation;
+    }
 
     public void setIgnoreSslCertificateValidation(boolean ignoreSslCertificateValidation) {
         this.ignoreSslCertificateValidation = ignoreSslCertificateValidation;
+        setHttpClient(buildHttpClient(debugging));
     }
+
+    private static Logger LOG = LoggerFactory.getLogger(ApiClientExtention.class);
+    private boolean ignoreSslCertificateValidation=false;
+    private int length = 20;
 
     public int getLength() {
         return length;
@@ -60,7 +66,6 @@ public class ApiClientExtention extends ApiClient {
         } catch (KeyManagementException e) {
             //logger.debug("Ignoring 'KeyManagementException' while ignoring ssl certificate validation.");
         }
-
         clientBuilder.sslContext(sslContext);
         clientBuilder.hostnameVerifier(
                 (hostname, sslSession) -> true);
@@ -73,6 +78,7 @@ public class ApiClientExtention extends ApiClient {
      * @return Client
      */
     protected Client buildHttpClient(boolean debugging) {
+        LOG.info("buildHttpClient: debugging: {}", debugging);
         final ClientConfig clientConfig = new ClientConfig();
         clientConfig.register(MultiPartFeature.class);
         clientConfig.register(getJSON());
@@ -85,15 +91,23 @@ public class ApiClientExtention extends ApiClient {
             java.util.logging.Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME).setLevel(java.util.logging.Level.ALL);
         }
         ClientBuilder builder =  ClientBuilder.newBuilder();
-        if (ignoreSslCertificateValidation)
+        if (ignoreSslCertificateValidation) {
+            LOG.info("buildHttpClient: ignoreSslCertificateValidation: {}", ignoreSslCertificateValidation);
             ignoreCertificateValididation(builder);
+        }
         performAdditionalClientConfiguration(clientConfig);
         builder.withConfig(clientConfig);
         return builder.build();
     }
 
     @Override
+    public void performAdditionalClientConfiguration(ClientConfig config) {
+        LOG.info("performAdditionalClientConfiguration: {}", config);
+        super.performAdditionalClientConfiguration(config);
+    }
+    @Override
     public String selectHeaderContentType(String[] contentTypes) {
+        LOG.info("selectHeaderContentType: {}", contentTypes);
         if (contentTypes.length == 0 || contentTypes[0].equals("*/*")) {
             return "application/json";
         }
