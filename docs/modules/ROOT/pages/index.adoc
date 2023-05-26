@@ -1,0 +1,12 @@
+= User's Guide to the _OpenNMS Nutanix Plugin_
+:imagesdir: ../assets/images
+:!sectids:
+
+Nutanix hypervisor, AHV, represents a unique
+approach to virtualization that offers the powerful virtualization capabilities needed to deploy
+and manage enterprise applications. AHV compliments the HCI value by integrating native
+virtualization along with networking, infrastructure, and operations management with a single
+intuitive interface - Nutanix Prism.
+
+This plugin can be used to monitor the key entities of the Nutanix stack, including virtual machines, hosts, and disks.
+This includes the collection of events and performance metrics the Nutanix hypervisor provides.

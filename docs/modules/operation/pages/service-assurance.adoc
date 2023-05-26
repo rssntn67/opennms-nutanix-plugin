@@ -1,0 +1,12 @@
+= Service Assurance
+:imagesdir: ../assets/images
+
+Various service monitors will be bound to the imported Nutanix entities in OpenNMS:
+
+## VMs
+
+## Hosts
+
+## Disks
+
+## Clusters

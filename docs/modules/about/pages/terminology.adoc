@@ -1,0 +1,25 @@
+= Terminology
+:imagesdir: ../assets/images
+
+This section introduces some of the basic terms we use in this documentation.
+
+AOS:: AOS is the operating system of the Nutanix Controller VM–the VM that runs in the hypervisor
+to provide Nutanix-specific functionality. It provides core functionality used by workloads
+and services running on the platform. It contains several data services and features for data
+protection, space efficiency, scalability, automated data tiering, and security.
+AOS is a back-end service that allows for workload and resource management, provisioning,
+and operations. Its goal is to abstract the facilitating resource (for example, hypervisor, on-prem
+infrastructure, and cloud based infrastructure) and give workload the ability to seamlessly move
+between hypervisors, cloud providers, and platforms.
+
+AHV:: the native Nutanix hypervisor, AHV, represents a unique approach to virtualization that offers the powerful virtualization capabilities needed to deploy
+and manage enterprise applications. AHV compliments the HCI value by integrating native
+virtualization along with networking, infrastructure, and operations management with a single
+intuitive interface - Nutanix Prism.
+
+VM:: A Virtual Machine defined in Nutanix hypervisor.
+
+Host:: A Host is a component of a Nutanix Cluster running AOS.
+
+Cluster:: A well identified set of Hosts running AOS/AHV.
+

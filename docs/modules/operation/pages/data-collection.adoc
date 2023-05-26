@@ -1,0 +1,12 @@
+= Data Collection
+:imagesdir: ../assets/images
+
+Various collectors exist to gather key metrics of the Nutanix entities in OpenNMS:
+
+## VMs
+
+## Hosts
+
+## Disks
+
+## Clusters

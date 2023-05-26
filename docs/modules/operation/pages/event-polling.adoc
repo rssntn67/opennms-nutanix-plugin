@@ -1,0 +1,18 @@
+= Events
+:imagesdir: ../assets/images
+
+After installation, the plugin starts to collect events for the configured connections.
+These events will be associated with the corresponding entities in the OpenNMS system, using the following event definitions:
+```
+<events xmlns="http://xmlns.opennms.org/xsd/eventconf">
+    <event>
+        <uei>uei.opennms.org/vendor/nutanix/proxyEvents</uei>
+        <event-label>Nutanix Proxy Event</event-label>
+        <descr>A proxy event of type %parm[event]% was sent for gateway %nodelabel% (%nodeid%): '%parm[message]%'</descr>
+        <logmsg dest="logndisplay">A proxy event of type %parm[event]% was sent for gateway %nodelabel% (%nodeid%): '%parm[message]%'</logmsg>
+        <severity>Indeterminate</severity>
+    </event>
+</events>
+```
+
+The default polling interval is set to five minutes and can be modified by using the configuration property `events.delay`.

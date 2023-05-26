@@ -1,0 +1,26 @@
+= Configuration Properties
+:imagesdir: ../assets/images
+
+Some configuration properties let you fine-tune the plugin's behavior:
+
+.Configuration properties for `org.opennms.nutanix`
+[options="header, autowidth", cols="3,2,1"]
+|===
+
+| Name
+| Description
+| Default
+
+| events.delay
+| Event polling interval in milliseconds
+| 300000 ms
+
+| ignore.certificate.validation
+| Ignore if Prism SSL certificate is to be trusted
+| false
+
+| client.length
+| Number of objects retrieved for Prism API bulk request
+| 20
+
+|===
