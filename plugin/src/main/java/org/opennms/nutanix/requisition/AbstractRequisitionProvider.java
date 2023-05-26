@@ -114,7 +114,7 @@ public abstract class AbstractRequisitionProvider<Req extends AbstractRequisitio
 
         public Request(final Connection connection) {
             this.alias = Objects.requireNonNull(connection.getAlias());
-            this.orchestratorUrl = Objects.requireNonNull(connection.getOrchestratorUrl());
+            this.orchestratorUrl = Objects.requireNonNull(connection.getPrismUrl());
             this.apiKey = Objects.requireNonNull(connection.getApiKey());
         }
 
@@ -170,7 +170,7 @@ public abstract class AbstractRequisitionProvider<Req extends AbstractRequisitio
 
         public NutanixApiClient getClient() throws NutanixApiException {
             return AbstractRequisitionProvider.this.clientManager.getClient(NutanixApiClientCredentials.builder()
-                                                                                                                 .withOrchestratorUrl(this.request.getOrchestratorUrl())
+                                                                                                                 .withPrismUrl(this.request.getOrchestratorUrl())
                                                                                                                  .withApiKey(this.request.getApiKey())
                                                                                                                  .build());
         }

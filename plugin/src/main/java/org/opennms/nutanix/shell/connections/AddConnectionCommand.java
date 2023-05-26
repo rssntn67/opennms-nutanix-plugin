@@ -8,7 +8,7 @@ import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.opennms.nutanix.connections.ConnectionManager;
 
-@Command(scope = "opennms-nutanix", name = "connection-add", description = "Add a connection", detailedDescription = "Add a connection to a nutanix orchestrator")
+@Command(scope = "opennms-nutanix", name = "connection-add", description = "Add a connection", detailedDescription = "Add a connection to a nutanix prism")
 @Service
 public class AddConnectionCommand implements Action {
 
@@ -24,10 +24,10 @@ public class AddConnectionCommand implements Action {
     @Argument(index = 0, name = "alias", description = "Alias", required = true, multiValued = false)
     public String alias = null;
 
-    @Argument(index = 1, name = "url", description = "Orchestrator Url", required = true, multiValued = false)
+    @Argument(index = 1, name = "url", description = "Nutanix Prism Url", required = true, multiValued = false)
     public String url = null;
 
-    @Argument(index = 2, name = "apiKey", description = "Orchestrator API Key", required = true, multiValued = false, censor = true)
+    @Argument(index = 2, name = "apiKey", description = "Nutanix Prism API Key", required = true, multiValued = false, censor = true)
     public String apiKey = null;
 
     @Override

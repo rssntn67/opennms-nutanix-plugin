@@ -9,7 +9,7 @@ import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.opennms.nutanix.connections.ConnectionManager;
 import org.opennms.nutanix.shell.AliasCompleter;
 
-@Command(scope = "opennms-nutanix", name = "connection-delete", description = "Delete a connection", detailedDescription = "Deletes a connection to a nutanix orchestrator")
+@Command(scope = "opennms-nutanix", name = "connection-delete", description = "Delete a connection", detailedDescription = "Deletes a connection to a nutanix prism")
 @Service
 public class DeleteConnectionCommand implements Action {
 

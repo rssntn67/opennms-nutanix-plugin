@@ -3,7 +3,6 @@ package org.opennms.nutanix.connections;
 
 
 import java.util.Optional;
-import java.util.UUID;
 
 public interface Connection {
 
@@ -19,13 +18,13 @@ public interface Connection {
      * Returns the URL of the orchestrator.
      * @return the orchestrator URL
      */
-    String getOrchestratorUrl();
+    String getPrismUrl();
 
     /**
      * Changes the URL of the orchestrator.
      * @param url the new URL
      */
-    void setOrchestratorUrl(final String url);
+    void setPrismUrl(final String url);
 
     /**
      * Returns the API key used to authenticate the connection.

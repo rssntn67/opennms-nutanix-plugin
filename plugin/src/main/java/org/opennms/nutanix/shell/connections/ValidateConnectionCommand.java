@@ -7,7 +7,7 @@ import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.opennms.nutanix.connections.ConnectionManager;
 
-@Command(scope = "opennms-nutanix", name = "connection-validate", description = "Validate a connection", detailedDescription = "Validate an existing connection to a nutanix orchestrator")
+@Command(scope = "opennms-nutanix", name = "connection-validate", description = "Validate a connection", detailedDescription = "Validate an existing connection to a nutanix prism")
 @Service
 public class ValidateConnectionCommand implements Action {
 

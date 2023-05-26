@@ -11,38 +11,32 @@ public class NutanixApiClientCredentials {
     /**
      * The URL of the Nutanix orchestrator.
      */
-    public final String orchestratorUrl;
+    public final String prismUrl;
 
     /**
      * The API key used to authenticate the connection to the orchestrator.
      */
     public final String apiKey;
-
-    public NutanixApiClientCredentials(final String orchestratorUrl,
-                                         final String apiKey) {
-        this.orchestratorUrl = Objects.requireNonNull(orchestratorUrl);
-        this.apiKey = Objects.requireNonNull(apiKey);
-    }
-
+    
     private NutanixApiClientCredentials(final Builder builder) {
-        this.orchestratorUrl = Objects.requireNonNull(builder.orchestratorUrl);
+        this.prismUrl = Objects.requireNonNull(builder.prismUrl);
         this.apiKey = Objects.requireNonNull(builder.apiKey);
     }
 
     public static class Builder {
-        private String orchestratorUrl;
+        private String prismUrl;
         private String apiKey;
 
         private Builder() {
         }
 
         private Builder(final NutanixApiClientCredentials credentials) {
-            this.orchestratorUrl = credentials.orchestratorUrl;
+            this.prismUrl = credentials.prismUrl;
             this.apiKey = credentials.apiKey;
         }
 
-        public Builder withOrchestratorUrl(final String orchestratorUrl) {
-            this.orchestratorUrl = orchestratorUrl;
+        public Builder withPrismUrl(final String orchestratorUrl) {
+            this.prismUrl = orchestratorUrl;
             return this;
         }
 
@@ -67,7 +61,7 @@ public class NutanixApiClientCredentials {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("orchestratorUrl", this.orchestratorUrl)
+                .add("orchestratorUrl", this.prismUrl)
                 .add("apiKey", this.apiKey)
                 .toString();
     }
@@ -81,13 +75,13 @@ public class NutanixApiClientCredentials {
             return false;
         }
         final NutanixApiClientCredentials that = (NutanixApiClientCredentials) o;
-        return Objects.equals(this.orchestratorUrl, that.orchestratorUrl) &&
+        return Objects.equals(this.prismUrl, that.prismUrl) &&
                 Objects.equals(this.apiKey, that.apiKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.orchestratorUrl,
+        return Objects.hash(this.prismUrl,
                 this.apiKey);
     }
 

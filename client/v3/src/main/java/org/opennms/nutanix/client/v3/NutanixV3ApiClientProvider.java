@@ -1,6 +1,5 @@
 package org.opennms.nutanix.client.v3;
 
-import org.glassfish.jersey.client.ClientConfig;
 import org.opennms.nutanix.client.api.NutanixApiClient;
 import org.opennms.nutanix.client.api.NutanixApiClientCredentials;
 import org.opennms.nutanix.client.api.NutanixApiClientProvider;
@@ -18,7 +17,7 @@ public class NutanixV3ApiClientProvider implements NutanixApiClientProvider {
     @Override
     public NutanixApiClient client(NutanixApiClientCredentials credentials) throws NutanixApiException {
         ApiClientExtention apiClient = new ApiClientExtention();
-        apiClient.setBasePath(credentials.orchestratorUrl);
+        apiClient.setBasePath(credentials.prismUrl);
         apiClient.setApiKey(credentials.apiKey);
         apiClient.setIgnoreSslCertificateValidation(ignoreSslCertificateValidation);
         apiClient.setLength(length);

@@ -9,7 +9,7 @@ import org.apache.karaf.shell.support.table.Col;
 import org.apache.karaf.shell.support.table.ShellTable;
 import org.opennms.nutanix.connections.ConnectionManager;
 
-@Command(scope = "opennms-nutanix", name = "connection-list", description = "List existing connections", detailedDescription = "List all existing connections to orchestrators")
+@Command(scope = "opennms-nutanix", name = "connection-list", description = "List existing connections", detailedDescription = "List all existing connections to Nutanix Prism")
 @Service
 public class ListConnectionsCommand implements Action {
 
@@ -24,14 +24,14 @@ public class ListConnectionsCommand implements Action {
         final var table = new ShellTable()
                 .size(session.getTerminal().getWidth() - 1)
                 .column(new Col("alias").maxSize(36))
-                .column(new Col("orchestratorUrl").maxSize(72));
+                .column(new Col("prismUrl").maxSize(72));
 
         this.connectionManager.getAliases().stream()
                                       .map(alias -> this.connectionManager.getConnection(alias).orElseThrow())
                                       .forEach(connection -> {
                                           final var row = table.addRow();
                                           row.addContent(connection.getAlias());
-                                          row.addContent(connection.getOrchestratorUrl());
+                                          row.addContent(connection.getPrismUrl());
                                       });
 
         table.print(System.out, true);

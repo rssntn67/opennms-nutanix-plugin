@@ -72,14 +72,14 @@ public class ConnectionManager {
      * Creates a connection under the given alias.
      *
      * @param alias           the alias of the connection to add
-     * @param orchestratorUrl the URL of the orchestrator
+     * @param prismUrl        the URL of the prism server
      * @param apiKey          the API key used to authenticate the connection
      */
-    public Connection newConnection(final String alias, final String orchestratorUrl, final String apiKey) {
+    public Connection newConnection(final String alias, final String prismUrl, final String apiKey) {
         this.ensureCore();
 
         return new ConnectionImpl(alias, NutanixApiClientCredentials.builder()
-                                                                      .withOrchestratorUrl(orchestratorUrl)
+                                                                      .withPrismUrl(prismUrl)
                                                                       .withApiKey(apiKey)
                                                                       .build());
     }
@@ -117,7 +117,7 @@ public class ConnectionManager {
     private static NutanixApiClientCredentials asNutanixCredentials(Connection connection) {
         return NutanixApiClientCredentials.builder()
                                             .withApiKey(connection.getApiKey())
-                                            .withOrchestratorUrl(connection.getOrchestratorUrl())
+                                            .withPrismUrl(connection.getPrismUrl())
                                             .build();
     }
 
@@ -133,7 +133,7 @@ public class ConnectionManager {
         final var apiKey = credentials.getPassword();
 
         return NutanixApiClientCredentials.builder()
-                                            .withOrchestratorUrl(orchestratorUrl)
+                                            .withPrismUrl(orchestratorUrl)
                                             .withApiKey(apiKey)
                                             .build();
     }
@@ -154,14 +154,14 @@ public class ConnectionManager {
         }
 
         @Override
-        public String getOrchestratorUrl() {
-            return this.credentials.orchestratorUrl;
+        public String getPrismUrl() {
+            return this.credentials.prismUrl;
         }
 
         @Override
-        public void setOrchestratorUrl(final String url) {
+        public void setPrismUrl(final String url) {
             this.credentials = NutanixApiClientCredentials.builder(this.credentials)
-                                                            .withOrchestratorUrl(url)
+                                                            .withPrismUrl(url)
                                                             .build();
         }
 
@@ -199,14 +199,14 @@ public class ConnectionManager {
         }
 
         private Credentials asCredentials() {
-            return new ImmutableCredentials(this.credentials.orchestratorUrl, this.credentials.apiKey, Collections.emptyMap());
+            return new ImmutableCredentials(this.credentials.prismUrl, this.credentials.apiKey, Collections.emptyMap());
         }
 
         @Override
         public String toString() {
             return MoreObjects.toStringHelper(this)
                               .add("alias", this.alias)
-                              .add("orchestratorUrl", this.credentials.orchestratorUrl)
+                              .add("orchestratorUrl", this.credentials.prismUrl)
                               .add("apiKey", "******")
                               .toString();
         }
