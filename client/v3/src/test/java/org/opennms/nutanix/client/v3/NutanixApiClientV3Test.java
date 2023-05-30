@@ -162,7 +162,7 @@ public class NutanixApiClientV3Test {
                 try {
                 VmListIntentResponse vmListIntentResponse = vmsApi.vmsListPost(body);
                 total = vmListIntentResponse.getMetadata().getTotalMatches();
-                vmListIntentResponse.getEntities().forEach(vm -> System.out.println(vm));
+                vmListIntentResponse.getEntities().forEach(System.out::println);
 
                 vmListIntentResponse.getEntities()
                         .stream()
@@ -178,7 +178,7 @@ public class NutanixApiClientV3Test {
                 } catch (ApiException e) {
                     throw new RuntimeException(e);
                 }
-            } while (vmnames.size() < 0 );
+            } while (vmnames.size() < total );
             System.out.println("total vms: " + vmnames.size());
             System.out.println("off vms: " + offVms.size());
             System.out.println("on vms: " + onVms.size());
@@ -279,7 +279,7 @@ public class NutanixApiClientV3Test {
                 AlertListIntentResponse response = api.alertsListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> alerts.add(item.toString()));
-                response.getEntities().forEach(item -> System.out.println(item));
+                response.getEntities().forEach(System.out::println);
                 lenght = response.getEntities().size();
                 offset+=lenght;
             } catch (ApiException e) {
@@ -357,6 +357,8 @@ public class NutanixApiClientV3Test {
                 ClusterListIntentResponse response = api.clustersListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.getStatus().toString()));
+                response.getEntities().forEach(item -> System.out.println(item.getStatus().getResources().getConfig().getOperationMode()));
+                response.getEntities().forEach(item -> System.out.println(item.getStatus().getResources().getConfig().isIsAvailable()));
                 lenght = response.getEntities().size();
                 offset+=lenght;
             } catch (ApiException e) {
