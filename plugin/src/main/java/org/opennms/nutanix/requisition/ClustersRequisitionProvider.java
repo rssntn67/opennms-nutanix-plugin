@@ -9,11 +9,11 @@ import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.Connection;
 import org.opennms.nutanix.connections.ConnectionManager;
 
-public class HostsRequisitionProvider extends AbstractRequisitionProvider<AbstractRequisitionProvider.Request> {
+public class ClustersRequisitionProvider extends AbstractRequisitionProvider<AbstractRequisitionProvider.Request> {
 
-    public final static String TYPE = "nutanix-hosts";
+    public final static String TYPE = "nutanix-clusters";
 
-    public HostsRequisitionProvider(NodeDao nodeDao, ClientManager clientManager, ConnectionManager connectionManager, Class<? extends AbstractRequisitionProvider.Request> requestClass) {
+    public ClustersRequisitionProvider(NodeDao nodeDao, ClientManager clientManager, ConnectionManager connectionManager, Class<? extends AbstractRequisitionProvider.Request> requestClass) {
         super(nodeDao, clientManager, connectionManager, requestClass);
     }
 
@@ -22,9 +22,10 @@ public class HostsRequisitionProvider extends AbstractRequisitionProvider<Abstra
         return TYPE;
     }
 
+
     @Override
-    protected AbstractRequisitionProvider.Request createRequest(Connection connection, Map<String, String> parameters) {
-        return new Request(connection);
+    protected ClustersRequisitionProvider.Request createRequest(Connection connection, Map<String, String> parameters) {
+        return new ClustersRequisitionProvider.Request(connection);
     }
 
     @Override
@@ -44,7 +45,8 @@ public class HostsRequisitionProvider extends AbstractRequisitionProvider<Abstra
 
         @Override
         protected String getDefaultForeignSource() {
-                return String.format("%s-%s", TYPE, this.getAlias());
+            return String.format("%s-%s", TYPE, this.getAlias());
         }
     }
+
 }

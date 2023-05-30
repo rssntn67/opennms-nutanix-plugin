@@ -12,23 +12,31 @@ NOTE: The `Content-Type` of the request and response is `application/json`.
 | Method
 | Description
 
-| `/plugin/velocloud/partner/\{alias}/customers`
+| `/plugin/nutanix/\{alias}/clusters`
 | GET
-| Returns the associated customers for a configured partner connection.
+| Returns the associated clusters for a configured nutanix with alias connection.
 
-| `/plugin/velocloud/connections`
+| `/plugin/nutanix/\{alias}/hosts`
+| GET
+| Returns the associated hosts for a configured nutanix with alias connection.
+
+| `/plugin/nutanix/\{alias}/vms`
+| GET
+| Returns the associated vms for a configured nutanix with alias connection.
+
+| `/plugin/nutanix/connections`
 | GET
 | Returns the list of configured connections.
 
-| `/plugin/velocloud/connections`
+| `/plugin/nutanix/connections`
 | POST
 | Adds a new connection.
 
-| `/plugin/velocloud/connections/\{alias}`
+| `/plugin/nutanix/connections/\{alias}`
 | PUT
 | Updates a configured connection.
 
-| `/plugin/velocloud/connections/\{alias}`
+| `/plugin/nutanix/connections/\{alias}`
 | GET
 | Validates a configured connection.
 
@@ -36,12 +44,12 @@ NOTE: The `Content-Type` of the request and response is `application/json`.
 
 == Examples
 
-=== Retrieve customers for a given partner connection
+=== Retrieve vms for a given prism connection
 
 .Request
 [source, console]
 ----
-curl -X GET -u admin:admin http://localhost:8980/opennms/rest/plugin/velocloud/partner/aPartnerAlias/customers
+curl -X GET -u admin:admin http://localhost:8980/opennms/rest/plugin/nutanix/prismAlias/vms
 ----
 
 .Response
@@ -100,7 +108,7 @@ curl -X GET -u admin:admin http://localhost:8980/opennms/rest/plugin/velocloud/p
 .Request
 [source, console]
 ----
-curl -u admin:admin http://localhost:8980/opennms/rest/plugin/velocloud/connections
+curl -u admin:admin http://localhost:8980/opennms/rest/plugin/nutanix/connections
 ----
 
 .Response
@@ -109,11 +117,11 @@ curl -u admin:admin http://localhost:8980/opennms/rest/plugin/velocloud/connecti
 [
   {
     "alias": "aPartnerAlias",
-    "orchestratorUrl": "https://something-somewhere.velocloud.net/"
+    "prismUrl": "https://something-somewhere.nutanix.net/"
   },
   {
     "alias": "aCustomerAlias",
-    "orchestratorUrl": "https://something-somewhere.velocloud.net/"
+    "prismUrl": "https://something-somewhere.nutanix.net/"
   }
 ]
 ----
@@ -123,7 +131,7 @@ curl -u admin:admin http://localhost:8980/opennms/rest/plugin/velocloud/connecti
 .Request
 [source, console]
 ----
-curl -H "Content-type: application/json" -X POST -u admin:admin http://localhost:8980/opennms/rest/plugin/velocloud/connections --data '{"alias":"anotherAlias","orchestratorUrl":"https://something-somewhere.velocloud.net","apiKey":"juKdsndSJnsjsdH3KnedejS3kNk3mndsfks3.sad8asdkhasd8asdSDSDFhkasd8asdhasd7k32l32kKkjbsdNS01ZGRhNGRlNGU2N2IiLCJleHAiOjE2OTY1NDExODYwMDAsInV1aWQiOiJV1aWQiOiI0MDUwMDJiNS01YjQ4sInR5cCI6IkpXVCQ3OTYtOWRiOS03NmRhODUxMGMyYjEiLCJOjE2OTY1NDExODYwMDAsInV1aWQiOdsJdsSjkSDlJLJ"}'
+curl -H "Content-type: application/json" -X POST -u admin:admin http://localhost:8980/opennms/rest/plugin/nutanix/connections --data '{"alias":"anotherAlias","prismUrl":"https://something-somewhere.nutanix.net","apiKey":"juKdsndSJnsjsdH3KnedejS3kNk3mndsfks3.sad8asdkhasd8asdSDSDFhkasd8asdhasd7k32l32kKkjbsdNS01ZGRhNGRlNGU2N2IiLCJleHAiOjE2OTY1NDExODYwMDAsInV1aWQiOiJV1aWQiOiI0MDUwMDJiNS01YjQ4sInR5cCI6IkpXVCQ3OTYtOWRiOS03NmRhODUxMGMyYjEiLCJOjE2OTY1NDExODYwMDAsInV1aWQiOdsJdsSjkSDlJLJ"}'
 ----
 
 .Response
@@ -137,7 +145,7 @@ Connection successfully added
 .Request
 [source, console]
 ----
-curl -H "Content-type: application/json" -X PUT -u admin:admin http://localhost:8980/opennms/rest/plugin/velocloud/connections/anotherAlias --data '{"orchestratorUrl":"https://something-somewhere.velocloud.net","apiKey":"juKdsndSJnsjsdH3KnedejS3kNk3mndsfks3.sad8asdkhasd8asdSDSDFhkasd8asdhasd7k32l32kKkjbsdNS01ZGRhNGRlNGU2N2IiLCJleHAiOjE2OTY1NDExODYwMDAsInV1aWQiOiJV1aWQiOiI0MDUwMDJiNS01YjQ4sInR5cCI6IkpXVCQ3OTYtOWRiOS03NmRhODUxMGMyYjEiLCJOjE2OTY1NDExODYwMDAsInV1aWQiOdsJdsSjkSDlJLJ"}'
+curl -H "Content-type: application/json" -X PUT -u admin:admin http://localhost:8980/opennms/rest/plugin/nutanix/connections/anotherAlias --data '{"prismUrl":"https://something-somewhere.nutanix.net","apiKey":"juKdsndSJnsjsdH3KnedejS3kNk3mndsfks3.sad8asdkhasd8asdSDSDFhkasd8asdhasd7k32l32kKkjbsdNS01ZGRhNGRlNGU2N2IiLCJleHAiOjE2OTY1NDExODYwMDAsInV1aWQiOiJV1aWQiOiI0MDUwMDJiNS01YjQ4sInR5cCI6IkpXVCQ3OTYtOWRiOS03NmRhODUxMGMyYjEiLCJOjE2OTY1NDExODYwMDAsInV1aWQiOdsJdsSjkSDlJLJ"}'
 ----
 
 .Response
@@ -151,7 +159,7 @@ Connection successfully updated
 .Request
 [source, console]
 ----
-curl -X GET -u admin:admin http://localhost:8980/opennms/rest/plugin/velocloud/connections/anotherAlias
+curl -X GET -u admin:admin http://localhost:8980/opennms/rest/plugin/nutanix/connections/anotherAlias
 ----
 
 .Response
@@ -159,7 +167,7 @@ curl -X GET -u admin:admin http://localhost:8980/opennms/rest/plugin/velocloud/c
 ----
 {
 "alias": "anotherAlias",
-"orchestratorUrl": "https://something-somewhere.velocloud.net",
+"nutanixUrl": "https://something-somewhere.nutanix.net",
 "valid": true
 }
 ----

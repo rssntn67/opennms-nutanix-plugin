@@ -14,10 +14,16 @@ Specify the requisition type `nutanix-vms` to import all vms defined in Nutanix 
 opennms:import-requisition nutanix-vms alias=aAlias location=naples
 ```
 
-Specify the requisition type `nutanix-hosts` to import all vms defined in Nutanix Prism connection:
+Specify the requisition type `nutanix-hosts` to import all hosts defined in Nutanix Prism connection:
 
 ```
 opennms:import-requisition nutanix-hosts alias=aAlias location=naples
+```
+
+Specify the requisition type `nutanix-clusters` to import all clusters defined in Nutanix Prism connection:
+
+```
+opennms:import-requisition nutanix-clusters alias=aAlias location=naples
 ```
 
 You can specify an additional parameter, `foreignSource`, to set the foreign source and requisition name.

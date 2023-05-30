@@ -2,6 +2,7 @@ package org.opennms.nutanix.client.api;
 
 import java.util.List;
 
+import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.client.api.model.VM;
 
@@ -21,5 +22,13 @@ public interface NutanixApiClient {
      * @throws NutanixApiException "see message for detail"
      */
     List<Host> getHosts() throws NutanixApiException;
+
+    /**
+     * Get the Hosts.
+     *
+     * @return a list of {@link Cluster}s
+     * @throws NutanixApiException "see message for detail"
+     */
+    List<Cluster> getClusters() throws NutanixApiException;
 
 }

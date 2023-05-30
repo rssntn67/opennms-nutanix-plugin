@@ -162,6 +162,7 @@ public class NutanixApiClientV3Test {
                 try {
                 VmListIntentResponse vmListIntentResponse = vmsApi.vmsListPost(body);
                 total = vmListIntentResponse.getMetadata().getTotalMatches();
+                vmListIntentResponse.getEntities().forEach(vm -> System.out.println(vm));
 
                 vmListIntentResponse.getEntities()
                         .stream()
@@ -177,7 +178,7 @@ public class NutanixApiClientV3Test {
                 } catch (ApiException e) {
                     throw new RuntimeException(e);
                 }
-            } while (vmnames.size() < total );
+            } while (vmnames.size() < 0 );
             System.out.println("total vms: " + vmnames.size());
             System.out.println("off vms: " + offVms.size());
             System.out.println("on vms: " + onVms.size());

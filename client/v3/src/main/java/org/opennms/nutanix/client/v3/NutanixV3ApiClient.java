@@ -5,11 +5,16 @@ import java.util.List;
 
 import org.opennms.nutanix.client.api.NutanixApiClient;
 import org.opennms.nutanix.client.api.NutanixApiException;
+import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.client.api.model.VM;
+import org.opennms.nutanix.client.v3.api.ClustersApi;
 import org.opennms.nutanix.client.v3.api.HostsApi;
 import org.opennms.nutanix.client.v3.api.VmsApi;
 import org.opennms.nutanix.client.v3.handler.ApiException;
+import org.opennms.nutanix.client.v3.model.ClusterIntentResource;
+import org.opennms.nutanix.client.v3.model.ClusterListIntentResponse;
+import org.opennms.nutanix.client.v3.model.ClusterListMetadata;
 import org.opennms.nutanix.client.v3.model.HostIntentResource;
 import org.opennms.nutanix.client.v3.model.HostListIntentResponse;
 import org.opennms.nutanix.client.v3.model.HostListMetadata;
@@ -31,17 +36,15 @@ public class NutanixV3ApiClient implements NutanixApiClient {
         VmsApi vmsApi = new VmsApi(apiClient);
         List<VM> vms = new ArrayList<>();
         int offset = 0;
-        int length = apiClient.getLength();
         int total;
         do {
-            VmListMetadata body = new VmListMetadata().length(length).offset(offset);
+            VmListMetadata body = new VmListMetadata().length(apiClient.getLength()).offset(offset);
             try {
                 VmListIntentResponse vmListIntentResponse = vmsApi.vmsListPost(body);
-                total = vmListIntentResponse.getMetadata().getTotalMatches();
 
+                total = vmListIntentResponse.getMetadata().getTotalMatches();
                 vmListIntentResponse.getEntities().forEach(vm -> vms.add(getFromVmIntentResource(vm)));
-                length = vmListIntentResponse.getEntities().size();
-                offset+=length;
+                offset+=vmListIntentResponse.getEntities().size();
             } catch (ApiException e) {
                 throw new NutanixApiException(e.getMessage());
             }
@@ -59,17 +62,15 @@ public class NutanixV3ApiClient implements NutanixApiClient {
         HostsApi hostsApi = new HostsApi(apiClient);
         List<Host> hosts = new ArrayList<>();
         int offset = 0;
-        int length = apiClient.getLength();
         int total;
         do {
-            HostListMetadata body = new HostListMetadata().length(length).offset(offset);
+            HostListMetadata body = new HostListMetadata().length(apiClient.getLength()).offset(offset);
             try {
                 HostListIntentResponse hostListIntentResponse = hostsApi.hostsListPost(body);
-                total = hostListIntentResponse.getMetadata().getTotalMatches();
 
+                total = hostListIntentResponse.getMetadata().getTotalMatches();
                 hostListIntentResponse.getEntities().forEach(host -> hosts.add(getFromHostIntentResource(host)));
-                length = hostListIntentResponse.getEntities().size();
-                offset+=length;
+                offset+= hostListIntentResponse.getEntities().size();
             } catch (ApiException e) {
                 throw new NutanixApiException(e.getMessage());
             }
@@ -81,4 +82,30 @@ public class NutanixV3ApiClient implements NutanixApiClient {
     private Host getFromHostIntentResource(HostIntentResource hostIntentResource) {
         return Host.builder().withName(hostIntentResource.getStatus().getName()).withUuid(hostIntentResource.getMetadata().getUuid()).build();
     }
+
+    @Override
+    public List<Cluster> getClusters() throws NutanixApiException {
+        ClustersApi clustersApi = new ClustersApi(apiClient);
+        List<Cluster> clusters = new ArrayList<>();
+        int offset = 0;
+        int total;
+        do {
+            ClusterListMetadata body = new ClusterListMetadata().length(apiClient.getLength()).offset(offset);
+            try {
+                ClusterListIntentResponse clustersListIntentResponse = clustersApi.clustersListPost(body);
+
+                total = clustersListIntentResponse.getMetadata().getTotalMatches();
+                clustersListIntentResponse.getEntities().forEach(cluster -> clusters.add(getFromClusterIntentResource(cluster)));
+                offset+=clustersListIntentResponse.getEntities().size();
+            } catch (ApiException e) {
+                throw new NutanixApiException(e.getMessage());
+            }
+        } while (clusters.size() < total );
+        return clusters;
+    }
+
+    private Cluster getFromClusterIntentResource(ClusterIntentResource cluster) {
+        return Cluster.builder().withName(cluster.getStatus().getName()).withUuid(cluster.getMetadata().getUuid()).build();
+    }
+
 }

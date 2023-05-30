@@ -1,11 +1,11 @@
 = Useful Karaf Shell Commands
 :imagesdir: ../assets/images
 
-== opennms-velocloud:connection-add
+== opennms-nutanix:connection-add
 
-Add a connection to a Velocloud Orchestrator.
+Add a connection to a Nutanix Prism.
 
-Syntax: `opennms-velocloud:connection-add alias url apiKey`
+Syntax: `opennms-nutanix:connection-add alias url apiKey`
 
 .Arguments
 [options="header, autowidth", cols="2,1"]
@@ -18,18 +18,18 @@ Syntax: `opennms-velocloud:connection-add alias url apiKey`
 | Alias for this connection
 
 | url
-| Orchestrator URL
+| Nutanix Prism URL
 
 | apiKey
-| Orchestrator API Key
+| Nutanix Prism API Key
 
 |===
 
-== opennms-velocloud:list-customers
+== opennms-nutanix:list-clusters
 
-List all customers for a given partner connection alias.
+List all clusters for a given nutanix prism connection alias.
 
-Syntax: `opennms-velocloud:list-customers alias`
+Syntax: `opennms-nutanix:list-clusters alias`
 
 .Arguments
 [options="header, autowidth", cols="2,1"]
@@ -43,14 +43,66 @@ Syntax: `opennms-velocloud:list-customers alias`
 
 |===
 
-.Example output for a partner connection `partnerAlias`
+.Example output for a connection `prismAlias`
 ```
-admin@opennms()> list-customers partnerAlias
-ID  │ Name    │ Domain   │ Description
-────┼─────────┼──────────┼──────────────────────────────────────────────────
-103 │ MY_LAB  │ mylab    │ My lab
-486 │ CUSTA1  │ custa1   │ Customer A1
-516 │ CUSTB3  │ custb3   │ Customer B3
+admin@opennms()> list-clusters prismAlias
+                         UUID        │ Name    │ Domain   │ Description
+───────────────────────────────────────────────┼──────────┼────────────┼
+00059dd3-26be-0d72-5228-ac1f6b357222 │ CLU_TEST│ tbd      │ tbd
+admin@opennms()>
+```
+
+== opennms-nutanix:list-hosts
+
+List all hosts for a given nutanix prism connection alias.
+
+Syntax: `opennms-nutanix:list-hosts alias`
+
+.Arguments
+[options="header, autowidth", cols="2,1"]
+|===
+
+| Argument
+| Description
+
+| alias
+| Alias for this connection
+
+|===
+
+.Example output for a connection `prismAlias`
+```
+admin@opennms()> list-hosts prismAlias
+                         UUID        │ Name       │ Domain   │ Description
+──────────────────────────────────────────────────┼──────────┼────────────┼
+cd6c6e07-39f2-4381-ba5d-ec854a76b02d │ NTX02B-TEST│ tbd      │ tbd
+admin@opennms()>
+```
+
+== opennms-nutanix:list-vms
+
+List all virtual machines for a given nutanix prism connection alias.
+
+Syntax: `opennms-nutanix:list-vms alias`
+
+.Arguments
+[options="header, autowidth", cols="2,1"]
+|===
+
+| Argument
+| Description
+
+| alias
+| Alias for this connection
+
+|===
+
+.Example output for a connection `prismAlias`
+```
+admin@opennms()> list-hosts prismAlias
+                         UUID        │ Name       │ Domain   │ Description
+──────────────────────────────────────────────────┼──────────┼────────────┼
+6cf9a98b-4954-4f85-9174-705fcfabc1cd │ VM001-TEST │ tbd      │ tbbd
 admin@opennms()>
 ```
 
@@ -69,7 +121,9 @@ Syntax: `opennms:import-requisition [options] type [parameters]`
 
 | type
 | Type of requisition.
-Use `velocloud-customer` for a customer connection and `velocloud-partner` for a partner connection.
+Use `nutanix-vms` for importing Virtual Machines
+Use `nutanix-hosts` for importing Hosts
+Use `nutanix-clusters` for importing Clusters
 
 | parameters
 | Parameters in key=value form
