@@ -5,13 +5,18 @@ import java.util.List;
 
 import org.opennms.nutanix.client.api.NutanixApiClient;
 import org.opennms.nutanix.client.api.NutanixApiException;
+import org.opennms.nutanix.client.api.model.Alert;
 import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.client.api.model.VM;
+import org.opennms.nutanix.client.v3.api.AlertsApi;
 import org.opennms.nutanix.client.v3.api.ClustersApi;
 import org.opennms.nutanix.client.v3.api.HostsApi;
 import org.opennms.nutanix.client.v3.api.VmsApi;
 import org.opennms.nutanix.client.v3.handler.ApiException;
+import org.opennms.nutanix.client.v3.model.AlertIntentResource;
+import org.opennms.nutanix.client.v3.model.AlertListIntentResponse;
+import org.opennms.nutanix.client.v3.model.AlertListMetadata;
 import org.opennms.nutanix.client.v3.model.ClusterIntentResource;
 import org.opennms.nutanix.client.v3.model.ClusterListIntentResponse;
 import org.opennms.nutanix.client.v3.model.ClusterListMetadata;
@@ -107,5 +112,30 @@ public class NutanixV3ApiClient implements NutanixApiClient {
     private Cluster getFromClusterIntentResource(ClusterIntentResource cluster) {
         return Cluster.builder().withName(cluster.getStatus().getName()).withUuid(cluster.getMetadata().getUuid()).build();
     }
+
+    @Override
+    public List<Alert> getAlerts() throws NutanixApiException {
+        AlertsApi alertsApi = new AlertsApi(apiClient);
+        List<Alert> alerts = new ArrayList<>();
+        int offset = 0;
+        int total;
+        do {
+            AlertListMetadata body = new AlertListMetadata().length(apiClient.getLength()).offset(offset);
+            try {
+                AlertListIntentResponse alertsListIntentResponse = alertsApi.alertsListPost(body);
+
+                total = alertsListIntentResponse.getMetadata().getTotalMatches();
+                alertsListIntentResponse.getEntities().forEach(alert -> alerts.add(getFromAlertIntentResource(alert)));
+                offset+=alertsListIntentResponse.getEntities().size();
+            } catch (ApiException e) {
+                throw new NutanixApiException(e.getMessage());
+            }
+        } while (alerts.size() < total );
+        return alerts;    }
+
+    private Alert getFromAlertIntentResource(AlertIntentResource alert) {
+        return Alert.builder().withUuid(alert.getMetadata().getUuid()).withSeverity(alert.getStatus().getResources().getSeverity()).withType(alert.getStatus().getResources().getType()).build();
+    }
+
 
 }

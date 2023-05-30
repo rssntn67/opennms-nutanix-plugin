@@ -233,8 +233,8 @@ public class NutanixApiClientV3Test {
 
         try {
             Versions versions= versionApi.versionsGet();
-            Assert.assertEquals("3", versions.getMajorVersion());
-            Assert.assertEquals("1", versions.getMinorVersion());
+            System.out.println(versions);
+            Assert.assertEquals("3.1", versions.getMajorVersion()+"."+versions.getMinorVersion());
         } catch (ApiException e) {
             throw new RuntimeException(e);
         }
@@ -270,7 +270,7 @@ public class NutanixApiClientV3Test {
         AlertsApi api = new AlertsApi(getApiClient());
         int offset = 0;
         int lenght = 20;
-        Set<String> names = new HashSet<>();
+        Set<String> alerts = new HashSet<>();
         int total;
         do {
             try {
@@ -278,16 +278,17 @@ public class NutanixApiClientV3Test {
 
                 AlertListIntentResponse response = api.alertsListPost(body);
                 total = response.getMetadata().getTotalMatches();
-                response.getEntities().forEach(item -> names.add(item.getStatus().toString()));
+                response.getEntities().forEach(item -> alerts.add(item.toString()));
+                response.getEntities().forEach(item -> System.out.println(item));
                 lenght = response.getEntities().size();
                 offset+=lenght;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
-        } while (names.size() < total );
+        } while (alerts.size() < total );
 
-        System.out.println("total : " + names.size());
-        names.forEach(System.out::println);
+        System.out.println("total : " + alerts.size());
+        alerts.forEach(System.out::println);
     }
 
     @Test

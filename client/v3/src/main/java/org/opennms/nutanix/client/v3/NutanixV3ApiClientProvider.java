@@ -4,6 +4,9 @@ import org.opennms.nutanix.client.api.NutanixApiClient;
 import org.opennms.nutanix.client.api.NutanixApiClientCredentials;
 import org.opennms.nutanix.client.api.NutanixApiClientProvider;
 import org.opennms.nutanix.client.api.NutanixApiException;
+import org.opennms.nutanix.client.v3.api.VersionsApi;
+import org.opennms.nutanix.client.v3.handler.ApiException;
+import org.opennms.nutanix.client.v3.model.Versions;
 
 public class NutanixV3ApiClientProvider implements NutanixApiClientProvider {
     private final boolean ignoreSslCertificateValidation;
@@ -21,6 +24,15 @@ public class NutanixV3ApiClientProvider implements NutanixApiClientProvider {
         apiClient.setApiKey(credentials.apiKey);
         apiClient.setIgnoreSslCertificateValidation(ignoreSslCertificateValidation);
         apiClient.setLength(length);
-        return new NutanixV3ApiClient(apiClient);
+        VersionsApi versionsApi = new VersionsApi(apiClient);
+        Versions versions;
+        try {
+            versions= versionsApi.versionsGet();
+        } catch (ApiException e) {
+            throw new NutanixApiException(e.getMessage(), e);
+        }
+        if (versions != null && "3.1".equalsIgnoreCase(versions.getMajorVersion()+"."+versions.getMinorVersion()))
+            return new NutanixV3ApiClient(apiClient);
+        throw new NutanixApiException("Unsupported Api version: " + versions.getMajorVersion()+"."+versions.getMinorVersion() + " is not 3.1");
     }
 }
