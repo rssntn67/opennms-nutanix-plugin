@@ -1,0 +1,1 @@
+{"apiVersion":"v0.8","swaggerVersion":"1.2","apis":[{"internal":false,"path":"/ha"},{"internal":false,"path":"/hosts"},{"internal":false,"path":"/images"},{"internal":false,"path":"/networks"},{"internal":false,"path":"/snapshots"},{"internal":false,"path":"/tasks"},{"internal":false,"path":"/vdisks"},{"internal":false,"path":"/vms"},{"internal":false,"path":"/volume_groups"}]}

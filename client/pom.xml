@@ -15,6 +15,9 @@
 
     <modules>
         <module>api</module>
+        <module>v08</module>
+        <module>v1</module>
+        <module>v2</module>
         <module>v3</module>
     </modules>
 

@@ -56,3 +56,19 @@ bundle:watch *
 ```
 
 You can also access the REST endpoint mounted by the plugin at `http://localhost:8980/opennms/rest/nutanix/`
+
+```
+Nutanix Api Support Reference 
+
+v1 (Prism Element)
+Legacy application support and VM performance metrics
+Should not be used outside of specific circumstances
+v2.0 (Prism Element)
+Merge of v0.8 and v1 APIs into single GA API
+cluster-specific tasks. For example, storage container management, storage container performance statistics
+v3 (Prism Central)
+environment-wide configuration and entity management
+Prism Central application and product management including Nutanix Self Service, Nutanix Kubernetes Engine, Nutanix Flow
+v4 (Prism Central)
+Multi-cluster entity management. This includes cluster images, virtual machines, networking, AIops
+See Nutanix API v4 Intro for detailed information, including official v4 API documentation
