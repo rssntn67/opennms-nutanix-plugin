@@ -8,8 +8,8 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>nutanix-client-v3</artifactId>
-    <name>OpenNMS :: Plugins :: Nutanix Plugin :: Client :: V3</name>
+    <artifactId>nutanix-client-v1</artifactId>
+    <name>OpenNMS :: Plugins :: Nutanix Plugin :: Client :: V1</name>
     <packaging>bundle</packaging>
 
     <build>
@@ -54,12 +54,12 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/build/resources/swagger.json</inputSpec>
+                            <inputSpec>${project.basedir}/src/build/resources/vms.json</inputSpec>
                             <language>java</language>
                             <library>jersey2</library>
-                            <apiPackage>org.opennms.nutanix.client.v3.api</apiPackage>
-                            <modelPackage>org.opennms.nutanix.client.v3.model</modelPackage>
-                            <invokerPackage>org.opennms.nutanix.client.v3.handler</invokerPackage>
+                            <apiPackage>org.opennms.nutanix.client.v1.api</apiPackage>
+                            <modelPackage>org.opennms.nutanix.client.v1.model</modelPackage>
+                            <invokerPackage>org.opennms.nutanix.client.v1.handler</invokerPackage>
                             <generateApiTests>false</generateApiTests>
                             <generateApiDocumentation>false</generateApiDocumentation>
                             <generateModelTests>false</generateModelTests>
