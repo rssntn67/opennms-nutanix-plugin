@@ -20,7 +20,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>org.opennms.nutanix.client.v3.*</Export-Package>
+                        <Export-Package>org.opennms.nutanix.client.v1.*</Export-Package>
                     </instructions>
                 </configuration>
             </plugin>
@@ -54,7 +54,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/build/resources/vms.json</inputSpec>
+                            <inputSpec>${project.basedir}/src/build/resources/swagger-v1-vms.json</inputSpec>
                             <language>java</language>
                             <library>jersey2</library>
                             <apiPackage>org.opennms.nutanix.client.v1.api</apiPackage>

@@ -7,6 +7,7 @@ import org.opennms.nutanix.client.v2.api.VmsApi;
 import org.opennms.nutanix.client.v2.handler.ApiClient;
 import org.opennms.nutanix.client.v2.handler.ApiException;
 import org.opennms.nutanix.client.v2.model.GetBaseEntityCollectionltgetDtoUhuraVmConfigDTOgt;
+import org.opennms.nutanix.client.v2.model.GetDtoUhuraVmConfigDTO;
 
 public class NutanixApiClientV2Test {
 
@@ -30,11 +31,19 @@ public class NutanixApiClientV2Test {
         VmsApi vmsApi = new VmsApi(getApiClient());
         GetBaseEntityCollectionltgetDtoUhuraVmConfigDTOgt dto;
         try {
-            dto = vmsApi.getVMs(true,true);
+            dto = vmsApi.getVMs(true, true);
+            GetDtoUhuraVmConfigDTO vm = vmsApi.getVM(null,true,true);
+            vm.getPowerState();
         } catch (ApiException e) {
-            throw new NutanixApiException(e.getMessage(),e);
+            throw new NutanixApiException(e.getMessage(), e);
         }
         System.out.println(dto);
-    }
 
+        System.out.println(dto.getMetadata().getTotalEntities());
+
+        dto.getEntities().forEach(e -> e.getVmCustomizationConfig());
+
+
+
+    }
 }
