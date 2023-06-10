@@ -12,11 +12,12 @@ import org.opennms.nutanix.client.v2.model.GetDtoUhuraVmConfigDTO;
 public class NutanixApiClientV2Test {
 
     private ApiClient getApiClient() {
-        ApiClient apiClient = new ApiClient();
-        apiClient.setBasePath("https://nutanix.arsinfo.it:9440/api/nutanix/v3");
+        ApiClientExtention apiClient = new ApiClientExtention();
+        apiClient.setBasePath("https://nutanix.arsinfo.it:9440/PrismGateway/services/rest/v2.0");
         apiClient.setUsername(System.getenv("NTX_USER"));
         apiClient.setPassword(System.getenv("NTX_PASS"));
         apiClient.setDebugging(true);
+        apiClient.setIgnoreSslCertificateValidation(true);
         return apiClient;
     }
 

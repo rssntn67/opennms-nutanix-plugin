@@ -1,4 +1,4 @@
-package org.opennms.nutanix.client.v08;
+package org.opennms.nutanix.client.v1;
 
 import java.util.List;
 
