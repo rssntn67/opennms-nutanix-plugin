@@ -45,16 +45,16 @@
             </plugin>
 
             <plugin>
-                <groupId>io.swagger.codegen.v3</groupId>
+                <groupId>io.swagger</groupId>
                 <artifactId>swagger-codegen-maven-plugin</artifactId>
-                <version>3.0.35</version>
+                <version>2.4.25</version>
                 <executions>
                     <execution>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/build/resources/swagger-v1-vms.json</inputSpec>
+                            <inputSpec>${project.basedir}/src/build/resources/vms.json</inputSpec>
                             <language>java</language>
                             <library>jersey2</library>
                             <apiPackage>org.opennms.nutanix.client.v1.api</apiPackage>
