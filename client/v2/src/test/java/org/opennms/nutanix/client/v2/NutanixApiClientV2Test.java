@@ -1,5 +1,10 @@
 package org.opennms.nutanix.client.v2;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
+import javax.ws.rs.core.HttpHeaders;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.opennms.nutanix.client.api.NutanixApiException;
@@ -14,8 +19,10 @@ public class NutanixApiClientV2Test {
     private ApiClient getApiClient() {
         ApiClientExtention apiClient = new ApiClientExtention();
         apiClient.setBasePath("https://nutanix.arsinfo.it:9440/PrismGateway/services/rest/v2.0");
-        apiClient.setUsername(System.getenv("NTX_USER"));
-        apiClient.setPassword(System.getenv("NTX_PASS"));
+        String auth = System.getenv("NTX_USER") + ":" + System.getenv("NTX_PASS");
+        byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
+        String authHeader = "Basic " + new String(encodedAuth);
+        apiClient.addDefaultHeader(HttpHeaders.AUTHORIZATION, authHeader);
         apiClient.setDebugging(true);
         apiClient.setIgnoreSslCertificateValidation(true);
         return apiClient;
@@ -32,19 +39,13 @@ public class NutanixApiClientV2Test {
         VmsApi vmsApi = new VmsApi(getApiClient());
         GetBaseEntityCollectionltgetDtoUhuraVmConfigDTOgt dto;
         try {
-            dto = vmsApi.getVMs(true, true);
-            GetDtoUhuraVmConfigDTO vm = vmsApi.getVM(null,true,true);
-            vm.getPowerState();
-        } catch (ApiException e) {
+            dto = vmsApi.getVMs(null, 0, 2, null,null,true, true);
+                    } catch (ApiException e) {
             throw new NutanixApiException(e.getMessage(), e);
         }
-        System.out.println(dto);
-
-        System.out.println(dto.getMetadata().getTotalEntities());
-
-        dto.getEntities().forEach(e -> e.getVmCustomizationConfig());
-
-
+        System.out.println(dto.getMetadata());
+        dto.getEntities().forEach(vm -> System.out.println(vm));
 
     }
+
 }

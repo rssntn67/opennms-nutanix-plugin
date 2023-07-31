@@ -47,10 +47,10 @@
             <plugin>
                 <groupId>io.swagger.codegen.v3</groupId>
                 <artifactId>swagger-codegen-maven-plugin</artifactId>
-                <version>3.0.35</version>
+                <version>3.0.46</version>
                 <executions>
                     <execution>
-                        <id>ha</id>
+                        <id>v08-ha</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -75,7 +75,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>hosts</id>
+                        <id>v08-hosts</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -100,7 +100,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>images</id>
+                        <id>v08-images</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -125,7 +125,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>networks</id>
+                        <id>v08-networks</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -150,7 +150,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>snapshots</id>
+                        <id>v08-snapshots</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -175,7 +175,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>tasks</id>
+                        <id>v08-tasks</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -200,7 +200,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>vdisks</id>
+                        <id>v08-vdisks</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -225,7 +225,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>vms</id>
+                        <id>v08-vms</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -250,7 +250,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>volume_groups</id>
+                        <id>v08-volume_groups</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>

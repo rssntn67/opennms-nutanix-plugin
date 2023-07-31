@@ -55,7 +55,7 @@
         <osgi.compendium.version>5.0.0</osgi.compendium.version>
         <osgi.enterprise.version>5.0.0</osgi.enterprise.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
-        <swagger.version>2.2.9</swagger.version>
+        <swagger.version>2.2.15</swagger.version>
         <jakarta.version>2.1.6</jakarta.version>
     </properties>
 

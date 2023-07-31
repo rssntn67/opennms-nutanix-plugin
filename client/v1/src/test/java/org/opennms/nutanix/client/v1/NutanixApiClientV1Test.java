@@ -1,11 +1,14 @@
 package org.opennms.nutanix.client.v1;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,8 +23,10 @@ public class NutanixApiClientV1Test {
     private ApiClient getApiClient() {
         ApiClientExtention apiClient = new ApiClientExtention();
         apiClient.setBasePath("https://nutanix.arsinfo.it:9440/PrismGateway/services/rest/v1");
-        apiClient.setUsername(System.getenv("NTX_USER"));
-        apiClient.setPassword(System.getenv("NTX_PASS"));
+        String auth = System.getenv("NTX_USER") + ":" + System.getenv("NTX_PASS");
+        byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
+        String authHeader = "Basic " + new String(encodedAuth);
+        apiClient.addDefaultHeader(HttpHeaders.AUTHORIZATION, authHeader);
         apiClient.setDebugging(true);
         apiClient.setIgnoreSslCertificateValidation(true);
         return apiClient;
