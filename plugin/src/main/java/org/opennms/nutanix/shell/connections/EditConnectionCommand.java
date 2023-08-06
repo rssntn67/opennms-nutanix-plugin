@@ -8,6 +8,8 @@ import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.opennms.nutanix.connections.ConnectionManager;
 
+import com.google.common.base.Strings;
+
 @Command(scope = "opennms-nutanix", name = "connection-edit", description = "Edit a connection", detailedDescription = "Edit an existing connection to a nutanix prism")
 @Service
 public class EditConnectionCommand implements Action {
@@ -18,14 +20,21 @@ public class EditConnectionCommand implements Action {
     @Option(name="-f", aliases="--force", description="Skip validation and save the connection as-is")
     public boolean skipValidation = false;
 
-    @Argument(index = 0, name = "alias", description = "Alias", required = true, multiValued = false)
+    @Option(name = "-a", aliases = "--apiKey", description = "Use api-key. username is ignored!")
+    boolean useApiKey = false;
+
+
+    @Argument(name = "alias", description = "Alias", required = true)
     public String alias = null;
 
-    @Argument(index = 1, name = "url", description = "Nutanix Prism Url", required = true, multiValued = false)
+    @Argument(index = 1, name = "url", description = "Nutanix Prism Url", required = true)
     public String url = null;
 
-    @Argument(index = 2, name = "apiKey", description = "Nutanix Prism API Key", required = true, multiValued = false, censor = true)
+    @Argument(index = 2, name = "apiKey", description = "Nutanix Prism API Key", required = true, censor = true)
     public String apiKey = null;
+
+    @Argument(index = 3, name = "username", description = "Nutanix Prism username, defaults to username", censor = true)
+    public String username = null;
 
     @Override
     public Object execute() throws Exception {
@@ -37,7 +46,18 @@ public class EditConnectionCommand implements Action {
         }
 
         connection.get().setPrismUrl(url);
-        connection.get().setApiKey(apiKey);
+        if (useApiKey) {
+            connection.get().setApiKey(apiKey);
+            connection.get().setPassword(null);
+            connection.get().setUsername(null);
+        } else {
+            connection.get().setApiKey(null);
+            connection.get().setPassword(apiKey);
+            if (Strings.isNullOrEmpty(username))
+                connection.get().setUsername("username");
+            else
+                connection.get().setUsername(username);
+        }
         if (!this.skipValidation) {
             final var error = connection.get().validate();
             if (error.isPresent()) {

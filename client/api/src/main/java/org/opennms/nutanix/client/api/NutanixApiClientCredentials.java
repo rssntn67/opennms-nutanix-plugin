@@ -42,6 +42,8 @@ public class NutanixApiClientCredentials {
         private Builder(final NutanixApiClientCredentials credentials) {
             this.prismUrl = credentials.prismUrl;
             this.apiKey = credentials.apiKey;
+            this.username = credentials.username;
+            this.password = credentials.password;
         }
 
         public Builder withPrismUrl(final String orchestratorUrl) {
@@ -59,6 +61,11 @@ public class NutanixApiClientCredentials {
             return this;
         }
 
+
+        public Builder withPassword(final String password) {
+            this.password = password;
+            return this;
+        }
 
         public NutanixApiClientCredentials build() {
             return new NutanixApiClientCredentials(this);

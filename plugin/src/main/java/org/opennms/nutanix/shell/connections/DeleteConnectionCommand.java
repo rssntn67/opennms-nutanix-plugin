@@ -16,7 +16,7 @@ public class DeleteConnectionCommand implements Action {
     @Reference
     private ConnectionManager connectionManager;
 
-    @Argument(index = 0, name = "alias", description = "Connection alias to delete", required = true, multiValued = false)
+    @Argument(name = "alias", description = "Connection alias to delete", required = true)
     @Completion(AliasCompleter.class)
     public String alias = null;
 
