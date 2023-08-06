@@ -42,6 +42,14 @@
     </bean>
     <service ref="connectionManager" interface="org.opennms.nutanix.connections.ConnectionManager"/>
 
+    <!--    Requisition-->
+    <bean id="nutanixRequisitionProvider" class="org.opennms.nutanix.requisition.NutanixRequisitionProvider">
+        <argument ref="nodeDao"/>
+        <argument ref="clientManager"/>
+        <argument ref="connectionManager"/>
+    </bean>
+    <service ref="nutanixRequisitionProvider" interface="org.opennms.integration.api.v1.requisition.RequisitionProvider"/>
+
     <!-- Build our API client -->
     <bean id="apiClient" class="org.opennms.nutanix.ApiClient">
         <argument value="${url}"/>

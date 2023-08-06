@@ -9,11 +9,11 @@ import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.Connection;
 import org.opennms.nutanix.connections.ConnectionManager;
 
-public class ClustersRequisitionProvider extends AbstractRequisitionProvider<AbstractRequisitionProvider.Request> {
+public class NutanixRequisitionProvider extends AbstractRequisitionProvider<AbstractRequisitionProvider.Request> {
 
-    public final static String TYPE = "nutanix-clusters";
+    public final static String TYPE = "nutanix";
 
-    public ClustersRequisitionProvider(NodeDao nodeDao, ClientManager clientManager, ConnectionManager connectionManager, Class<? extends AbstractRequisitionProvider.Request> requestClass) {
+    public NutanixRequisitionProvider(NodeDao nodeDao, ClientManager clientManager, ConnectionManager connectionManager, Class<? extends AbstractRequisitionProvider.Request> requestClass) {
         super(nodeDao, clientManager, connectionManager, requestClass);
     }
 
@@ -24,8 +24,8 @@ public class ClustersRequisitionProvider extends AbstractRequisitionProvider<Abs
 
 
     @Override
-    protected ClustersRequisitionProvider.Request createRequest(Connection connection, Map<String, String> parameters) {
-        return new ClustersRequisitionProvider.Request(connection);
+    protected NutanixRequisitionProvider.Request createRequest(Connection connection, Map<String, String> parameters) {
+        return new NutanixRequisitionProvider.Request(connection);
     }
 
     @Override
