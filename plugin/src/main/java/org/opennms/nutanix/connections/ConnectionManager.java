@@ -180,10 +180,6 @@ public class ConnectionManager {
         @Override
         public void save() {
             // Purge cached client with old credentials
-            final var oldCredentials = ConnectionManager.this.vault.getCredentials(PREFIX + this.alias);
-            if (oldCredentials != null) {
-                ConnectionManager.this.clientManager.purgeClient(ConnectionManager.fromStore(oldCredentials));
-            }
             ConnectionManager.this.vault.setCredentials(PREFIX + this.alias, this.asCredentials());
         }
 
@@ -195,7 +191,6 @@ public class ConnectionManager {
         @Override
         public void delete() {
             ConnectionManager.this.vault.deleteCredentials(PREFIX + this.alias);
-            ConnectionManager.this.clientManager.purgeClient(this.credentials);
         }
 
         private Credentials asCredentials() {

@@ -3,6 +3,7 @@ package org.opennms.nutanix.client.api.model;
 import java.util.Objects;
 
 public class Cluster {
+
     public final String name;
     public final String uuid;
     public final String operationMode;

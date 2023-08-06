@@ -3,6 +3,7 @@ package org.opennms.nutanix.client.api;
 import java.util.List;
 
 import org.opennms.nutanix.client.api.model.Alert;
+import org.opennms.nutanix.client.api.model.ApiVersion;
 import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.client.api.model.MetricsCluster;
@@ -69,6 +70,5 @@ public interface NutanixApiClient {
     List<Alert> getAlerts() throws NutanixApiException;
 
     MetricsCluster getClusterMetric(String uuid);
-
 
 }

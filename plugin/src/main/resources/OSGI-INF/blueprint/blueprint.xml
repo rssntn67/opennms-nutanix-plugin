@@ -18,6 +18,30 @@
     <reference id="edgeDao" interface="org.opennms.integration.api.v1.dao.EdgeDao" availability="optional"/>
     <reference id="eventForwarder" interface="org.opennms.integration.api.v1.events.EventForwarder" availability="optional"/>
 
+    <reference id="clientV3Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" availability="optional"/>
+    <reference id="clientV2Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" availability="optional"/>
+    <reference id="clientV1Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" availability="optional"/>
+    <reference id="clientV08Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" availability="optional"/>
+
+    <bean id="clientManager" class="org.opennms.nutanix.clients.ClientManager">
+        <argument ref="clientV08Provider"/>
+        <argument ref="clientV1Provider"/>
+        <argument ref="clientV2Provider"/>
+        <argument ref="clientV3Provider"/>
+    </bean>
+    <service ref="clientManager" interface="org.opennms.nutanix.clients.ClientManager"/>
+
+    <bean id="connectionManager" class="org.opennms.nutanix.connections.ConnectionManager">
+        <argument>
+            <reference interface="org.opennms.integration.api.v1.runtime.RuntimeInfo" availability="optional"/>
+        </argument>
+        <argument>
+            <reference interface="org.opennms.integration.api.v1.scv.SecureCredentialsVault" availability="optional"/>
+        </argument>
+        <argument ref="clientManager" />
+    </bean>
+    <service ref="connectionManager" interface="org.opennms.nutanix.connections.ConnectionManager"/>
+
     <!-- Build our API client -->
     <bean id="apiClient" class="org.opennms.nutanix.ApiClient">
         <argument value="${url}"/>

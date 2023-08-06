@@ -14,18 +14,27 @@ public class NutanixApiClientCredentials {
     public final String prismUrl;
 
     /**
-     * The API key used to authenticate the connection to the orchestrator.
+     * The API key used to authenticate the connection to the PRISM ELEMENT.
      */
-    public final String apiKey;
-    
+    public String apiKey;
+
+    public String username;
+
+    public String password;
+
     private NutanixApiClientCredentials(final Builder builder) {
         this.prismUrl = Objects.requireNonNull(builder.prismUrl);
-        this.apiKey = Objects.requireNonNull(builder.apiKey);
+        this.apiKey = builder.apiKey;
+        this.username = builder.username;
+        this.password = builder.password;
     }
 
     public static class Builder {
         private String prismUrl;
         private String apiKey;
+        private String username;
+        private String password;
+
 
         private Builder() {
         }
@@ -45,6 +54,12 @@ public class NutanixApiClientCredentials {
             return this;
         }
 
+        public Builder withUsername(final String username) {
+            this.username = username;
+            return this;
+        }
+
+
         public NutanixApiClientCredentials build() {
             return new NutanixApiClientCredentials(this);
         }
@@ -62,6 +77,8 @@ public class NutanixApiClientCredentials {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("orchestratorUrl", this.prismUrl)
+                .add("username", this.username)
+                .add("password", this.password)
                 .add("apiKey", this.apiKey)
                 .toString();
     }
@@ -75,14 +92,19 @@ public class NutanixApiClientCredentials {
             return false;
         }
         final NutanixApiClientCredentials that = (NutanixApiClientCredentials) o;
+        if (this.apiKey != null)
+            return Objects.equals(this.prismUrl, that.prismUrl) &&
+                    Objects.equals(this.apiKey, that.apiKey);
         return Objects.equals(this.prismUrl, that.prismUrl) &&
-                Objects.equals(this.apiKey, that.apiKey);
+                Objects.equals(this.username, that.username) &&
+                Objects.equals(this.password, that.password);
+
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(this.prismUrl,
-                this.apiKey);
+                this.apiKey, this.username, this.password);
     }
 
 }
