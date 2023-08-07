@@ -85,6 +85,9 @@
                             <features>
                                 <feature>opennms-plugins-nutanix</feature>
                                 <feature>opennms-plugins-nutanix-client-v3</feature>
+                                <feature>opennms-plugins-nutanix-client-v2</feature>
+                                <feature>opennms-plugins-nutanix-client-v1</feature>
+                                <feature>opennms-plugins-nutanix-client-v08</feature>
                                 <feature>okhttp</feature>
                                 <feature>guava</feature>
                                 <feature>jackson</feature>
@@ -122,6 +125,24 @@
         <dependency>
             <groupId>org.opennms.plugins.nutanix</groupId>
             <artifactId>nutanix-client-v3</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.opennms.plugins.nutanix</groupId>
+            <artifactId>nutanix-client-v2</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.opennms.plugins.nutanix</groupId>
+            <artifactId>nutanix-client-v1</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.opennms.plugins.nutanix</groupId>
+            <artifactId>nutanix-client-v08</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>

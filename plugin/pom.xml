@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>nutanix-plugin</artifactId>
-    <name>OpenNMS :: Plugins :: Nutanix Plugin</name>
+    <name>OpenNMS :: Plugins :: Nutanix Plugin :: Plugin</name>
     <packaging>bundle</packaging>
 
     <build>
