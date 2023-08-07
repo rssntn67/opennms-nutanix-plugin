@@ -27,18 +27,6 @@ public interface Connection {
     void setPrismUrl(final String url);
 
     /**
-     * Returns the API key used to authenticate the connection.
-     * @return the API key
-     */
-    String getApiKey();
-
-    /**
-     * Changes the API key used to authenticate the connection.
-     * @param apiKey the new API key
-     */
-    void setApiKey(final String apiKey);
-
-    /**
      * Returns the Username used to authenticate the connection.
      * @return the username
      */
@@ -46,7 +34,7 @@ public interface Connection {
 
     /**
      * Changes the API username used to authenticate the connection.
-     * @param username
+     * @param username username
      */
     void setUsername(final String username);
 
@@ -58,7 +46,7 @@ public interface Connection {
 
     /**
      * Changes the API password used to authenticate the connection.
-     * @param password
+     * @param password password
      */
     void setPassword(final String password);
 

@@ -24,7 +24,8 @@ public class NutanixV3ApiClientProvider implements NutanixApiClientProvider {
     private ApiClientExtention getClient(NutanixApiClientCredentials credentials) {
         ApiClientExtention apiClient = new ApiClientExtention();
         apiClient.setBasePath(credentials.prismUrl);
-        apiClient.setApiKey(credentials.apiKey);
+        apiClient.setUsername(credentials.username);
+        apiClient.setPassword(credentials.password);
         apiClient.setIgnoreSslCertificateValidation(ignoreSslCertificateValidation);
         apiClient.setLength(length);
         return apiClient;

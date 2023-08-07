@@ -105,7 +105,9 @@ public abstract class AbstractRequisitionProvider<Req extends AbstractRequisitio
 
         private String orchestratorUrl;
 
-        private String apiKey;
+        private String username;
+
+        private String password;
 
         private String location;
 
@@ -115,7 +117,8 @@ public abstract class AbstractRequisitionProvider<Req extends AbstractRequisitio
         public Request(final Connection connection) {
             this.alias = Objects.requireNonNull(connection.getAlias());
             this.orchestratorUrl = Objects.requireNonNull(connection.getPrismUrl());
-            this.apiKey = Objects.requireNonNull(connection.getApiKey());
+            this.username = Objects.requireNonNull(connection.getUsername());
+            this.password = Objects.requireNonNull(connection.getPassword());
         }
 
         protected abstract String getDefaultForeignSource();
@@ -144,12 +147,20 @@ public abstract class AbstractRequisitionProvider<Req extends AbstractRequisitio
             this.orchestratorUrl = orchestratorUrl;
         }
 
-        public String getApiKey() {
-            return this.apiKey;
+        public String getUsername() {
+            return this.username;
         }
 
-        public void setApiKey(final String apiKey) {
-            this.apiKey = apiKey;
+        public void setUsername(final String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return this.password;
+        }
+
+        public void setPassword(final String password) {
+            this.password = password;
         }
 
         public String getLocation() {
@@ -170,9 +181,9 @@ public abstract class AbstractRequisitionProvider<Req extends AbstractRequisitio
 
         public NutanixApiClient getClient() throws NutanixApiException {
             return AbstractRequisitionProvider.this.clientManager.getClient(NutanixApiClientCredentials.builder()
-                                                                                                                 .withPrismUrl(this.request.getOrchestratorUrl())
-                                                                                                                 .withApiKey(this.request.getApiKey())
-                                                                                                                 .build());
+                    .withPrismUrl(this.request.getOrchestratorUrl())
+                    .withUsername(this.request.getUsername())
+                    .withPassword(this.request.getPassword()).build());
         }
 
         public Req getRequest() {

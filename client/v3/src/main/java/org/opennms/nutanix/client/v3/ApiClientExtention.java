@@ -29,7 +29,6 @@ public class ApiClientExtention extends ApiClient {
     private static final Logger LOG = LoggerFactory.getLogger(ApiClientExtention.class);
     private boolean ignoreSslCertificateValidation=false;
     private int length = 20;
-
     public int getLength() {
         return length;
     }

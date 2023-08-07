@@ -14,24 +14,23 @@ public class NutanixApiClientCredentials {
     public final String prismUrl;
 
     /**
-     * The API key used to authenticate the connection to the PRISM ELEMENT.
+     * The username used to authenticate the connection to the PRISM ELEMENT.
      */
-    public String apiKey;
-
     public String username;
 
+    /**
+     * The password used to authenticate the connection to the PRISM ELEMENT.
+     */
     public String password;
 
     private NutanixApiClientCredentials(final Builder builder) {
         this.prismUrl = Objects.requireNonNull(builder.prismUrl);
-        this.apiKey = builder.apiKey;
         this.username = builder.username;
         this.password = builder.password;
     }
 
     public static class Builder {
         private String prismUrl;
-        private String apiKey;
         private String username;
         private String password;
 
@@ -41,18 +40,12 @@ public class NutanixApiClientCredentials {
 
         private Builder(final NutanixApiClientCredentials credentials) {
             this.prismUrl = credentials.prismUrl;
-            this.apiKey = credentials.apiKey;
             this.username = credentials.username;
             this.password = credentials.password;
         }
 
         public Builder withPrismUrl(final String orchestratorUrl) {
             this.prismUrl = orchestratorUrl;
-            return this;
-        }
-
-        public Builder withApiKey(final String apiKey) {
-            this.apiKey = apiKey;
             return this;
         }
 
@@ -86,7 +79,6 @@ public class NutanixApiClientCredentials {
                 .add("orchestratorUrl", this.prismUrl)
                 .add("username", this.username)
                 .add("password", this.password)
-                .add("apiKey", this.apiKey)
                 .toString();
     }
 
@@ -99,9 +91,6 @@ public class NutanixApiClientCredentials {
             return false;
         }
         final NutanixApiClientCredentials that = (NutanixApiClientCredentials) o;
-        if (this.apiKey != null)
-            return Objects.equals(this.prismUrl, that.prismUrl) &&
-                    Objects.equals(this.apiKey, that.apiKey);
         return Objects.equals(this.prismUrl, that.prismUrl) &&
                 Objects.equals(this.username, that.username) &&
                 Objects.equals(this.password, that.password);
@@ -111,7 +100,7 @@ public class NutanixApiClientCredentials {
     @Override
     public int hashCode() {
         return Objects.hash(this.prismUrl,
-                this.apiKey, this.username, this.password);
+                 this.username, this.password);
     }
 
 }

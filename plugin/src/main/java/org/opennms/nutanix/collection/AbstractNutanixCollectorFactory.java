@@ -1,8 +1,9 @@
 package org.opennms.nutanix.collection;
 
 import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_ALIAS;
-import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_API_KEY;
+import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_PASSWORD;
 import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_PRISM_URL;
+import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_USERNAME;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,8 +34,8 @@ abstract public class AbstractNutanixCollectorFactory<T extends AbstractNutanixS
         final var runtimeAttributes = new HashMap<>(parameters);
 
         runtimeAttributes.put(ATTR_PRISM_URL, connection.getPrismUrl());
-        runtimeAttributes.put(ATTR_API_KEY, connection.getApiKey());
-
+        runtimeAttributes.put(ATTR_USERNAME, connection.getUsername());
+        runtimeAttributes.put(ATTR_PASSWORD, connection.getPassword());
         return runtimeAttributes;
     }
 

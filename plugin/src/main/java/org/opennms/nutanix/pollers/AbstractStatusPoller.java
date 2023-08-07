@@ -27,7 +27,8 @@ public abstract class AbstractStatusPoller implements ServicePoller {
     public static final String ATTR_ALIAS = "alias";
 
     public static final String ATTR_PRISM_URL = "prismUrl";
-    public static final String ATTR_API_KEY = "apiKey";
+    public static final String ATTR_USERNAME = "username";
+    public static final String ATTR_PASSWORD = "password";
 
     private final ClientManager clientManager;
 
@@ -91,7 +92,8 @@ public abstract class AbstractStatusPoller implements ServicePoller {
 
             final var attrs = ImmutableMap.<String, String>builder();
             attrs.put(ATTR_PRISM_URL, connection.getPrismUrl());
-            attrs.put(ATTR_API_KEY, connection.getApiKey());
+            attrs.put(ATTR_USERNAME, connection.getUsername());
+            attrs.put(ATTR_PASSWORD, connection.getPassword());
             return attrs.build();
         }
     }
@@ -106,12 +108,16 @@ public abstract class AbstractStatusPoller implements ServicePoller {
         public NutanixApiClientCredentials getClientCredentials() {
             final var prismUrl = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_PRISM_URL),
                                                                "Missing attribute: " + ATTR_PRISM_URL);
-            final var apiKey = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_API_KEY),
-                                                      "Missing attribute: " + ATTR_API_KEY);
+            final var username = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_USERNAME),
+                                                      "Missing attribute: " + ATTR_USERNAME);
+
+            final var password = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_PASSWORD),
+                    "Missing attribute: " + ATTR_PASSWORD);
 
             return NutanixApiClientCredentials.builder()
                                                 .withPrismUrl(prismUrl)
-                                                .withApiKey(apiKey)
+                                                .withUsername(username)
+                                                .withPassword(password)
                                                 .build();
         }
 

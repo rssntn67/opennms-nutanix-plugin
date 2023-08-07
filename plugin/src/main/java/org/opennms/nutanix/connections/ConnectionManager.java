@@ -71,22 +71,6 @@ public class ConnectionManager {
     }
 
     /**
-     * Creates an apiKey connection under the given alias.
-     *
-     * @param alias           the alias of the connection to add
-     * @param prismUrl        the URL of the prism server
-     * @param apiKey          the API key used to authenticate the connection
-     */
-    public Connection newConnection(final String alias, final String prismUrl, final String apiKey) {
-        this.ensureCore();
-
-        return new ConnectionImpl(alias, NutanixApiClientCredentials.builder()
-                                                                      .withPrismUrl(prismUrl)
-                                                                      .withApiKey(apiKey)
-                                                                      .build());
-    }
-
-    /**
      * Creates a basic authentication connection under the given alias.
      *
      * @param alias           the alias of the connection to add
@@ -135,11 +119,6 @@ public class ConnectionManager {
 
 
     private static NutanixApiClientCredentials asNutanixCredentials(Connection connection) {
-        if (connection.getApiKey() != null)
-            return NutanixApiClientCredentials.builder()
-                                            .withApiKey(connection.getApiKey())
-                                            .withPrismUrl(connection.getPrismUrl())
-                                            .build();
         return NutanixApiClientCredentials.builder().withUsername(connection.getUsername())
                 .withPassword(connection.getPassword())
                 .withPrismUrl(connection.getPrismUrl())
@@ -160,12 +139,6 @@ public class ConnectionManager {
 
         final var prismUrl = credentials.getAttribute(PRISM_URL_KEY);
 
-        if (Strings.isNullOrEmpty(credentials.getUsername())) {
-            return NutanixApiClientCredentials.builder()
-                    .withPrismUrl(prismUrl)
-                    .withApiKey(password)
-                    .build();
-        }
         final var username = credentials.getUsername();
 
         return NutanixApiClientCredentials.builder()
@@ -202,19 +175,6 @@ public class ConnectionManager {
                                                             .withPrismUrl(url)
                                                             .build();
         }
-
-        @Override
-        public String getApiKey() {
-            return this.credentials.apiKey;
-        }
-
-        @Override
-        public void setApiKey(final String apiKey) {
-            this.credentials = NutanixApiClientCredentials.builder(this.credentials)
-                                                            .withApiKey(apiKey)
-                                                            .build();
-        }
-
         @Override
         public String getUsername() {
             return this.credentials.username;
@@ -259,13 +219,8 @@ public class ConnectionManager {
         private Credentials asCredentials() {
             Map<String,String> credentialMap = new HashMap<>();
             credentialMap.put(PRISM_URL_KEY, this.credentials.prismUrl);
+            return new ImmutableCredentials(this.credentials.username, this.credentials.password, credentialMap);
 
-            if (this.credentials.username != null)
-                return new ImmutableCredentials(this.credentials.username, this.credentials.password, credentialMap);
-
-            if (this.credentials.apiKey != null)
-                return new ImmutableCredentials("apiKey", this.credentials.apiKey, credentialMap);
-            return new ImmutableCredentials("username", this.credentials.password, credentialMap);
 
         }
 
@@ -275,7 +230,7 @@ public class ConnectionManager {
                               .add("alias", this.alias)
                               .add(PRISM_URL_KEY, this.credentials.prismUrl)
                               .add("username", this.credentials.username)
-                              .add("apiKey", "******")
+                              .add("password", "******")
                               .toString();
         }
     }

@@ -29,8 +29,9 @@ public class ApiClientExtention extends ApiClient {
         setHttpClient(buildHttpClient(debugging));
     }
 
-    private static Logger LOG = LoggerFactory.getLogger(ApiClientExtention.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ApiClientExtention.class);
     private boolean ignoreSslCertificateValidation=false;
+
     private int length = 20;
 
     public int getLength() {

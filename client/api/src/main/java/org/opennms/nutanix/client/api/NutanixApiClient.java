@@ -69,6 +69,6 @@ public interface NutanixApiClient {
      */
     List<Alert> getAlerts() throws NutanixApiException;
 
-    MetricsCluster getClusterMetric(String uuid);
+    MetricsCluster getClusterMetric(String uuid) throws NutanixApiException;
 
 }

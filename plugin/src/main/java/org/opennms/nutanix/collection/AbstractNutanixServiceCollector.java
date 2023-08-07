@@ -1,10 +1,10 @@
 package org.opennms.nutanix.collection;
 
-import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_API_KEY;
+import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_PASSWORD;
 import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_PRISM_URL;
+import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_USERNAME;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import org.opennms.integration.api.v1.collectors.CollectionSet;
@@ -25,8 +25,6 @@ import org.opennms.nutanix.client.api.model.Aggregate;
 import org.opennms.nutanix.client.api.model.Traffic;
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
-
-import com.google.common.base.Strings;
 
 public abstract class AbstractNutanixServiceCollector implements NutanixApiServiceCollector {
 
@@ -88,7 +86,11 @@ public abstract class AbstractNutanixServiceCollector implements NutanixApiServi
     }
 
     private static NutanixApiClientCredentials getCredentials(Map<String, Object> attributes) {
-        return NutanixApiClientCredentials.builder().withApiKey(attributes.get(ATTR_API_KEY).toString()).withPrismUrl(attributes.get(ATTR_API_KEY).toString()).build();
+        return NutanixApiClientCredentials.builder()
+                .withUsername(attributes.get(ATTR_USERNAME).toString())
+                .withPassword(attributes.get(ATTR_PASSWORD).toString())
+                .withPrismUrl(attributes.get(ATTR_PRISM_URL).toString())
+                .build();
     }
 
     public static CompletableFuture<CollectionSet> createFailedCollectionSet(ImmutableNodeResource nodeResource, long timestamp) {

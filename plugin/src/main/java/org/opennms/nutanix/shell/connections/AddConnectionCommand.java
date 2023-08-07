@@ -6,7 +6,6 @@ import org.apache.karaf.shell.api.action.Command;
 import org.apache.karaf.shell.api.action.Option;
 import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
-import org.opennms.nutanix.connections.Connection;
 import org.opennms.nutanix.connections.ConnectionManager;
 
 @Command(scope = "opennms-nutanix", name = "connection-add", description = "Add a connection", detailedDescription = "Add a connection to a nutanix prism")
@@ -19,9 +18,6 @@ public class AddConnectionCommand implements Action {
     @Option(name = "-t", aliases = "--test", description = "Dry run mode, test the credentials but do not save them")
     boolean dryRun = false;
 
-    @Option(name = "-a", aliases = "--apiKey", description = "Use api-key username is ignored")
-    boolean useApiKey = false;
-
     @Option(name="-f", aliases="--force", description="Skip validation and save the connection as-is")
     public boolean skipValidation = false;
 
@@ -31,11 +27,12 @@ public class AddConnectionCommand implements Action {
     @Argument(index = 1, name = "url", description = "Nutanix Prism Url", required = true)
     public String url = null;
 
-    @Argument(index = 2, name = "apiKey", description = "Nutanix Prism API Key/Password", required = true, censor = true)
-    public String apiKey = null;
-
-    @Argument(index = 3, name = "username", description = "Nutanix Prism username", censor = true)
+    @Argument(index = 2, name = "username", description = "Nutanix Prism API username", required = true, censor = true)
     public String username = null;
+
+    @Argument(index = 3, name = "password", description = "Nutanix Prism API password", required = true, censor = true)
+    public String password = null;
+
 
     @Override
     public Object execute() {
@@ -44,22 +41,13 @@ public class AddConnectionCommand implements Action {
             return null;
         }
 
-        final Connection connection;
-        if (useApiKey)
-            connection =
-                    this.connectionManager.newConnection(this.alias,
-                                                        this.url,
-                                                        this.apiKey
-            );
-
-        else
-            connection =
-                    this.connectionManager.newConnection(
-                            this.alias,
-                            this.url,
-                            this.username,
-                            this.apiKey
-                    );
+        final var connection =
+                this.connectionManager.newConnection(
+                                this.alias,
+                                this.url,
+                                this.username,
+                                this.password
+        );
 
         if (!this.skipValidation) {
             final var error = connection.validate();
