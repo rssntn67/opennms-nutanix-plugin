@@ -28,17 +28,20 @@ public class NutanixV2ApiClient implements NutanixApiClient {
     public List<VM> getVMS() throws NutanixApiException {
         VmsApi vmsApi= new VmsApi(apiClient);
         List<VM> vms = new ArrayList<>();
-        int offset = 0;
         int total;
+        int endIndex;
+        int startIndex = 0;
         do {
             try {
-                GetBaseEntityCollectionltgetDtoUhuraVmConfigDTOgt dto = vmsApi.getVMs(null, offset, apiClient.getLength(), null,null,true, true);
-                total = dto.getMetadata().getGrandTotalEntities();
+                GetBaseEntityCollectionltgetDtoUhuraVmConfigDTOgt dto = vmsApi.getVMs(null, startIndex, apiClient.getLength(), null,null,true, true);
                 dto.getEntities().forEach(vm -> vms.add(getFromDtoUhuraVmConfigDTO(vm)));
+                endIndex=dto.getMetadata().getEndIndex();
+                total = dto.getMetadata().getGrandTotalEntities();
+                startIndex = endIndex;
             } catch (ApiException e) {
                 throw new NutanixApiException(e.getMessage(), e);
             }
-        } while (vms.size() < total );
+        } while (endIndex < total );
 
         return vms;
     }
