@@ -18,16 +18,16 @@
     <reference id="edgeDao" interface="org.opennms.integration.api.v1.dao.EdgeDao" availability="optional"/>
     <reference id="eventForwarder" interface="org.opennms.integration.api.v1.events.EventForwarder" availability="optional"/>
 
-    <reference id="clientV3Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" availability="optional"/>
-    <reference id="clientV2Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" availability="optional"/>
-    <reference id="clientV1Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" availability="optional"/>
-    <reference id="clientV08Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" availability="optional"/>
+    <reference id="nutanixApiClientV3Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" availability="optional"/>
+    <reference id="nutanixApiClientV2Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" availability="optional"/>
+    <reference id="nutanixApiClientV1Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" availability="optional"/>
+    <reference id="nutanixApiClientV08Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" availability="optional"/>
 
     <bean id="clientManager" class="org.opennms.nutanix.clients.ClientManager">
-        <argument ref="clientV08Provider"/>
-        <argument ref="clientV1Provider"/>
-        <argument ref="clientV2Provider"/>
-        <argument ref="clientV3Provider"/>
+        <argument ref="nutanixApiClientV08Provider"/>
+        <argument ref="nutanixApiClientV1Provider"/>
+        <argument ref="nutanixApiClientV2Provider"/>
+        <argument ref="nutanixApiClientV3Provider"/>
     </bean>
     <service ref="clientManager" interface="org.opennms.nutanix.clients.ClientManager"/>
 
@@ -49,43 +49,5 @@
         <argument ref="connectionManager"/>
     </bean>
     <service ref="nutanixRequisitionProvider" interface="org.opennms.integration.api.v1.requisition.RequisitionProvider"/>
-
-    <!-- Build our API client -->
-    <bean id="apiClient" class="org.opennms.nutanix.ApiClient">
-        <argument value="${url}"/>
-        <argument value="${apiKey}"/>
-    </bean>
-
-    <!-- Build our forwarder bean -->
-    <bean id="alarmForwarder" class="org.opennms.nutanix.AlarmForwarder">
-        <argument ref="apiClient"/>
-        <argument ref="eventForwarder"/>
-    </bean>
-    <!-- Expose the forwarder as a AlarmLifecycleListener so we get callbacks -->
-    <service interface="org.opennms.integration.api.v1.alarms.AlarmLifecycleListener" ref="alarmForwarder"/>
-    <!-- Expose the forwarder directly for access from our shell commands -->
-    <service interface="org.opennms.nutanix.AlarmForwarder" ref="alarmForwarder"/>
-
-    <!-- Build our forwarder bean -->
-    <bean id="topologyForwarder" class="org.opennms.nutanix.TopologyForwarder">
-        <argument ref="apiClient"/>
-        <argument ref="edgeDao"/>
-    </bean>
-    <!-- Expose the forwarder directly for access from our shell commands -->
-    <service interface="org.opennms.nutanix.TopologyForwarder" ref="topologyForwarder"/>
-
-    <!-- Build and expose the JAX-RS annotated webhook handler.
-         This will automatically mount the endpoint over the REST API. -->
-    <bean id="webhookHandlerImpl" class="org.opennms.nutanix.WebhookHandlerImpl" />
-    <service interface="org.opennms.nutanix.WebhookHandler" ref="webhookHandlerImpl">
-        <service-properties>
-            <entry key="application-path" value="/rest" />
-        </service-properties>
-    </service>
-
-    <!-- Expose our custom event definitions bundled in the .jar -->
-    <service interface="org.opennms.integration.api.v1.config.events.EventConfExtension">
-        <bean class="org.opennms.nutanix.EventConfExtension"/>
-    </service>
 
 </blueprint>

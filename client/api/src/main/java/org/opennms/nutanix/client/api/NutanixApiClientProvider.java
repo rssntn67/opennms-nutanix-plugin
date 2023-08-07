@@ -8,12 +8,11 @@ public interface NutanixApiClientProvider {
      *
      * @param credentials the credentials to use for the client.
      * @return a NutanixApiClient client
-     * @throws NutanixApiException
      */
-    NutanixApiClient client(final NutanixApiClientCredentials credentials) throws NutanixApiException;
+    NutanixApiClient client(final NutanixApiClientCredentials credentials);
 
     ApiVersion getApiVersion();
 
-    boolean validate(final NutanixApiClientCredentials credentials) throws NutanixApiException;
+    boolean validate(final NutanixApiClientCredentials credentials);
 
 }

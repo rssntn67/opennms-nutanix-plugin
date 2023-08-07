@@ -38,14 +38,12 @@ public class ClientManager {
     public Optional<ConnectionValidationError> validate(final NutanixApiClientCredentials credentials) {
 
         for (NutanixApiClientProvider provider: clientProviderMap.values()) {
-            try {
-                provider.validate(credentials);
+            if (provider.validate(credentials)) {
                 return Optional.empty();
-            } catch (NutanixApiException e) {
-                LOG.info("validate: cannot validate: {}", credentials.prismUrl);
+
             }
         }
-
+        LOG.info("validate: cannot validate: {}", credentials);
         return Optional.of(new ConnectionValidationError("Credentials could not be validated"));
     }
 

@@ -15,10 +15,10 @@
         </cm:default-properties>
     </cm:property-placeholder>
 
-    <bean id="clientProvider" class="org.opennms.nutanix.client.v3.NutanixV3ApiClientProvider">
+    <bean id="clientProvider" class="org.opennms.nutanix.client.v08.NutanixV08ApiClientProvider">
         <argument value="${nutanix.ignore.certificate.validation}"/>
         <argument value="${nutanix.client.length}"/>
     </bean>
 
-    <service ref="clientProvider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider"/>
+    <service ref="nutanixApiClientV08Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider"/>
 </blueprint>

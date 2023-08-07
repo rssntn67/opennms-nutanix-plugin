@@ -3,6 +3,7 @@ package org.opennms.nutanix.client.v3;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -20,16 +21,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ApiClientExtention extends ApiClient {
-    public boolean isIgnoreSslCertificateValidation() {
-        return ignoreSslCertificateValidation;
-    }
-
     public void setIgnoreSslCertificateValidation(boolean ignoreSslCertificateValidation) {
         this.ignoreSslCertificateValidation = ignoreSslCertificateValidation;
         setHttpClient(buildHttpClient(debugging));
     }
 
-    private static Logger LOG = LoggerFactory.getLogger(ApiClientExtention.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ApiClientExtention.class);
     private boolean ignoreSslCertificateValidation=false;
     private int length = 20;
 
@@ -91,8 +88,8 @@ public class ApiClientExtention extends ApiClient {
             java.util.logging.Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME).setLevel(java.util.logging.Level.ALL);
         }
         ClientBuilder builder =  ClientBuilder.newBuilder();
+        LOG.info("buildHttpClient: ignoreSslCertificateValidation: {}", ignoreSslCertificateValidation);
         if (ignoreSslCertificateValidation) {
-            LOG.info("buildHttpClient: ignoreSslCertificateValidation: {}", ignoreSslCertificateValidation);
             ignoreCertificateValididation(builder);
         }
         performAdditionalClientConfiguration(clientConfig);
@@ -107,7 +104,7 @@ public class ApiClientExtention extends ApiClient {
     }
     @Override
     public String selectHeaderContentType(String[] contentTypes) {
-        LOG.info("selectHeaderContentType: {}", contentTypes);
+        LOG.info("selectHeaderContentType: {}", Arrays.toString(contentTypes));
         if (contentTypes.length == 0 || contentTypes[0].equals("*/*")) {
             return "application/json";
         }
