@@ -9,7 +9,6 @@ import javax.ws.rs.core.HttpHeaders;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opennms.nutanix.client.v08.api.HaApi;
-import org.opennms.nutanix.client.v08.api.HostsApi;
 import org.opennms.nutanix.client.v08.api.ImagesApi;
 import org.opennms.nutanix.client.v08.api.NetworksApi;
 import org.opennms.nutanix.client.v08.api.SnapshotsApi;
@@ -19,7 +18,6 @@ import org.opennms.nutanix.client.v08.api.VmsApi;
 import org.opennms.nutanix.client.v08.api.VolumeGroupsApi;
 import org.opennms.nutanix.client.v08.handler.ApiClient;
 import org.opennms.nutanix.client.v08.handler.ApiException;
-import org.opennms.nutanix.client.v08.model.GetBaseEntityCollectionltgetDtoAcropolisAddressAssignmentDTOgt;
 import org.opennms.nutanix.client.v08.model.GetBaseEntityCollectionltgetDtoAcropolisImageInfoDTOgt;
 import org.opennms.nutanix.client.v08.model.GetBaseEntityCollectionltgetDtoAcropolisNetworkConfigDTOgt;
 import org.opennms.nutanix.client.v08.model.GetBaseEntityCollectionltgetDtoAcropolisSnapshotInfoDTOgt;
@@ -34,7 +32,7 @@ public class NutanixApiClientV08Test {
     private ApiClient getApiClient() {
 
         ApiClientExtention apiClient = new ApiClientExtention();
-        apiClient.setBasePath("https://nutanix.arsinfo.it:9440/api/nutanix/v0.8/");
+        apiClient.setBasePath("https://nutanix.arsinfo.it:9440/api/nutanix/v0.8");
         String auth = System.getenv("NTX_USER") + ":" + System.getenv("NTX_PASS");
         byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
         String authHeader = "Basic " + new String(encodedAuth);
@@ -86,13 +84,6 @@ public class NutanixApiClientV08Test {
         }
     }
 
-    @Test
-    public void testHostsApi()  {
-
-        HostsApi hostsApi = new HostsApi(getApiClient());
-        // Only enter and exit mainteinance mode
-       //nothing to test.
-    }
 
     @Test
     public void testImagesApi()  {
@@ -102,7 +93,7 @@ public class NutanixApiClientV08Test {
         try {
             GetBaseEntityCollectionltgetDtoAcropolisImageInfoDTOgt imagesCollection = imagesApi.getImages(true,true);
             System.out.println(imagesCollection.getMetadata());
-            imagesCollection.getEntities().forEach(e -> System.out.println(e));
+            imagesCollection.getEntities().forEach(System.out::println);
         } catch (ApiException e) {
             System.out.println("err");
         }
@@ -116,7 +107,7 @@ public class NutanixApiClientV08Test {
         try {
             GetBaseEntityCollectionltgetDtoAcropolisNetworkConfigDTOgt networksConfig = networksApi.getNetworks();
             System.out.println(networksConfig.getMetadata());
-            networksConfig.getEntities().forEach(e -> System.out.println(e));
+            networksConfig.getEntities().forEach(System.out::println);
         } catch (ApiException e) {
             System.out.println("err");
         }
@@ -130,7 +121,7 @@ public class NutanixApiClientV08Test {
         try {
             GetBaseEntityCollectionltgetDtoAcropolisSnapshotInfoDTOgt snapshots = snapshotsApi.getSnapshots();
             System.out.println(snapshots.getMetadata());
-            snapshots.getEntities().forEach(e -> System.out.println(e));
+            snapshots.getEntities().forEach(System.out::println);
         } catch (ApiException e) {
             System.out.println("err");
         }
@@ -144,7 +135,7 @@ public class NutanixApiClientV08Test {
         try {
             GetBaseEntityCollectionltgetDtoAcropolisTasksTaskDTOgt tasks = tasksApi.getTasks("VM",null,null, null, null,10, true);
             System.out.println(tasks.getMetadata());
-            tasks.getEntities().forEach(e -> System.out.println(e));
+            tasks.getEntities().forEach(System.out::println);
         } catch (ApiException e) {
             System.out.println("err");
         }
@@ -158,7 +149,7 @@ public class NutanixApiClientV08Test {
         try {
             GetBaseEntityCollectionltgetDtoNdfsFileDTOgt vdisks = vdisksApi.getVdisks("/SelfServiceContainer/.acropolis/vmdisk/30c8f253-c410-4641-9141-3f3c27ae7600");
             System.out.println(vdisks.getMetadata());
-            vdisks.getEntities().forEach(e -> System.out.println(e));
+            vdisks.getEntities().forEach(System.out::println);
         } catch (ApiException e) {
             System.out.println(e.getMessage());
         }
@@ -171,7 +162,7 @@ public class NutanixApiClientV08Test {
         VolumeGroupsApi volumeGroupsApi = new VolumeGroupsApi(getApiClient());
         try {
             List<GetDtoAcropolisVolumegroupsVolumeGroupConfigDTO>  vgs = volumeGroupsApi.getVolumeGroups(true,true);
-            vgs.forEach(e -> System.out.println(e));
+            vgs.forEach(System.out::println);
         } catch (ApiException e) {
             System.out.println(e.getMessage());
         }
