@@ -30,7 +30,7 @@ public class NutanixV2ApiClientProvider implements NutanixApiClientProvider {
 
     private ApiClientExtention getClient(NutanixApiClientCredentials credentials) {
         ApiClientExtention apiClient = new ApiClientExtention();
-        apiClient.setBasePath(credentials.prismUrl);
+        apiClient.setBasePath(credentials.prismUrl+"/PrismGateway/services/rest/v2.0");
         String auth = credentials.username + ":" + credentials.password;
         byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
         String authHeader = "Basic " + new String(encodedAuth);

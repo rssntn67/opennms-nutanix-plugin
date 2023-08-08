@@ -1,5 +1,10 @@
 package org.opennms.nutanix.client.v1;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
+import javax.ws.rs.core.HttpHeaders;
+
 import org.opennms.nutanix.client.api.NutanixApiClient;
 import org.opennms.nutanix.client.api.NutanixApiClientCredentials;
 import org.opennms.nutanix.client.api.NutanixApiClientProvider;
@@ -15,9 +20,21 @@ public class NutanixV1ApiClientProvider implements NutanixApiClientProvider {
         this.length=length;
     }
 
+    private ApiClientExtention getClient(NutanixApiClientCredentials credentials) {
+        ApiClientExtention apiClient = new ApiClientExtention();
+        apiClient.setBasePath(credentials.prismUrl+"/PrismGateway/services/rest/v1");
+        String auth = credentials.username + ":" + credentials.password;
+        byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
+        String authHeader = "Basic " + new String(encodedAuth);
+        apiClient.addDefaultHeader(HttpHeaders.AUTHORIZATION, authHeader);
+        apiClient.setIgnoreSslCertificateValidation(ignoreSslCertificateValidation);
+        apiClient.setLength(length);
+        return apiClient;
+    }
+
     @Override
     public NutanixApiClient client(NutanixApiClientCredentials credentials) {
-        return null;
+        return new NutanixV1ApiClient(getClient(credentials));
     }
 
     @Override

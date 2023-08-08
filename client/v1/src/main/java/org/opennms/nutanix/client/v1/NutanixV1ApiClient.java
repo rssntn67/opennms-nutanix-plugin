@@ -13,44 +13,50 @@ import org.opennms.nutanix.client.api.model.VM;
 public class NutanixV1ApiClient implements NutanixApiClient {
 
 
+    private final ApiClientExtention apiClient;
+
+    public NutanixV1ApiClient(ApiClientExtention apiClient) {
+        this.apiClient = apiClient;
+    }
     @Override
     public List<VM> getVMS() throws NutanixApiException {
-        return null;
+        throw new NutanixApiException("not supported");
     }
 
     @Override
     public VM getVM(String uuid) throws NutanixApiException {
-        return null;
+        throw new NutanixApiException("not supported");
     }
 
     @Override
     public List<Host> getHosts() throws NutanixApiException {
-        return null;
+        throw new NutanixApiException("not supported");
     }
 
     @Override
     public Host getHost(String uuid) throws NutanixApiException {
-        return null;
+        throw new NutanixApiException("not supported");
     }
 
     @Override
     public List<Cluster> getClusters() throws NutanixApiException {
-        return null;
+        throw new NutanixApiException("not supported");
     }
 
     @Override
     public Cluster getCluster(String uuid) throws NutanixApiException {
-        return null;
+        throw new NutanixApiException("not supported");
     }
 
     @Override
     public List<Alert> getAlerts() throws NutanixApiException {
-        return null;
+        throw new NutanixApiException("not supported");
+
     }
 
     @Override
-    public MetricsCluster getClusterMetric(String uuid) {
-        return null;
+    public MetricsCluster getClusterMetric(String uuid) throws NutanixApiException {
+        throw new NutanixApiException("not supported");
     }
 
 

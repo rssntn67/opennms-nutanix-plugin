@@ -13,9 +13,11 @@ import javax.ws.rs.core.HttpHeaders;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opennms.nutanix.client.api.NutanixApiException;
+import org.opennms.nutanix.client.v1.api.AuthconfigApi;
 import org.opennms.nutanix.client.v1.handler.ApiClient;
 import org.opennms.nutanix.client.v1.handler.ApiException;
 import org.opennms.nutanix.client.v1.handler.Pair;
+import org.opennms.nutanix.client.v1.model.GetAuthDtoConfigAuthConfigDTO;
 
 public class NutanixApiClientV1Test {
 
@@ -74,5 +76,18 @@ public class NutanixApiClientV1Test {
 
     }
 
+    @Test
+    public void testHealthChecksApi() throws NutanixApiException {
+        ApiClient apiClient = getApiClient();
+        AuthconfigApi authconfigApi = new AuthconfigApi(apiClient);
+        try {
+            GetAuthDtoConfigAuthConfigDTO dto = authconfigApi.getAuthConfig();
 
-}
+            System.out.println();
+        } catch (ApiException e) {
+            throw new NutanixApiException(e.getMessage(),e);
+        }
+    }
+
+
+    }

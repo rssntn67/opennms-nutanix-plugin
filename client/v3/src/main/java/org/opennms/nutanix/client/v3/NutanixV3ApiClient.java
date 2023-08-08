@@ -208,8 +208,9 @@ public class NutanixV3ApiClient implements NutanixApiClient {
         return alerts;    }
 
     @Override
-    public MetricsCluster getClusterMetric(String uuid) {
-        return null;
+    public MetricsCluster getClusterMetric(String uuid) throws NutanixApiException {
+        throw new NutanixApiException("not supported");
+
     }
 
     private Alert getFromAlertIntentResource(AlertIntentResource alert) {
