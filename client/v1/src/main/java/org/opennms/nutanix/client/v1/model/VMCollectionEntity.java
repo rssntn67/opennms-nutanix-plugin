@@ -18,12 +18,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "entities"
 })
 @Generated("jsonschema2pojo")
-public class VMs {
+public class VMCollectionEntity {
 
     @JsonProperty("metadata")
     private Metadata metadata;
     @JsonProperty("entities")
-    private List<Entity> entities;
+    private List<VMEntity> entities;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -38,12 +38,12 @@ public class VMs {
     }
 
     @JsonProperty("entities")
-    public List<Entity> getEntities() {
+    public List<VMEntity> getEntities() {
         return entities;
     }
 
     @JsonProperty("entities")
-    public void setEntities(List<Entity> entities) {
+    public void setEntities(List<VMEntity> entities) {
         this.entities = entities;
     }
 
@@ -60,7 +60,7 @@ public class VMs {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(VMs.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(VMCollectionEntity.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("metadata");
         sb.append('=');
         sb.append(((this.metadata == null)?"<null>":this.metadata));
@@ -95,10 +95,10 @@ public class VMs {
         if (other == this) {
             return true;
         }
-        if ((other instanceof VMs) == false) {
+        if ((other instanceof VMCollectionEntity) == false) {
             return false;
         }
-        VMs rhs = ((VMs) other);
+        VMCollectionEntity rhs = ((VMCollectionEntity) other);
         return ((((this.metadata == rhs.metadata)||((this.metadata!= null)&&this.metadata.equals(rhs.metadata)))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.entities == rhs.entities)||((this.entities!= null)&&this.entities.equals(rhs.entities))));
     }
 

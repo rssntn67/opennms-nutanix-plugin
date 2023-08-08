@@ -21,7 +21,8 @@ import org.opennms.nutanix.client.v1.handler.ApiClient;
 import org.opennms.nutanix.client.v1.handler.ApiException;
 import org.opennms.nutanix.client.v1.handler.Pair;
 import org.opennms.nutanix.client.v1.model.GetAuthDtoConfigAuthConfigDTO;
-import org.opennms.nutanix.client.v1.model.VMs;
+import org.opennms.nutanix.client.v1.model.VMEntity;
+import org.opennms.nutanix.client.v1.model.VMCollectionEntity;
 
 public class NutanixApiClientV1Test {
 
@@ -73,9 +74,9 @@ public class NutanixApiClientV1Test {
 
         String[] localVarAuthNames = new String[] {  };
 
-        GenericType<VMs> localVarReturnType = new GenericType<>() {};
+        GenericType<VMCollectionEntity> localVarReturnType = new GenericType<>() {};
         try {
-            VMs vms = apiClient.invokeAPI(localVarPath, "GET", localVarQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+            VMCollectionEntity vms = apiClient.invokeAPI(localVarPath, "GET", localVarQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
             System.out.println(vms.getMetadata());
             System.out.println(vms.getAdditionalProperties());
             vms.getEntities().forEach(vm -> System.out.println(vm.getVmName()));
@@ -90,7 +91,7 @@ public class NutanixApiClientV1Test {
     }
 
     @Test
-    public void testVmsApi() throws NutanixApiException {
+    public void testVmsApiGetVms() throws NutanixApiException {
         ApiClientExtention apiClient = getApiClient();
         VmsApi vmsApi = new VmsApi(apiClient);
         int count = 0;
@@ -100,7 +101,7 @@ public class NutanixApiClientV1Test {
         final Set<String> uuid = new HashSet<>();
         do {
             int startIndex;
-            VMs dto;
+            VMCollectionEntity dto;
             try {
                 dto = vmsApi.getVMs(page,apiClient.getLength());
             } catch (ApiException e) {
@@ -121,9 +122,27 @@ public class NutanixApiClientV1Test {
         Assert.assertEquals(count, total);
         Assert.assertEquals(count, uuid.size());
         System.out.println(uuid);
+    }
 
+    @Test
+    public void testVmsApiGetVm() throws NutanixApiException {
+        ApiClientExtention apiClient = getApiClient();
+        VmsApi vmsApi = new VmsApi(apiClient);
+        String uuid = "d04f11c9-690b-4fa9-8d17-0c0de2e92c77";
+
+            try {
+                VMEntity vmEntity = vmsApi.getVM(uuid);
+                Assert.assertNotNull(vmEntity);
+                Assert.assertEquals(uuid,vmEntity.getUuid());
+                Assert.assertEquals("SVL-TOMCATS2-AS2",vmEntity.getVmName());
+                Assert.assertNotNull(vmEntity.getStats());
+                System.out.println(vmEntity.getStats());
+            } catch (ApiException e) {
+                throw new NutanixApiException(e.getMessage(), e);
+            }
 
     }
+
     @Test
     public void testHealthChecksApi() throws NutanixApiException {
         ApiClient apiClient = getApiClient();

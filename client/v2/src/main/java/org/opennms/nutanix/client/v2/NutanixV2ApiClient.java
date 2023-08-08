@@ -54,7 +54,14 @@ public class NutanixV2ApiClient implements NutanixApiClient {
     }
     @Override
     public VM getVM(String uuid) throws NutanixApiException {
-        throw new NutanixApiException("getVM(String uuid) not supported");
+        VmsApi vmsApi= new VmsApi(apiClient);
+        GetDtoUhuraVmConfigDTO dto;
+        try {
+            dto = vmsApi.getVM(uuid,true,true);
+        } catch (ApiException e) {
+            throw new NutanixApiException(e.getMessage(), e);
+        }
+        return getFromDtoUhuraVmConfigDTO(dto);
     }
 
     @Override

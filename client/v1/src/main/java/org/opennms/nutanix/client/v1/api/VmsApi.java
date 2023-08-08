@@ -10,7 +10,8 @@ import javax.ws.rs.core.GenericType;
 import org.opennms.nutanix.client.v1.ApiClientExtention;
 import org.opennms.nutanix.client.v1.handler.ApiException;
 import org.opennms.nutanix.client.v1.handler.Pair;
-import org.opennms.nutanix.client.v1.model.VMs;
+import org.opennms.nutanix.client.v1.model.VMEntity;
+import org.opennms.nutanix.client.v1.model.VMCollectionEntity;
 
 public class VmsApi {
     private final ApiClientExtention apiClient;
@@ -19,7 +20,32 @@ public class VmsApi {
         this.apiClient = apiClient;
     }
 
-    public VMs getVMs(int page, int count) throws ApiException {
+    public VMEntity getVM(String uuid) throws ApiException {
+        String localVarPath = "/vms/"+uuid;
+        List<Pair> localVarQueryParams = new ArrayList<>();
+        Map<String, String> localVarHeaderParams = new HashMap<>();
+
+        Map<String, Object> localVarFormParams = new HashMap<>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+
+        final String[] localVarContentTypes = {
+
+        };
+        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] {  };
+
+        GenericType<VMEntity> localVarReturnType = new GenericType<>() {};
+
+        return apiClient.invokeAPI(localVarPath, "GET", localVarQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+
+
+    }
+    public VMCollectionEntity getVMs(int page, int count) throws ApiException {
 
         String localVarPath = "/vms/";
 
@@ -43,7 +69,7 @@ public class VmsApi {
 
         String[] localVarAuthNames = new String[] {  };
 
-        GenericType<VMs> localVarReturnType = new GenericType<>() {};
+        GenericType<VMCollectionEntity> localVarReturnType = new GenericType<>() {};
 
         return apiClient.invokeAPI(localVarPath, "GET", localVarQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
 

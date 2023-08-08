@@ -12,8 +12,8 @@ import org.opennms.nutanix.client.api.model.MetricsCluster;
 import org.opennms.nutanix.client.api.model.VM;
 import org.opennms.nutanix.client.v1.api.VmsApi;
 import org.opennms.nutanix.client.v1.handler.ApiException;
-import org.opennms.nutanix.client.v1.model.Entity;
-import org.opennms.nutanix.client.v1.model.VMs;
+import org.opennms.nutanix.client.v1.model.VMEntity;
+import org.opennms.nutanix.client.v1.model.VMCollectionEntity;
 
 public class NutanixV1ApiClient implements NutanixApiClient {
 
@@ -32,7 +32,7 @@ public class NutanixV1ApiClient implements NutanixApiClient {
         int total;
         do {
             try {
-                VMs dto = vmsApi.getVMs(page, apiClient.getLength());
+                VMCollectionEntity dto = vmsApi.getVMs(page, apiClient.getLength());
                 dto.getEntities().forEach(vm -> vms.add(getFromVmEntity(vm)));
                 endIndex=dto.getMetadata().getEndIndex();
                 total = dto.getMetadata().getGrandTotalEntities();
@@ -44,7 +44,7 @@ public class NutanixV1ApiClient implements NutanixApiClient {
         return vms;
     }
 
-    private VM getFromVmEntity(Entity vmdto) {
+    private VM getFromVmEntity(VMEntity vmdto) {
         return VM.builder()
                 .withName(vmdto.getVmName())
                 .withUuid(vmdto.getUuid())
@@ -53,7 +53,14 @@ public class NutanixV1ApiClient implements NutanixApiClient {
 
     @Override
     public VM getVM(String uuid) throws NutanixApiException {
-        throw new NutanixApiException("not supported");
+        VmsApi vmsApi= new VmsApi(apiClient);
+        VMEntity vmEntity;
+        try {
+            vmEntity = vmsApi.getVM(uuid);
+        } catch (ApiException e) {
+            throw new NutanixApiException(e.getMessage(), e);
+        }
+        return getFromVmEntity(vmEntity);
     }
 
     @Override

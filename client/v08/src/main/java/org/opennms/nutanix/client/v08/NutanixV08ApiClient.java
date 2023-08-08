@@ -47,7 +47,14 @@ public class NutanixV08ApiClient implements NutanixApiClient {
 
     @Override
     public VM getVM(String uuid) throws NutanixApiException {
-        throw new NutanixApiException("not supported");
+        VmsApi vmsApi = new VmsApi(apiClient);
+        GetDtoAcropolisVMInfoDTO dto;
+        try {
+            dto = vmsApi.getVM(uuid, true, true, true);
+        } catch (ApiException e) {
+            throw new NutanixApiException(e.getMessage(), e);
+        }
+        return getFromVmAcropolisDto(dto);
     }
 
     @Override
