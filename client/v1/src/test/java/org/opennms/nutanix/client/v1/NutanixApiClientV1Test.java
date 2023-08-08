@@ -18,6 +18,7 @@ import org.opennms.nutanix.client.v1.handler.ApiClient;
 import org.opennms.nutanix.client.v1.handler.ApiException;
 import org.opennms.nutanix.client.v1.handler.Pair;
 import org.opennms.nutanix.client.v1.model.GetAuthDtoConfigAuthConfigDTO;
+import org.opennms.nutanix.client.v1.model.Vms;
 
 public class NutanixApiClientV1Test {
 
@@ -44,14 +45,13 @@ public class NutanixApiClientV1Test {
     public void testVmsApi() throws NutanixApiException {
         ApiClient apiClient = getApiClient();
 
-        Object localVarPostBody = null;
         // create path and map variables
-        String localVarPath = "/vms/";
+        String localVarPath = "/vms/?count=2&page=2";
 
         // query params
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+        List<Pair> localVarQueryParams = new ArrayList<>();
+        Map<String, String> localVarHeaderParams = new HashMap<>();
+        Map<String, Object> localVarFormParams = new HashMap<>();
 
 
         final String[] localVarAccepts = {
@@ -66,12 +66,13 @@ public class NutanixApiClientV1Test {
 
         String[] localVarAuthNames = new String[] {  };
 
-        GenericType<String> localVarReturnType = new GenericType<String>() {};
+        GenericType<Vms> localVarReturnType = new GenericType<>() {};
         try {
-            String out =  apiClient.invokeAPI(localVarPath, "GET", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
-            System.out.println(out);
+            Vms vms = apiClient.invokeAPI(localVarPath, "GET", localVarQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+            System.out.println(vms.getMetadata());
+            System.out.println(vms.getAdditionalProperties());
         } catch (ApiException e) {
-            throw new RuntimeException(e);
+            throw new NutanixApiException(e.getMessage(),e);
         }
 
     }
@@ -83,7 +84,7 @@ public class NutanixApiClientV1Test {
         try {
             GetAuthDtoConfigAuthConfigDTO dto = authconfigApi.getAuthConfig();
 
-            System.out.println();
+            System.out.println(dto);
         } catch (ApiException e) {
             throw new NutanixApiException(e.getMessage(),e);
         }
