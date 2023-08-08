@@ -1,10 +1,13 @@
 package org.opennms.nutanix.client.v3;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.v3.api.AccessControlPoliciesApi;
 import org.opennms.nutanix.client.v3.api.AlertsApi;
 import org.opennms.nutanix.client.v3.api.AppBlueprintApi;
@@ -53,7 +56,6 @@ import org.opennms.nutanix.client.v3.api.VmsApi;
 import org.opennms.nutanix.client.v3.api.VolumeGroupSnapshotsApi;
 import org.opennms.nutanix.client.v3.api.VolumeGroupsApi;
 import org.opennms.nutanix.client.v3.api.WebhooksApi;
-import org.opennms.nutanix.client.v3.handler.ApiClient;
 import org.opennms.nutanix.client.v3.handler.ApiException;
 import org.opennms.nutanix.client.v3.model.AccessControlPolicyListIntentResponse;
 import org.opennms.nutanix.client.v3.model.AccessControlPolicyListMetadata;
@@ -120,6 +122,8 @@ import org.opennms.nutanix.client.v3.model.UserGroupListMetadata;
 import org.opennms.nutanix.client.v3.model.UserListIntentResponse;
 import org.opennms.nutanix.client.v3.model.UserListMetadata;
 import org.opennms.nutanix.client.v3.model.Versions;
+import org.opennms.nutanix.client.v3.model.VmIntentResource;
+import org.opennms.nutanix.client.v3.model.VmIntentResponse;
 import org.opennms.nutanix.client.v3.model.VmListIntentResponse;
 import org.opennms.nutanix.client.v3.model.VmListMetadata;
 import org.opennms.nutanix.client.v3.model.VmRecoveryPointListIntentResponse;
@@ -131,13 +135,14 @@ import org.opennms.nutanix.client.v3.model.WebhookListMetadata;
 
 public class NutanixApiClientV3Test {
 
-    private ApiClient getApiClient() {
+    private ApiClientExtention getApiClient() {
         ApiClientExtention apiClient = new ApiClientExtention();
         apiClient.setBasePath("https://nutanix.arsinfo.it:9440/api/nutanix/v3");
         apiClient.setUsername(System.getenv("NTX_USER"));
         apiClient.setPassword(System.getenv("NTX_PASS"));
         apiClient.setDebugging(true);
         apiClient.setIgnoreSslCertificateValidation(true);
+        apiClient.setLength(20);
         return apiClient;
 
     }
@@ -150,41 +155,83 @@ public class NutanixApiClientV3Test {
     @Test
     public void testVmsApi() {
 
-        VmsApi vmsApi = new VmsApi(getApiClient());
+        ApiClientExtention apiClient = getApiClient();
+        VmsApi vmsApi = new VmsApi(apiClient);
         int offset = 0;
-        int lenght = 20;
         Set<String> vmnames = new HashSet<>();
         Set<String> onVms = new HashSet<>();
         Set<String> offVms = new HashSet<>();
+        Set<String> stateVms = new HashSet<>();
+        Set<String> powerStateVms = new HashSet<>();
+        Set<String> clusteruuids = new HashSet<>();
+        Set<String> clusternames = new HashSet<>();
+        Set<String> clusterkinds = new HashSet<>();
+        List<VmIntentResource> errorVms = new ArrayList<>();
         int total;
             do {
-                VmListMetadata body = new VmListMetadata().length(lenght).offset(offset);
+                VmListMetadata body = new VmListMetadata().length(apiClient.getLength()).offset(offset);
                 try {
-                VmListIntentResponse vmListIntentResponse = vmsApi.vmsListPost(body);
-                total = vmListIntentResponse.getMetadata().getTotalMatches();
-                vmListIntentResponse.getEntities().forEach(System.out::println);
+                    VmListIntentResponse vmListIntentResponse = vmsApi.vmsListPost(body);
+                    total = vmListIntentResponse.getMetadata().getTotalMatches();
+                    vmListIntentResponse.getEntities().forEach(System.out::println);
 
-                vmListIntentResponse.getEntities()
-                        .stream()
-                        .filter(vm -> vm.getStatus().getResources().getPowerState().equalsIgnoreCase("off"))
-                        .forEach(vm -> offVms.add(vm.getStatus().getName()));
-                vmListIntentResponse.getEntities()
-                        .stream()
-                        .filter(vm -> vm.getStatus().getResources().getPowerState().equalsIgnoreCase("on"))
-                        .forEach(vm -> onVms.add(vm.getStatus().getName()));
-                vmListIntentResponse.getEntities().forEach(vm -> vmnames.add(vm.getStatus().getName()));
-                lenght = vmListIntentResponse.getEntities().size();
-                offset+=lenght;
+                    vmListIntentResponse.getEntities()
+                            .stream()
+                            .filter(vm -> vm.getStatus().getResources().getPowerState().equalsIgnoreCase("off"))
+                            .forEach(vm -> offVms.add(vm.getStatus().getName()));
+                    vmListIntentResponse.getEntities()
+                            .stream()
+                            .filter(vm -> vm.getStatus().getResources().getPowerState().equalsIgnoreCase("on"))
+                            .forEach(vm -> onVms.add(vm.getStatus().getName()));
+                    vmListIntentResponse.getEntities()
+                            .stream()
+                            .filter(vm -> vm.getStatus().getState().equalsIgnoreCase("error"))
+                            .forEach(errorVms::add);
+                    vmListIntentResponse.getEntities().forEach(vm -> {
+                        vmnames.add(vm.getStatus().getName());
+                        stateVms.add((vm.getStatus().getState()));
+                        clusteruuids.add(vm.getStatus().getClusterReference().getUuid());
+                        clusternames.add(vm.getStatus().getClusterReference().getName());
+                        clusterkinds.add(vm.getStatus().getClusterReference().getKind());
+                        powerStateVms.add(vm.getStatus().getResources().getPowerState());
+                    });
+
+                    offset+=vmListIntentResponse.getEntities().size();
                 } catch (ApiException e) {
                     throw new RuntimeException(e);
                 }
             } while (vmnames.size() < total );
+            System.out.println(stateVms);
+            System.out.println(powerStateVms);
+            System.out.println(clusterkinds);
+            System.out.println(clusternames);
+            System.out.println(clusteruuids);
+
             System.out.println("total vms: " + vmnames.size());
+            System.out.println("error vms: " + errorVms.size());
             System.out.println("off vms: " + offVms.size());
             System.out.println("on vms: " + onVms.size());
 
             Assert.assertEquals(vmnames.size(),total);
 
+
+    }
+    @Test
+    public void testVmsApiGetVm() throws NutanixApiException {
+        ApiClientExtention apiClient = getApiClient();
+        VmsApi vmsApi = new VmsApi(apiClient);
+        String uuid = "d04f11c9-690b-4fa9-8d17-0c0de2e92c77";
+
+        try {
+            VmIntentResponse vmEntity = vmsApi.vmsUuidGet(uuid);
+            Assert.assertNotNull(vmEntity);
+            Assert.assertEquals(uuid,vmEntity.getMetadata().getUuid());
+            Assert.assertEquals("SVL-TOMCATS2-AS2",vmEntity.getStatus().getName());
+            System.out.println(uuid);
+            System.out.println(vmEntity);
+        } catch (ApiException e) {
+            throw new NutanixApiException(e.getMessage(), e);
+        }
 
     }
 

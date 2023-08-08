@@ -65,8 +65,8 @@ public class NutanixApiClientV08Test {
             System.out.println(dto.getMetadata());
             dto.getEntities().forEach(e -> System.out.println(e.getUuid()+ ":" +e.getState() +":" + e.getHostUuid()));
             dto.getEntities().forEach(e -> System.out.println(e.getConfig()));
-            System.out.println(dto.getEntities().size());
             Assert.assertEquals(dto.getMetadata().getTotalEntities().intValue(), dto.getEntities().size());
+            System.out.println(dto.getEntities().size());
         } catch (ApiException e) {
             System.out.println("err");
         }

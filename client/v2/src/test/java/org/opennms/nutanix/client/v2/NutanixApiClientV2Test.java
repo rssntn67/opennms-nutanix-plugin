@@ -71,6 +71,8 @@ public class NutanixApiClientV2Test {
         Assert.assertEquals(count, uuid.size());
         System.out.println(uuid);
 
+        System.out.println("total vms: " + total);
+
     }
 
     @Test

@@ -32,13 +32,10 @@ import org.opennms.nutanix.client.v3.model.VmListIntentResponse;
 import org.opennms.nutanix.client.v3.model.VmListMetadata;
 
 public class NutanixV3ApiClient implements NutanixApiClient {
-
     private final ApiClientExtention apiClient;
-
     public NutanixV3ApiClient(ApiClientExtention apiClient) {
         this.apiClient = apiClient;
     }
-
 
     @Override
     public List<VM> getVMS() throws NutanixApiException {
@@ -58,14 +55,13 @@ public class NutanixV3ApiClient implements NutanixApiClient {
                 throw new NutanixApiException(e.getMessage(), e);
             }
         } while (vms.size() < total );
-
         return vms;
     }
 
     @Override
     public VM getVM(String uuid) throws NutanixApiException {
         VmsApi vmsApi = new VmsApi(apiClient);
-                VmIntentResponse vmIntentResponse;
+        VmIntentResponse vmIntentResponse;
         try {
             vmIntentResponse = vmsApi.vmsUuidGet(uuid);
         } catch (ApiException e) {
@@ -77,14 +73,42 @@ public class NutanixV3ApiClient implements NutanixApiClient {
     private static VM getFromVmIntentResponse(VmIntentResponse vmIntentResponse) {
         return VM.builder()
                 .withName(vmIntentResponse.getStatus().getName())
+                .withDescription(vmIntentResponse.getStatus().getDescription())
                 .withUuid(vmIntentResponse.getMetadata().getUuid())
+                .withClusterName(vmIntentResponse.getStatus().getClusterReference().getName())
+                .withClusterUuid(vmIntentResponse.getStatus().getClusterReference().getUuid())
+                .withHostName(vmIntentResponse.getStatus().getResources().getHostReference().getName())
+                .withHostUuid(vmIntentResponse.getStatus().getResources().getHostReference().getUuid())
+                .withState(vmIntentResponse.getStatus().getState())
+                .withNumThreadsPerCore(vmIntentResponse.getStatus().getResources().getNumThreadsPerCore())
+                .withMemorySizeMib(vmIntentResponse.getStatus().getResources().getMemorySizeMib())
+                .withPowerState(vmIntentResponse.getStatus().getResources().getPowerState())
+                .withNumVcpusPerSocket(vmIntentResponse.getStatus().getResources().getNumVcpusPerSocket())
+                .withNumSockets(vmIntentResponse.getStatus().getResources().getNumSockets())
+                .withProtectionType(vmIntentResponse.getStatus().getResources().getProtectionType())
+                .withMachineType(vmIntentResponse.getStatus().getResources().getMachineType())
+                .withHypervisorType(vmIntentResponse.getStatus().getResources().getHypervisorType())
                 .build();
     }
 
     private static VM getFromVmIntentResource(VmIntentResource vmIntentResource) {
         return VM.builder()
                 .withName(vmIntentResource.getStatus().getName())
+                .withDescription(vmIntentResource.getStatus().getDescription())
                 .withUuid(vmIntentResource.getMetadata().getUuid())
+                .withClusterName(vmIntentResource.getStatus().getClusterReference().getName())
+                .withClusterUuid(vmIntentResource.getStatus().getClusterReference().getUuid())
+                .withHostName(vmIntentResource.getStatus().getResources().getHostReference().getName())
+                .withHostUuid(vmIntentResource.getStatus().getResources().getHostReference().getUuid())
+                .withState(vmIntentResource.getStatus().getState())
+                .withNumThreadsPerCore(vmIntentResource.getStatus().getResources().getNumThreadsPerCore())
+                .withMemorySizeMib(vmIntentResource.getStatus().getResources().getMemorySizeMib())
+                .withPowerState(vmIntentResource.getStatus().getResources().getPowerState())
+                .withNumVcpusPerSocket(vmIntentResource.getStatus().getResources().getNumVcpusPerSocket())
+                .withNumSockets(vmIntentResource.getStatus().getResources().getNumSockets())
+                .withProtectionType(vmIntentResource.getStatus().getResources().getProtectionType())
+                .withMachineType(vmIntentResource.getStatus().getResources().getMachineType())
+                .withHypervisorType(vmIntentResource.getStatus().getResources().getHypervisorType())
                 .build();
     }
 

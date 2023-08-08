@@ -91,7 +91,7 @@ public class NutanixApiClientV1Test {
     }
 
     @Test
-    public void testVmsApiGetVms() throws NutanixApiException {
+    public void testVmsApi() throws NutanixApiException {
         ApiClientExtention apiClient = getApiClient();
         VmsApi vmsApi = new VmsApi(apiClient);
         int count = 0;
@@ -122,6 +122,8 @@ public class NutanixApiClientV1Test {
         Assert.assertEquals(count, total);
         Assert.assertEquals(count, uuid.size());
         System.out.println(uuid);
+        System.out.println("total vms: " + total);
+
     }
 
     @Test
