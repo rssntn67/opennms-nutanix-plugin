@@ -8,6 +8,12 @@
         <feature version="${okhttp.version}" dependency="true">okhttp</feature>
         <feature version="${guava.version}" dependency="true">guava</feature>
         <feature version="${jackson.version}" dependency="true">jackson</feature>
+
+        <feature version="${project.version}">opennms-plugins-nutanix-client-v08</feature>
+        <feature version="${project.version}">opennms-plugins-nutanix-client-v1</feature>
+        <feature version="${project.version}">opennms-plugins-nutanix-client-v2</feature>
+        <feature version="${project.version}">opennms-plugins-nutanix-client-v3</feature>
+
         <bundle dependency="true">mvn:org.apache.commons/commons-jexl3/${jexl.version}</bundle>
         <bundle dependency="true">mvn:io.dropwizard.metrics/metrics-core/${metrics.version}</bundle>
         <bundle dependency="true">mvn:javax.ws.rs/javax.ws.rs-api/2.1.1</bundle>
