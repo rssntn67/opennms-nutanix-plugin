@@ -10,6 +10,9 @@ import javax.ws.rs.core.HttpHeaders;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opennms.nutanix.client.api.NutanixApiException;
+import org.opennms.nutanix.client.v2.api.AuthconfigApi;
+import org.opennms.nutanix.client.v2.api.HaApi;
+import org.opennms.nutanix.client.v2.api.SnmpApi;
 import org.opennms.nutanix.client.v2.api.VmsApi;
 import org.opennms.nutanix.client.v2.handler.ApiException;
 import org.opennms.nutanix.client.v2.model.GetBaseEntityCollectionltgetDtoUhuraVmConfigDTOgt;
@@ -66,6 +69,44 @@ public class NutanixApiClientV2Test {
         Assert.assertEquals(count, uuid.size());
         System.out.println(uuid);
 
+    }
+
+    @Test
+    public void testAuthconfigApi() throws NutanixApiException {
+        ApiClientExtention apiClientExtention = getApiClient();
+        AuthconfigApi authconfigApi = new AuthconfigApi(apiClientExtention);
+
+        try {
+            System.out.println(authconfigApi.getAuthConfig());
+            System.out.println(authconfigApi.getClientAuth());
+        } catch (ApiException e) {
+            throw new NutanixApiException(e.getMessage(), e);
+        }
+    }
+
+    @Test
+    public void testHaApi() throws NutanixApiException {
+        ApiClientExtention apiClientExtention = getApiClient();
+        HaApi haApi = new HaApi(apiClientExtention);
+
+        try {
+            System.out.println(haApi.getHaConfig());
+        } catch (ApiException e) {
+            throw new NutanixApiException(e.getMessage(), e);
+        }
+    }
+
+    @Test
+    public void testSnmpApi() throws NutanixApiException {
+        ApiClientExtention apiClientExtention = getApiClient();
+        SnmpApi snmpApi = new SnmpApi(apiClientExtention);
+
+        try {
+            System.out.println(snmpApi.getSnmpStatus());
+            System.out.println(snmpApi.getSnmpInfo());
+        } catch (ApiException e) {
+            throw new NutanixApiException(e.getMessage(), e);
+        }
     }
 
 }
