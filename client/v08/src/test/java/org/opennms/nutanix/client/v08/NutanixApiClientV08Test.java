@@ -61,9 +61,9 @@ public class NutanixApiClientV08Test {
     public void testVmsApi()  {
 
         VmsApi vmsApi = new VmsApi(getApiClient());
-        GetBaseEntityCollectionltgetDtoAcropolisVMInfoDTOgt dto;
+
         try {
-            dto = vmsApi.getVMs(true,true,true);
+            GetBaseEntityCollectionltgetDtoAcropolisVMInfoDTOgt dto = vmsApi.getVMs(true,true,true);
             System.out.println(dto.getMetadata());
             dto.getEntities().forEach(e -> System.out.println(e.getUuid()+ ":" +e.getState() +":" + e.getHostUuid()));
             dto.getEntities().forEach(e -> System.out.println(e.getConfig()));
