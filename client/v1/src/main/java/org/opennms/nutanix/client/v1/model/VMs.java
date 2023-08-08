@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "entities"
 })
 @Generated("jsonschema2pojo")
-public class Vms {
+public class VMs {
 
     @JsonProperty("metadata")
     private Metadata metadata;
@@ -60,7 +60,7 @@ public class Vms {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Vms.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(VMs.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("metadata");
         sb.append('=');
         sb.append(((this.metadata == null)?"<null>":this.metadata));
@@ -95,10 +95,10 @@ public class Vms {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Vms) == false) {
+        if ((other instanceof VMs) == false) {
             return false;
         }
-        Vms rhs = ((Vms) other);
+        VMs rhs = ((VMs) other);
         return ((((this.metadata == rhs.metadata)||((this.metadata!= null)&&this.metadata.equals(rhs.metadata)))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.entities == rhs.entities)||((this.entities!= null)&&this.entities.equals(rhs.entities))));
     }
 
