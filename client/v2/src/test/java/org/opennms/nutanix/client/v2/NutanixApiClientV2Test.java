@@ -63,6 +63,8 @@ public class NutanixApiClientV2Test {
             System.out.println(dto.getMetadata());
             count+=dto.getMetadata().getCount();
             dto.getEntities().forEach(vm -> uuid.add(vm.getUuid()));
+            dto.getEntities().forEach(System.out::println);
+            dto.getEntities().forEach(vm -> Assert.assertNotNull(vm.getPowerState()));
         } while (endIndex < total );
 
         Assert.assertEquals(count, total);
