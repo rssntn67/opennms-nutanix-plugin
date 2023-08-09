@@ -2,14 +2,14 @@ package org.opennms.nutanix.client.api.model;
 
 import java.util.Objects;
 
-public class VmDisk {
+public class Disk {
     public final String uuid;
     public final Integer deviceIndex;
     public final String deviceType;
     public final String adapterType;
     public final Integer diskSizeMib;
 
-    public VmDisk(Builder builder) {
+    public Disk(Builder builder) {
         this.uuid = Objects.requireNonNull(builder.uuid);
         this.deviceIndex = Objects.requireNonNull(builder.deviceIndex);
         this.deviceType = Objects.requireNonNull(builder.deviceType);
@@ -32,37 +32,37 @@ public class VmDisk {
         private String adapterType;
         private Integer diskSizeMib;
 
-        public VmDisk.Builder withUuid(final String uuid) {
+        public Disk.Builder withUuid(final String uuid) {
             this.uuid = uuid;
             return this;
         }
 
-        public VmDisk.Builder withDeviceType(final String deviceType) {
+        public Disk.Builder withDeviceType(final String deviceType) {
             this.deviceType = deviceType;
             return this;
         }
 
-        public VmDisk.Builder withDiskSizeMib(final Integer diskSizeMib) {
+        public Disk.Builder withDiskSizeMib(final Integer diskSizeMib) {
             this.diskSizeMib = diskSizeMib;
             return this;
         }
 
-        public VmDisk.Builder withAdapterType(final String adapterType) {
+        public Disk.Builder withAdapterType(final String adapterType) {
             this.adapterType = adapterType;
             return this;
         }
 
-        public VmDisk.Builder withDeviceIndex(final Integer deviceIndex) {
+        public Disk.Builder withDeviceIndex(final Integer deviceIndex) {
             this.deviceIndex = deviceIndex;
             return this;
         }
 
-        public VmDisk build() {
-            return new VmDisk(this);
+        public Disk build() {
+            return new Disk(this);
         }
     }
-    public static VmDisk.Builder builder() {
-        return new VmDisk.Builder();
+    public static Disk.Builder builder() {
+        return new Disk.Builder();
     }
 
 }

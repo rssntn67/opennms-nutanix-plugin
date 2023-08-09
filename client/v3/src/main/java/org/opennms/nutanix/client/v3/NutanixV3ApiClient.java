@@ -11,7 +11,7 @@ import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.client.api.model.MetricsCluster;
 import org.opennms.nutanix.client.api.model.VM;
-import org.opennms.nutanix.client.api.model.VmDisk;
+import org.opennms.nutanix.client.api.model.Disk;
 import org.opennms.nutanix.client.v3.api.AlertsApi;
 import org.opennms.nutanix.client.v3.api.ClustersApi;
 import org.opennms.nutanix.client.v3.api.HostsApi;
@@ -95,9 +95,10 @@ public class NutanixV3ApiClient implements NutanixApiClient {
                 .build();
     }
 
-    private static List<VmDisk> getFromVmResources(List<VmDiskOutputStatus> vmDiskOutputStatusList) {
-        return vmDiskOutputStatusList.stream().map(d -> {
-            return VmDisk.builder()
+    private static List<Disk> getFromVmResources(List<VmDiskOutputStatus> vmDiskOutputStatusList) {
+        return vmDiskOutputStatusList.stream().filter(d -> d.getDeviceProperties().getDeviceType().equalsIgnoreCase("DISK"))
+                .map(d -> {
+            return Disk.builder()
                     .withUuid(d.getUuid())
                     .withDeviceType(d.getDeviceProperties().getDeviceType())
                     .withDeviceIndex(d.getDeviceProperties().getDiskAddress().getDeviceIndex())
