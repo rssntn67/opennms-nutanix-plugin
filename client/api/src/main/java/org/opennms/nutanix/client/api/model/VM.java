@@ -29,6 +29,7 @@ public class VM {
     public final String hypervisorType;
 
     public final List<Disk> disks;
+    public final List<Nic> nics;
 
     private VM(Builder builder) {
         this.name=Objects.requireNonNull(builder.name);
@@ -48,6 +49,7 @@ public class VM {
         this.hypervisorType=Objects.requireNonNull(builder.hypervisorType);
         this.description=Objects.requireNonNull(builder.description);
         this.disks=Objects.requireNonNull(builder.disks);
+        this.nics=Objects.requireNonNull(builder.nics);
     }
     public static class Builder {
         private String name;
@@ -119,6 +121,12 @@ public class VM {
         private List<Disk> disks;
         public VM.Builder withDisks(final List<Disk> disks) {
             this.disks = disks;
+            return this;
+        }
+
+        private List<Nic> nics;
+        public VM.Builder withNics(final List<Nic> nics) {
+            this.nics = nics;
             return this;
         }
 

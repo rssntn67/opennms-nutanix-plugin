@@ -166,6 +166,8 @@ public class NutanixApiClientV3Test {
         Set<String> clusteruuids = new HashSet<>();
         Set<String> clusternames = new HashSet<>();
         Set<String> clusterkinds = new HashSet<>();
+        Set<String> nicType = new HashSet<>();
+        Set<String> diskType = new HashSet<>();
         List<VmIntentResource> errorVms = new ArrayList<>();
         int total;
             do {
@@ -188,6 +190,8 @@ public class NutanixApiClientV3Test {
                             .filter(vm -> vm.getStatus().getState().equalsIgnoreCase("error"))
                             .forEach(errorVms::add);
                     vmListIntentResponse.getEntities().forEach(vm -> {
+                        vm.getStatus().getResources().getDiskList().forEach(dsk -> diskType.add(dsk.getDeviceProperties().getDeviceType()));
+                        vm.getStatus().getResources().getNicList().forEach(nic -> nicType.add(nic.getNicType()));
                         vmnames.add(vm.getStatus().getName());
                         stateVms.add((vm.getStatus().getState()));
                         clusteruuids.add(vm.getStatus().getClusterReference().getUuid());
@@ -206,6 +210,8 @@ public class NutanixApiClientV3Test {
             System.out.println(clusterkinds);
             System.out.println(clusternames);
             System.out.println(clusteruuids);
+            System.out.println(nicType);
+            System.out.println(diskType);
 
             System.out.println("total vms: " + vmnames.size());
             System.out.println("error vms: " + errorVms.size());

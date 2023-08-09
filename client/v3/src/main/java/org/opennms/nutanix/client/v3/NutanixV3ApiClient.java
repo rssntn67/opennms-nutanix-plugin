@@ -10,6 +10,7 @@ import org.opennms.nutanix.client.api.model.Alert;
 import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.client.api.model.MetricsCluster;
+import org.opennms.nutanix.client.api.model.Nic;
 import org.opennms.nutanix.client.api.model.VM;
 import org.opennms.nutanix.client.api.model.Disk;
 import org.opennms.nutanix.client.v3.api.AlertsApi;
@@ -28,11 +29,13 @@ import org.opennms.nutanix.client.v3.model.HostIntentResource;
 import org.opennms.nutanix.client.v3.model.HostIntentResponse;
 import org.opennms.nutanix.client.v3.model.HostListIntentResponse;
 import org.opennms.nutanix.client.v3.model.HostListMetadata;
+import org.opennms.nutanix.client.v3.model.IpAddress;
 import org.opennms.nutanix.client.v3.model.VmDiskOutputStatus;
 import org.opennms.nutanix.client.v3.model.VmIntentResource;
 import org.opennms.nutanix.client.v3.model.VmIntentResponse;
 import org.opennms.nutanix.client.v3.model.VmListIntentResponse;
 import org.opennms.nutanix.client.v3.model.VmListMetadata;
+import org.opennms.nutanix.client.v3.model.VmNicOutputStatus;
 
 public class NutanixV3ApiClient implements NutanixApiClient {
     private final ApiClientExtention apiClient;
@@ -91,22 +94,40 @@ public class NutanixV3ApiClient implements NutanixApiClient {
                 .withProtectionType(vmIntentResponse.getStatus().getResources().getProtectionType())
                 .withMachineType(vmIntentResponse.getStatus().getResources().getMachineType())
                 .withHypervisorType(vmIntentResponse.getStatus().getResources().getHypervisorType())
-                .withDisks(getFromVmResources(vmIntentResponse.getStatus().getResources().getDiskList()))
+                .withDisks(getDisksFromVmResources(vmIntentResponse.getStatus().getResources().getDiskList()))
+                .withNics(getNicsFromVmResources(vmIntentResponse.getStatus().getResources().getNicList()))
                 .build();
     }
 
-    private static List<Disk> getFromVmResources(List<VmDiskOutputStatus> vmDiskOutputStatusList) {
-        return vmDiskOutputStatusList.stream().filter(d -> d.getDeviceProperties().getDeviceType().equalsIgnoreCase("DISK"))
-                .map(d -> {
-            return Disk.builder()
+    private static List<Nic> getNicsFromVmResources(List<VmNicOutputStatus> vmNicOutputStatusList) {
+        return vmNicOutputStatusList
+                .stream()
+                .map(n -> Nic.builder()
+                        .withNicType(n.getNicType())
+                        .withKind(n.getSubnetReference().getKind())
+                        .withName(n.getSubnetReference().getName())
+                        .withMacAddress(n.getMacAddress())
+                        .withVlanMode(n.getVlanMode())
+                        .withIsConnected(n.isIsConnected())
+                        .withIpList(n.getIpEndpointList().stream().map(IpAddress::getIp).collect(Collectors.toUnmodifiableSet()))
+                        .build()
+                )
+                .collect(Collectors.toUnmodifiableList());
+
+    }
+
+    private static List<Disk> getDisksFromVmResources(List<VmDiskOutputStatus> vmDiskOutputStatusList) {
+    return vmDiskOutputStatusList
+            .stream()
+            .filter(d -> d.getDeviceProperties().getDeviceType().equalsIgnoreCase("DISK"))
+            .map(d -> Disk.builder()
                     .withUuid(d.getUuid())
                     .withDeviceType(d.getDeviceProperties().getDeviceType())
                     .withDeviceIndex(d.getDeviceProperties().getDiskAddress().getDeviceIndex())
                     .withAdapterType(d.getDeviceProperties().getDiskAddress().getAdapterType())
-                    .withDiskSizeMib(d.getDiskSizeMib()).build();
-        }).collect(Collectors.toUnmodifiableList());
-
-    }
+                    .withDiskSizeMib(d.getDiskSizeMib()).build())
+            .collect(Collectors.toUnmodifiableList());
+}
     private static VM getFromVmIntentResource(VmIntentResource vmIntentResource) {
         return VM.builder()
                 .withName(vmIntentResource.getStatus().getName())
@@ -125,7 +146,8 @@ public class NutanixV3ApiClient implements NutanixApiClient {
                 .withProtectionType(vmIntentResource.getStatus().getResources().getProtectionType())
                 .withMachineType(vmIntentResource.getStatus().getResources().getMachineType())
                 .withHypervisorType(vmIntentResource.getStatus().getResources().getHypervisorType())
-                .withDisks(getFromVmResources(vmIntentResource.getStatus().getResources().getDiskList()))
+                .withDisks(getDisksFromVmResources(vmIntentResource.getStatus().getResources().getDiskList()))
+                .withNics(getNicsFromVmResources(vmIntentResource.getStatus().getResources().getNicList()))
                 .build();
     }
 
