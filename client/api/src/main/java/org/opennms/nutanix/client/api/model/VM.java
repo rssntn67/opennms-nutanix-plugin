@@ -1,5 +1,6 @@
 package org.opennms.nutanix.client.api.model;
 
+import java.util.List;
 import java.util.Objects;
 
 public class VM {
@@ -26,6 +27,9 @@ public class VM {
     public final String  protectionType;
     public final String machineType;
     public final String hypervisorType;
+
+    public final List<VmDisk> disks;
+
     private VM(Builder builder) {
         this.name=Objects.requireNonNull(builder.name);
         this.uuid=Objects.requireNonNull(builder.uuid);
@@ -43,7 +47,7 @@ public class VM {
         this.protectionType=Objects.requireNonNull(builder.protectionType);
         this.hypervisorType=Objects.requireNonNull(builder.hypervisorType);
         this.description=Objects.requireNonNull(builder.description);
-
+        this.disks=Objects.requireNonNull(builder.disks);
     }
     public static class Builder {
         private String name;
@@ -58,6 +62,7 @@ public class VM {
         private String state;
 
         private Integer numThreadsPerCore;
+
         public VM.Builder withNumThreadsPerCore(final Integer  numThreadsPerCore) {
             this.numThreadsPerCore = numThreadsPerCore;
             return this;
@@ -108,6 +113,12 @@ public class VM {
 
         public VM.Builder withDescription(final String description) {
             this.description = description;
+            return this;
+        }
+
+        private List<VmDisk> disks;
+        public VM.Builder withDisks(final List<VmDisk> disks) {
+            this.disks = disks;
             return this;
         }
 
