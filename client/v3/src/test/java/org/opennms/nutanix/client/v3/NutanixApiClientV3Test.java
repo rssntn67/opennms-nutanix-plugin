@@ -410,8 +410,8 @@ public class NutanixApiClientV3Test {
         do {
             try {
                 ClusterListMetadata body = new ClusterListMetadata().length(lenght).offset(offset);
-
                 ClusterListIntentResponse response = api.clustersListPost(body);
+                System.out.println(response);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.getStatus().toString()));
                 response.getEntities().forEach(item -> System.out.println(item.getStatus().getResources().getConfig().getOperationMode()));

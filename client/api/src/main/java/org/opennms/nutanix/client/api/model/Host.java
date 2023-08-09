@@ -8,10 +8,20 @@ public class Host {
     public final Integer specVersion;
     public final String kind;
     public final String state;
+
+    //
+    //Controller VM is a Virtual Machine Fundamentally used for sharing data over cluster
     public final String controllerVmIp;
     public final Float oplogDiskPct;
     public final Long oplogDiskSize;
+
+    //
+    //ipMI is ip address of host hardware console
     public final String ipmi;
+
+    // Hypervisor ip address of physical machine running AHV operating System
+    public final String hypervisorIp;
+    public final String hypervisorFullName;
     public final String hostType;
     public final String cpuModel;
 
@@ -24,9 +34,7 @@ public class Host {
 
     public final Long numVms;
 
-    public final String hypervisorIp;
 
-    public final String hypervisorFullName;
 
     public final String blockSerialNumber;
     public final String blockModel;
