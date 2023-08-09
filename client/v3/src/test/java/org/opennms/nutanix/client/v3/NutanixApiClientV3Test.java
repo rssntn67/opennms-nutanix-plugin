@@ -248,8 +248,8 @@ public class NutanixApiClientV3Test {
         int offset = 0;
         int lenght = 20;
         Set<String> hostnames = new HashSet<>();
-        Set<String> hiperConvergentHostTypes = new HashSet<>();
-        Set<String> notHiperConvergentHostTypes = new HashSet<>();
+        Set<String> hyperConvergentHostTypes = new HashSet<>();
+        Set<String> notHyperConvergentHostTypes = new HashSet<>();
         int total;
 
         do {
@@ -259,12 +259,15 @@ public class NutanixApiClientV3Test {
                 total = hostListIntentResponse.getMetadata().getTotalMatches();
 
                 hostListIntentResponse.getEntities().forEach(h -> hostnames.add(h.getStatus().getName()));
+                hostListIntentResponse.getEntities().forEach(System.out::println);
+                System.out.println(hostListIntentResponse.getMetadata());
+                System.out.println(hostListIntentResponse.getApiVersion());
                 hostListIntentResponse.getEntities()
                         .stream().filter(h -> h.getStatus().getResources().getHostType().equalsIgnoreCase("HYPER_CONVERGED"))
-                        .forEach(h -> hiperConvergentHostTypes.add(h.getStatus().getName()));
+                        .forEach(h -> hyperConvergentHostTypes.add(h.getStatus().getName()));
                 hostListIntentResponse.getEntities()
                         .stream().filter(h -> !h.getStatus().getResources().getHostType().equalsIgnoreCase("HYPER_CONVERGED"))
-                        .forEach(h -> notHiperConvergentHostTypes.add(h.getStatus().getName()));
+                        .forEach(h -> notHyperConvergentHostTypes.add(h.getStatus().getName()));
                 lenght = hostListIntentResponse.getEntities().size();
                 offset+=lenght;
         } catch (ApiException e) {
@@ -272,9 +275,10 @@ public class NutanixApiClientV3Test {
         }
         } while (hostnames.size() < total );
 
+        System.out.println(hostnames);
         System.out.println("total hosts: " + hostnames.size());
-        System.out.println("hyper_converged hosts: " + hiperConvergentHostTypes.size());
-        System.out.println("not hyper_converged hosts: " + notHiperConvergentHostTypes.size());
+        System.out.println("hyper_converged hosts: " + hyperConvergentHostTypes.size());
+        System.out.println("not hyper_converged hosts: " + notHyperConvergentHostTypes.size());
         Assert.assertEquals(hostnames.size(),total);
 
 

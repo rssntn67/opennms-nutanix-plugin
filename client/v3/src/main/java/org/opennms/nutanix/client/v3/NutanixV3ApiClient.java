@@ -8,11 +8,11 @@ import org.opennms.nutanix.client.api.NutanixApiClient;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Alert;
 import org.opennms.nutanix.client.api.model.Cluster;
+import org.opennms.nutanix.client.api.model.Disk;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.client.api.model.MetricsCluster;
 import org.opennms.nutanix.client.api.model.Nic;
 import org.opennms.nutanix.client.api.model.VM;
-import org.opennms.nutanix.client.api.model.Disk;
 import org.opennms.nutanix.client.v3.api.AlertsApi;
 import org.opennms.nutanix.client.v3.api.ClustersApi;
 import org.opennms.nutanix.client.v3.api.HostsApi;
@@ -148,6 +148,9 @@ public class NutanixV3ApiClient implements NutanixApiClient {
                 .withHypervisorType(vmIntentResource.getStatus().getResources().getHypervisorType())
                 .withDisks(getDisksFromVmResources(vmIntentResource.getStatus().getResources().getDiskList()))
                 .withNics(getNicsFromVmResources(vmIntentResource.getStatus().getResources().getNicList()))
+                .withKind(vmIntentResource.getMetadata().getKind())
+                .withSpecVersion(vmIntentResource.getMetadata().getSpecVersion())
+                .withEntityVersion(vmIntentResource.getMetadata().getEntityVersion())
                 .build();
     }
 
@@ -189,13 +192,55 @@ public class NutanixV3ApiClient implements NutanixApiClient {
         return Host.builder()
                 .withName(hostIntentResource.getStatus().getName())
                 .withUuid(hostIntentResource.getMetadata().getUuid())
+                .withSpecVersion(hostIntentResource.getMetadata().getSpecVersion())
+                .withKind(hostIntentResource.getMetadata().getKind())
+                .withState(hostIntentResource.getStatus().getState())
+                .withControllerVmIp(hostIntentResource.getStatus().getResources().getControllerVm().getIp())
+                .withOplogDiskPct(hostIntentResource.getStatus().getResources().getControllerVm().getOplogUsage().getOplogDiskPct())
+                .withOplogDiskSize(hostIntentResource.getStatus().getResources().getControllerVm().getOplogUsage().getOplogDiskSize())
+                .withIpmi(hostIntentResource.getStatus().getResources().getIpmi().getIp())
+                .withHostType(hostIntentResource.getStatus().getResources().getHostType())
+                .withCpuModel(hostIntentResource.getStatus().getResources().getCpuModel())
+                .withNumCpuSockets(hostIntentResource.getStatus().getResources().getNumCpuSockets())
+                .withNumCpuCores(hostIntentResource.getStatus().getResources().getNumCpuCores())
+                .withCpuCapacityHz(hostIntentResource.getStatus().getResources().getCpuCapacityHz())
+                .withSerialNumber(hostIntentResource.getStatus().getResources().getSerialNumber())
+                .withMemoryCapacityMib(hostIntentResource.getStatus().getResources().getMemoryCapacityMib())
+                .withNumVms(hostIntentResource.getStatus().getResources().getHypervisor().getNumVms())
+                .withHypervisorIp(hostIntentResource.getStatus().getResources().getHypervisor().getIp())
+                .withHypervisorFullName(hostIntentResource.getStatus().getResources().getHypervisor().getHypervisorFullName())
+                .withBlockSerialNumber(hostIntentResource.getStatus().getResources().getBlock().getBlockSerialNumber())
+                .withBlockModel(hostIntentResource.getStatus().getResources().getBlock().getBlockModel())
+                .withClusterKind(hostIntentResource.getStatus().getClusterReference().getKind())
+                .withClusterUuid(hostIntentResource.getStatus().getClusterReference().getUuid())
                 .build();
     }
 
-    private Host getFromHostIntentResponse(HostIntentResponse hostIntenthostIntentResponseurce) {
+    private Host getFromHostIntentResponse(HostIntentResponse hostIntentResource) {
         return Host.builder()
-                .withName(hostIntenthostIntentResponseurce.getStatus().getName())
-                .withUuid(hostIntenthostIntentResponseurce.getMetadata().getUuid())
+                .withName(hostIntentResource.getStatus().getName())
+                .withUuid(hostIntentResource.getMetadata().getUuid())
+                .withSpecVersion(hostIntentResource.getMetadata().getSpecVersion())
+                .withKind(hostIntentResource.getMetadata().getKind())
+                .withState(hostIntentResource.getStatus().getState())
+                .withControllerVmIp(hostIntentResource.getStatus().getResources().getControllerVm().getIp())
+                .withOplogDiskPct(hostIntentResource.getStatus().getResources().getControllerVm().getOplogUsage().getOplogDiskPct())
+                .withOplogDiskSize(hostIntentResource.getStatus().getResources().getControllerVm().getOplogUsage().getOplogDiskSize())
+                .withIpmi(hostIntentResource.getStatus().getResources().getIpmi().getIp())
+                .withHostType(hostIntentResource.getStatus().getResources().getHostType())
+                .withCpuModel(hostIntentResource.getStatus().getResources().getCpuModel())
+                .withNumCpuSockets(hostIntentResource.getStatus().getResources().getNumCpuSockets())
+                .withNumCpuCores(hostIntentResource.getStatus().getResources().getNumCpuCores())
+                .withCpuCapacityHz(hostIntentResource.getStatus().getResources().getCpuCapacityHz())
+                .withSerialNumber(hostIntentResource.getStatus().getResources().getSerialNumber())
+                .withMemoryCapacityMib(hostIntentResource.getStatus().getResources().getMemoryCapacityMib())
+                .withNumVms(hostIntentResource.getStatus().getResources().getHypervisor().getNumVms())
+                .withHypervisorIp(hostIntentResource.getStatus().getResources().getHypervisor().getIp())
+                .withHypervisorFullName(hostIntentResource.getStatus().getResources().getHypervisor().getHypervisorFullName())
+                .withBlockSerialNumber(hostIntentResource.getStatus().getResources().getBlock().getBlockSerialNumber())
+                .withBlockModel(hostIntentResource.getStatus().getResources().getBlock().getBlockModel())
+                .withClusterKind(hostIntentResource.getStatus().getClusterReference().getKind())
+                .withClusterUuid(hostIntentResource.getStatus().getClusterReference().getUuid())
                 .build();
     }
 

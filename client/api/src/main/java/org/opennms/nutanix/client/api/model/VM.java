@@ -6,9 +6,14 @@ import java.util.Objects;
 public class VM {
     //from Status
     public final String name;
-    public final String uuid;
     public final String description;
     public final String state;
+
+    //from metadata
+    public final String uuid;
+    public final String kind;
+    public final Integer specVersion;
+    public final String entityVersion;
 
     //from Status.Cluster
     public final String clusterUuid;
@@ -50,6 +55,9 @@ public class VM {
         this.description=Objects.requireNonNull(builder.description);
         this.disks=Objects.requireNonNull(builder.disks);
         this.nics=Objects.requireNonNull(builder.nics);
+        this.kind=Objects.requireNonNull(builder.kind);
+        this.entityVersion=Objects.requireNonNull(builder.entityVersion);
+        this.specVersion=Objects.requireNonNull(builder.specVersion);
     }
     public static class Builder {
         private String name;
@@ -166,9 +174,28 @@ public class VM {
             return this;
         }
 
+        private String kind;
+        public VM.Builder withKind(final String kind) {
+            this.kind = kind;
+            return this;
+        }
+        private Integer specVersion;
+        public VM.Builder withSpecVersion(final Integer specVersion) {
+            this.specVersion = specVersion;
+            return this;
+        }
+
+        private String entityVersion;
+        public VM.Builder withEntityVersion(final String entityVersion) {
+            this.entityVersion = entityVersion;
+            return this;
+        }
+
         public VM build() {
             return new VM(this);
         }
+
+
 
     }
 
