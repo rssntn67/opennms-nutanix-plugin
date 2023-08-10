@@ -1,34 +1,35 @@
 = Requisitions
 :imagesdir: ../assets/images
 
-In order to monitor the Nutanix clusters, VMs, hosts, and disks, you need to import these entities into OpenNMS.
+In order to monitor the Nutanix clusters, VMs, hosts, and clusters, you need to import these entities into OpenNMS.
 To do so, create a requisition for a given connection alias.
 A connection alias can represent multiple clusters.
 All nodes created by a requisition are assigned to the same location controlled by the `location' parameter, which uses the default location if not specified.
 
 Furthermore, a connection can also be used to import vms entities.
 
-Specify the requisition type `nutanix-vms` to import all vms defined in Nutanix Prism connection:
+Specify the requisition type `nutanix` to import all "powered on" vms defined in Nutanix Prism connection:
 
 ```
-opennms:import-requisition nutanix-vms alias=aAlias location=naples
+opennms:import-requisition nutanix alias=aAlias location=naples
 ```
 
-Specify the requisition type `nutanix-hosts` to import all hosts defined in Nutanix Prism connection:
-
-```
-opennms:import-requisition nutanix-hosts alias=aAlias location=naples
-```
-
-Specify the requisition type `nutanix-clusters` to import all clusters defined in Nutanix Prism connection:
-
-```
-opennms:import-requisition nutanix-clusters alias=aAlias location=naples
-```
 
 You can specify an additional parameter, `foreignSource`, to set the foreign source and requisition name.
 The following example creates a VM requisition named `My-Cluster-VMS-Requisition`.
 
 ```
-opennms:import-requisition nutanix-vms alias=aAlias foreignSource=My-Cluster-VMS-Requisition
+opennms:import-requisition nutanix alias=aAlias foreignSource=My-Cluster-VMS-Requisition
+```
+
+You can specify an additional parameter, `importVms` (default value true), to import or not the powered on vms.
+You can specify an additional parameter, `importHosts` (default value false), to import or not the hosts.
+You can specify an additional parameter, `importClusters` (default value false), to import or not the clusters.
+
+You can specify an additional parameter, `importAllVms` (default value false), to import or not all the vms.
+
+The following example creates a VM requisition named `My-Cluster-VMS-Requisition`.
+
+```
+opennms:import-requisition nutanix alias=aAlias foreignSource=My-Cluster-VMS-Requisition
 ```

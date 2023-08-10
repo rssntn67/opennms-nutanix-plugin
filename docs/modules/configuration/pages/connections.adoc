@@ -2,7 +2,7 @@
 :imagesdir: ../assets/images
 
 First, we have to define the connections the plugin uses to connect to the Nutanix Prism. A connection consists of
-a Nutanix Prism URL, an API key to authenticate against the Prism, and an alias used to reference it. Connections
+a Username/Password with a Nutanix Prism URL to authenticate against the Prism, and an alias used to reference it. Connections
 are saved internally in the Secure Credentials Vault.
 
 You can use REST endpoints and Karaf shell commands to add, validate, and modify connections.
@@ -83,6 +83,66 @@ DETAILS
 ----
 
 [source, console]
+.List Clusters for connection alias.
+----
+admin@opennms()> opennms-nutanix:list-clusters --help
+DESCRIPTION
+opennms-nutanix:list-clusters
+
+	List existing clusters for connection alias
+
+SYNTAX
+opennms-nutanix:list-clusters alias
+
+ARGUMENTS
+        alias
+                Alias
+                (required)
+DETAILS
+List all existing clusters on alias orchestrator
+----
+
+[source, console]
+.List Hosts for connection alias.
+----
+admin@opennms()> opennms-nutanix:list-hosts --help
+DESCRIPTION
+opennms-nutanix:list-hosts
+
+	List existing hosts for connection alias
+
+SYNTAX
+opennms-nutanix:list-hosts alias
+
+ARGUMENTS
+        alias
+                Alias
+                (required)
+DETAILS
+List all existing hosts on alias orchestrator
+----
+
+[source, console]
+.List VMs for connection alias.
+----
+admin@opennms()> opennms-nutanix:list-vms --help
+DESCRIPTION
+opennms-nutanix:list-vms
+
+	List existing Virtual Machines for connection alias
+
+SYNTAX
+opennms-nutanix:list-vms alias
+
+ARGUMENTS
+        alias
+                Alias
+                (required)
+DETAILS
+List all existing vms on alias orchestrator
+----
+
+[source, console]
 .Add a connection.
 ----
 admin@opennms()> opennms-nutanix:connection-add --help
@@ -92,7 +152,7 @@ DESCRIPTION
 	Add a connection
 
 SYNTAX
-        opennms-nutanix:connection-add [options] alias url apiKey
+        opennms-nutanix:connection-add [options] alias url username password
 
 ARGUMENTS
         alias
@@ -101,8 +161,12 @@ ARGUMENTS
         url
                 Prism Url
                 (required)
-        apiKey
-                API Key
+        username
+                username
+                (required)
+
+        password
+                password
                 (required)
 
 OPTIONS
@@ -127,7 +191,7 @@ DESCRIPTION
 	Edit a connection
 
 SYNTAX
-        opennms-nutanix:connection-edit [options] alias url apiKey
+        opennms-nutanix:connection-edit [options] alias url username password
 
 ARGUMENTS
         alias
@@ -136,8 +200,12 @@ ARGUMENTS
         url
                 Prism Url
                 (required)
-        apiKey
-                API Key
+        username
+                username
+                (required)
+
+        password
+                password
                 (required)
 
 OPTIONS
@@ -196,7 +264,7 @@ DETAILS
 
 The following example adds a connection with the alias `theAlias` and assumes that the Nutanix Prism is reachable by the URL `https://my.prism.net:9440/api/nutanix/v3` and the API-key is `tHiSiS.TheAP1Key`.
 ```
-admin@opennms()> opennms-nutanix:connection-add theAlias https://my.prism.net:9440/api/nutanix/v3 tHiSiS.TheAP1Key
+admin@opennms()> opennms-nutanix:connection-add theAlias https://my.prism.net:9440/ TheUsername ThePassword
 ```
 
 NOTE: If the connection you can list the associated VM by invoking `opennms-nutanix:list-vms theAlias`.

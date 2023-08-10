@@ -20,8 +20,11 @@ Syntax: `opennms-nutanix:connection-add alias url apiKey`
 | url
 | Nutanix Prism URL
 
-| apiKey
-| Nutanix Prism API Key
+| username
+| Nutanix Prism Username
+
+| password
+| Nutanix Prism Password
 
 |===
 
@@ -110,7 +113,7 @@ admin@opennms()>
 
 Import the requisition from a given URL.
 
-Syntax: `opennms:import-requisition [options] type [parameters]`
+Syntax: `opennms:import-requisition [options] nutanix [importVms=true] [importHosts=false] [importClusters=false] [importAllVms=false]`
 
 .Arguments
 [options="header, autowidth", cols="2,1"]
@@ -119,14 +122,18 @@ Syntax: `opennms:import-requisition [options] type [parameters]`
 | Argument
 | Description
 
-| type
+| nutanix
 | Type of requisition.
-Use `nutanix-vms` for importing Virtual Machines
-Use `nutanix-hosts` for importing Hosts
-Use `nutanix-clusters` for importing Clusters
+Use `nutanix` for importing Nutanix Virtual Machines, Hosts and Clusters
 
-| parameters
-| Parameters in key=value form
+| importVms
+| `importVms=true` is default value set `importVms=false` to not import Vms
+
+| importHosts
+| set `importHosts=true` to import Hosts
+
+| importClusters
+| set `importClusters=true` to import Clusters  
 
 |===
 
