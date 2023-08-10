@@ -13,7 +13,7 @@ import org.opennms.nutanix.connections.ConnectionManager;
 
 @Command(scope = "opennms-nutanix", name = "list-vms", description = "List Nutanix Cluster VM", detailedDescription = "List all Nutanix Cluster Virtual Machine")
 @Service
-public class ListVMsCommand implements Action {
+public class ListVMCommand implements Action {
 
     @Reference
     private ConnectionManager connectionManager;
