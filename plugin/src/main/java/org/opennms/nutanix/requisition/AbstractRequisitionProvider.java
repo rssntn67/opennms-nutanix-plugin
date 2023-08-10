@@ -103,7 +103,7 @@ public abstract class AbstractRequisitionProvider<Req extends AbstractRequisitio
 
         private String alias;
 
-        private String orchestratorUrl;
+        private String prismUrl;
 
         private String username;
 
@@ -116,7 +116,7 @@ public abstract class AbstractRequisitionProvider<Req extends AbstractRequisitio
 
         public Request(final Connection connection) {
             this.alias = Objects.requireNonNull(connection.getAlias());
-            this.orchestratorUrl = Objects.requireNonNull(connection.getPrismUrl());
+            this.prismUrl = Objects.requireNonNull(connection.getPrismUrl());
             this.username = Objects.requireNonNull(connection.getUsername());
             this.password = Objects.requireNonNull(connection.getPassword());
         }
@@ -135,32 +135,16 @@ public abstract class AbstractRequisitionProvider<Req extends AbstractRequisitio
             return this.alias;
         }
 
-        public void setAlias(final String alias) {
-            this.alias = Objects.requireNonNull(alias);
-        }
-
-        public String getOrchestratorUrl() {
-            return this.orchestratorUrl;
-        }
-
-        public void setOrchestratorUrl(final String orchestratorUrl) {
-            this.orchestratorUrl = orchestratorUrl;
+        public String getPrismUrl() {
+            return this.prismUrl;
         }
 
         public String getUsername() {
             return this.username;
         }
 
-        public void setUsername(final String username) {
-            this.username = username;
-        }
-
         public String getPassword() {
             return this.password;
-        }
-
-        public void setPassword(final String password) {
-            this.password = password;
         }
 
         public String getLocation() {
@@ -181,7 +165,7 @@ public abstract class AbstractRequisitionProvider<Req extends AbstractRequisitio
 
         public NutanixApiClient getClient() throws NutanixApiException {
             return AbstractRequisitionProvider.this.clientManager.getClient(NutanixApiClientCredentials.builder()
-                    .withPrismUrl(this.request.getOrchestratorUrl())
+                    .withPrismUrl(this.request.getPrismUrl())
                     .withUsername(this.request.getUsername())
                     .withPassword(this.request.getPassword()).build());
         }

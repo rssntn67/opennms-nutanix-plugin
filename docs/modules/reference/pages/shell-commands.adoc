@@ -113,7 +113,7 @@ admin@opennms()>
 
 Import the requisition from a given URL.
 
-Syntax: `opennms:import-requisition [options] nutanix [importVms=true] [importHosts=false] [importClusters=false] [importAllVms=false]`
+Syntax: `opennms:import-requisition [options] nutanix alias=aAlias [foreignSource=AForS] [location=ALoc] [importVms=true] [importHosts=false] [importClusters=false] [importAllVms=false]`
 
 .Arguments
 [options="header, autowidth", cols="2,1"]
@@ -126,6 +126,13 @@ Syntax: `opennms:import-requisition [options] nutanix [importVms=true] [importHo
 | Type of requisition.
 Use `nutanix` for importing Nutanix Virtual Machines, Hosts and Clusters
 
+
+| foreignSource
+| the foreign source where to store nodes, not required. Defaults to nutanix-\{alias\}
+
+| location
+| the monitoring location, not required. Defaults to default location
+
 | importVms
 | `importVms=true` is default value set `importVms=false` to not import Vms
 
@@ -133,7 +140,7 @@ Use `nutanix` for importing Nutanix Virtual Machines, Hosts and Clusters
 | set `importHosts=true` to import Hosts
 
 | importClusters
-| set `importClusters=true` to import Clusters  
+| set `importClusters=true` to import Clusters
 
 |===
 
