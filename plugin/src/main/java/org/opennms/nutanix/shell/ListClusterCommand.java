@@ -11,9 +11,9 @@ import org.apache.karaf.shell.support.table.Col;
 import org.apache.karaf.shell.support.table.ShellTable;
 import org.opennms.nutanix.connections.ConnectionManager;
 
-@Command(scope = "opennms-nutanix", name = "list-hosts", description = "List Nutanix Cluster Hosts", detailedDescription = "List all Nutanix Cluster hosts")
+@Command(scope = "opennms-nutanix", name = "list-clusters", description = "List Nutanix Clusters", detailedDescription = "List all Nutanix Clusters")
 @Service
-public class ListHostsCommand implements Action {
+public class ListClusterCommand implements Action {
 
     @Reference
     private ConnectionManager connectionManager;
@@ -35,13 +35,13 @@ public class ListHostsCommand implements Action {
 
         final var table = new ShellTable()
                 .size(session.getTerminal().getWidth() - 1)
-                .column(new Col("ID").maxSize(24).bold(true))
+                .column(new Col("Cluster UIID").maxSize(24).bold(true))
                 .column(new Col("Name").maxSize(24));
 
-        for (final var host : client.get().getHosts()) {
+        for (final var vm : client.get().getClusters()) {
             final var row = table.addRow();
-            row.addContent(host.uuid);
-            row.addContent(host.name);
+            row.addContent(vm.uuid);
+            row.addContent(vm.name);
         }
 
         table.print(System.out, true);
