@@ -12,12 +12,7 @@ import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.ApiVersion;
 
 public class NutanixV1ApiClientProvider implements NutanixApiClientProvider {
-    private final boolean ignoreSslCertificateValidation;
-    private final int length;
-
-    public NutanixV1ApiClientProvider(boolean ignoreSslCertificateValidation, int length) {
-        this.ignoreSslCertificateValidation=ignoreSslCertificateValidation;
-        this.length=length;
+    public NutanixV1ApiClientProvider() {
     }
 
     private ApiClientExtention getClient(NutanixApiClientCredentials credentials) {
@@ -27,8 +22,8 @@ public class NutanixV1ApiClientProvider implements NutanixApiClientProvider {
         byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
         String authHeader = "Basic " + new String(encodedAuth);
         apiClient.addDefaultHeader(HttpHeaders.AUTHORIZATION, authHeader);
-        apiClient.setIgnoreSslCertificateValidation(ignoreSslCertificateValidation);
-        apiClient.setLength(length);
+        apiClient.setIgnoreSslCertificateValidation(credentials.ignoreSslCertificateValidation);
+        apiClient.setLength(credentials.length);
         return apiClient;
     }
 

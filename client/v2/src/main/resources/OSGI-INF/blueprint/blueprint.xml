@@ -2,23 +2,6 @@
            xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
-    <cm:property-placeholder id="nutanixProperties" persistent-id="org.opennms.nutanix" update-strategy="reload">
-        <cm:default-properties>
-
-            <!-- Ignore if Prism SSL certificate is to be trusted -->
-            <cm:property name="nutanix.ignore.certificate.validation" value="true"/>
-
-            <!-- Number of objects retrieved for Prism API bulk request -->
-            <cm:property name="nutanix.client.length" value="20"/>
-
-
-        </cm:default-properties>
-    </cm:property-placeholder>
-
-    <bean id="nutanixApiClientV2Provider" class="org.opennms.nutanix.client.v2.NutanixV2ApiClientProvider">
-        <argument value="${nutanix.ignore.certificate.validation}"/>
-        <argument value="${nutanix.client.length}"/>
-    </bean>
-
+    <bean id="nutanixApiClientV2Provider" class="org.opennms.nutanix.client.v2.NutanixV2ApiClientProvider"/>
     <service ref="nutanixApiClientV2Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider"/>
 </blueprint>

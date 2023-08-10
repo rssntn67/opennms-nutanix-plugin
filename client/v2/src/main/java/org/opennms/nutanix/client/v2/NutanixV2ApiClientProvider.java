@@ -17,15 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class NutanixV2ApiClientProvider implements NutanixApiClientProvider {
-    private final boolean ignoreSslCertificateValidation;
-
-    private int length = 20;
 
     private static final Logger LOG = LoggerFactory.getLogger(NutanixV2ApiClientProvider.class);
 
-    public NutanixV2ApiClientProvider(boolean ignoreSslCertificateValidation, int lenght) {
-        this.ignoreSslCertificateValidation=ignoreSslCertificateValidation;
-        this.length = lenght;
+    public NutanixV2ApiClientProvider() {
     }
 
     private ApiClientExtention getClient(NutanixApiClientCredentials credentials) {
@@ -35,8 +30,8 @@ public class NutanixV2ApiClientProvider implements NutanixApiClientProvider {
         byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
         String authHeader = "Basic " + new String(encodedAuth);
         apiClient.addDefaultHeader(HttpHeaders.AUTHORIZATION, authHeader);
-        apiClient.setIgnoreSslCertificateValidation(ignoreSslCertificateValidation);
-        apiClient.setLength(20);
+        apiClient.setIgnoreSslCertificateValidation(credentials.ignoreSslCertificateValidation);
+        apiClient.setLength(credentials.length);
         return apiClient;
     }
 
