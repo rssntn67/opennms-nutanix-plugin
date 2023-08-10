@@ -1,5 +1,6 @@
 package org.opennms.nutanix.collection;
 
+import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_IGNORE_SSL_VALIDATION;
 import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_PASSWORD;
 import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_PRISM_URL;
 import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_USERNAME;
@@ -90,6 +91,7 @@ public abstract class AbstractNutanixServiceCollector implements NutanixApiServi
                 .withUsername(attributes.get(ATTR_USERNAME).toString())
                 .withPassword(attributes.get(ATTR_PASSWORD).toString())
                 .withPrismUrl(attributes.get(ATTR_PRISM_URL).toString())
+                .withIgnoreSslCertificateValidation(Boolean.parseBoolean(attributes.get(ATTR_IGNORE_SSL_VALIDATION).toString()))
                 .build();
     }
 

@@ -1,6 +1,7 @@
 package org.opennms.nutanix.collection;
 
 import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_ALIAS;
+import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_IGNORE_SSL_VALIDATION;
 import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_PASSWORD;
 import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_PRISM_URL;
 import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_USERNAME;
@@ -36,6 +37,7 @@ abstract public class AbstractNutanixCollectorFactory<T extends AbstractNutanixS
         runtimeAttributes.put(ATTR_PRISM_URL, connection.getPrismUrl());
         runtimeAttributes.put(ATTR_USERNAME, connection.getUsername());
         runtimeAttributes.put(ATTR_PASSWORD, connection.getPassword());
+        runtimeAttributes.put(ATTR_IGNORE_SSL_VALIDATION, String.valueOf(connection.isIgnoreSslCertificateValidation()));
         return runtimeAttributes;
     }
 

@@ -6,6 +6,9 @@ import java.util.Optional;
 
 public interface Connection {
 
+    boolean isIgnoreSslCertificateValidation();
+
+    void setIgnoreSslCertificateValidation(boolean ignoreSslCertificateValidation);
     /**
      * Returns the alias of the connection.
      * The alias is a unique identifier representing a connection configuration.

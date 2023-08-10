@@ -21,16 +21,20 @@ public class AddConnectionCommand implements Action {
     @Option(name="-f", aliases="--force", description="Skip validation and save the connection as-is")
     public boolean skipValidation = false;
 
+    @Option(name = "-i", aliases = "--ignore-ssl-certificate-validation", description = "Ignore ssl certificate validation")
+    boolean ignoreSslCertificateValidation = false;
+
+
     @Argument(name = "alias", description = "Alias", required = true)
     public String alias = null;
 
     @Argument(index = 1, name = "url", description = "Nutanix Prism Url", required = true)
     public String url = null;
 
-    @Argument(index = 2, name = "username", description = "Nutanix Prism API username", required = true, censor = true)
+    @Argument(index = 2, name = "username", description = "Nutanix Prism API username", required = true)
     public String username = null;
 
-    @Argument(index = 3, name = "password", description = "Nutanix Prism API password", required = true, censor = true)
+    @Argument(index = 3, name = "password", description = "Nutanix Prism API password", required = true)
     public String password = null;
 
 
@@ -46,7 +50,8 @@ public class AddConnectionCommand implements Action {
                                 this.alias,
                                 this.url,
                                 this.username,
-                                this.password
+                                this.password,
+                        this.ignoreSslCertificateValidation
         );
 
         if (!this.skipValidation) {

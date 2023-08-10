@@ -178,9 +178,18 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
 
         private String password;
 
+        private boolean ignoreSslCertificateValidation;
         private String location;
 
         public Request() {
+        }
+
+        public boolean isIgnoreSslCertificateValidation() {
+            return ignoreSslCertificateValidation;
+        }
+
+        public void setIgnoreSslCertificateValidation(boolean ignoreSslCertificateValidation) {
+            this.ignoreSslCertificateValidation = ignoreSslCertificateValidation;
         }
 
         public Request(final Connection connection) {
@@ -188,6 +197,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
             this.prismUrl = Objects.requireNonNull(connection.getPrismUrl());
             this.username = Objects.requireNonNull(connection.getUsername());
             this.password = Objects.requireNonNull(connection.getPassword());
+            this.ignoreSslCertificateValidation = connection.isIgnoreSslCertificateValidation();
         }
 
 
@@ -255,7 +265,9 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
             return clientManager.getClient(NutanixApiClientCredentials.builder()
                     .withPrismUrl(this.request.getPrismUrl())
                     .withUsername(this.request.getUsername())
-                    .withPassword(this.request.getPassword()).build());
+                    .withPassword(this.request.getPassword())
+                    .withIgnoreSslCertificateValidation(this.request.ignoreSslCertificateValidation)
+                    .build());
         }
 
         public Request getRequest() {

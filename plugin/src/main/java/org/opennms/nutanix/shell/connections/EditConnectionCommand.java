@@ -18,6 +18,9 @@ public class EditConnectionCommand implements Action {
     @Option(name="-f", aliases="--force", description="Skip validation and save the connection as-is")
     public boolean skipValidation = false;
 
+    @Option(name = "-i", aliases = "--ignore-ssl-certificate-validation", description = "Ignore ssl certificate validation")
+    boolean ignoreSslCertificateValidation = false;
+
     @Argument(name = "alias", description = "Alias", required = true)
     public String alias = null;
 
@@ -42,6 +45,7 @@ public class EditConnectionCommand implements Action {
         connection.get().setPrismUrl(url);
         connection.get().setUsername(username);
         connection.get().setPassword(password);
+        connection.get().setIgnoreSslCertificateValidation(ignoreSslCertificateValidation);
 
         if (!this.skipValidation) {
             final var error = connection.get().validate();

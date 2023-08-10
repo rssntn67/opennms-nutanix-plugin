@@ -24,6 +24,7 @@ public class ConnectionManager {
 
     private static final String PREFIX = "nutanix_connection_";
     private static final String PRISM_URL_KEY = "prismUrl";
+    private static final String IGNORE_SSH_CERT_VALIDATION_KEY = "ignoreSslCertificateValidation";
 
     private final RuntimeInfo runtimeInfo;
 
@@ -77,14 +78,16 @@ public class ConnectionManager {
      * @param prismUrl        the URL of the prism server
      * @param username          the username to authenticate the connection
      * @param password          the password to authenticate the connection
+     * @param ignoreSslCerticateValidation          ignore Ssl Certificate Validation
      */
-    public Connection newConnection(final String alias, final String prismUrl, final String username, final String password) {
+    public Connection newConnection(final String alias, final String prismUrl, final String username, final String password, final boolean ignoreSslCerticateValidation) {
         this.ensureCore();
 
         return new ConnectionImpl(alias, NutanixApiClientCredentials.builder()
                 .withPrismUrl(prismUrl)
                 .withUsername(username)
                 .withPassword(password)
+                .withIgnoreSslCertificateValidation(ignoreSslCerticateValidation)
                 .build());
     }
 
@@ -119,9 +122,11 @@ public class ConnectionManager {
 
 
     private static NutanixApiClientCredentials asNutanixCredentials(Connection connection) {
-        return NutanixApiClientCredentials.builder().withUsername(connection.getUsername())
+        return NutanixApiClientCredentials.builder()
+                .withUsername(connection.getUsername())
                 .withPassword(connection.getPassword())
                 .withPrismUrl(connection.getPrismUrl())
+                .withIgnoreSslCertificateValidation(connection.isIgnoreSslCertificateValidation())
                 .build();
     }
 
@@ -129,22 +134,31 @@ public class ConnectionManager {
 
 
         if (Strings.isNullOrEmpty(credentials.getPassword())) {
-            throw new IllegalStateException("API key (password) is missing");
+            throw new IllegalStateException("API password is missing");
         }
-        final var password = credentials.getPassword();
+        if (Strings.isNullOrEmpty(credentials.getUsername())) {
+            throw new IllegalStateException("API username is missing");
+        }
 
         if (Strings.isNullOrEmpty(credentials.getAttribute(PRISM_URL_KEY))) {
             throw new IllegalStateException("Prism URL is missing");
         }
 
+        if (Strings.isNullOrEmpty(credentials.getAttribute(IGNORE_SSH_CERT_VALIDATION_KEY))) {
+            throw new IllegalStateException("IGnore  SSH CEERTIFICATION Validation is missing");
+        }
+
         final var prismUrl = credentials.getAttribute(PRISM_URL_KEY);
 
         final var username = credentials.getUsername();
+        final var password = credentials.getPassword();
+        final var ignoreSslCertificateValidation = Boolean.parseBoolean(credentials.getAttribute(IGNORE_SSH_CERT_VALIDATION_KEY));
 
         return NutanixApiClientCredentials.builder()
                 .withPrismUrl(prismUrl)
                 .withUsername(username)
                 .withPassword(password)
+                .withIgnoreSslCertificateValidation(ignoreSslCertificateValidation)
                 .build();
         }
 
@@ -160,6 +174,18 @@ public class ConnectionManager {
         }
 
         @Override
+        public boolean isIgnoreSslCertificateValidation() {
+            return this.credentials.ignoreSslCertificateValidation;
+        }
+
+        @Override
+        public void setIgnoreSslCertificateValidation(boolean ignoreSslCertificateValidation) {
+            this.credentials = NutanixApiClientCredentials.builder(this.credentials)
+                    .withIgnoreSslCertificateValidation(ignoreSslCertificateValidation)
+                    .build();
+        }
+
+        @Override
         public String getAlias() {
             return this.alias;
         }
@@ -171,7 +197,7 @@ public class ConnectionManager {
 
         @Override
         public void setPrismUrl(final String url) {
-            this.credentials = NutanixApiClientCredentials.builder(this.credentials)
+            this.credentials = NutanixApiClientCredentials.builder()
                                                             .withPrismUrl(url)
                                                             .build();
         }

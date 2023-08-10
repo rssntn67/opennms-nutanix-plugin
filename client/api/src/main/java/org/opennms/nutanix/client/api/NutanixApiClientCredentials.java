@@ -16,17 +16,23 @@ public class NutanixApiClientCredentials {
     /**
      * The username used to authenticate the connection to the PRISM ELEMENT.
      */
-    public String username;
+    public final String username;
 
     /**
      * The password used to authenticate the connection to the PRISM ELEMENT.
      */
-    public String password;
+    public final String password;
+
+    /**
+     * Wheter to check SSL Certificate
+     */
+    public final Boolean ignoreSslCertificateValidation;
 
     private NutanixApiClientCredentials(final Builder builder) {
         this.prismUrl = Objects.requireNonNull(builder.prismUrl);
         this.username = builder.username;
         this.password = builder.password;
+        this.ignoreSslCertificateValidation = builder.ignoreSslCertificateValidation;
     }
 
     public static class Builder {
@@ -34,14 +40,10 @@ public class NutanixApiClientCredentials {
         private String username;
         private String password;
 
+        private Boolean ignoreSslCertificateValidation;
+
 
         private Builder() {
-        }
-
-        private Builder(final NutanixApiClientCredentials credentials) {
-            this.prismUrl = credentials.prismUrl;
-            this.username = credentials.username;
-            this.password = credentials.password;
         }
 
         public Builder withPrismUrl(final String orchestratorUrl) {
@@ -60,6 +62,11 @@ public class NutanixApiClientCredentials {
             return this;
         }
 
+        public Builder withIgnoreSslCertificateValidation(final Boolean ignoreSslCertificateValidation) {
+            this.ignoreSslCertificateValidation = ignoreSslCertificateValidation;
+            return this;
+        }
+
         public NutanixApiClientCredentials build() {
             return new NutanixApiClientCredentials(this);
         }
@@ -69,16 +76,22 @@ public class NutanixApiClientCredentials {
         return new Builder();
     }
 
-    public static Builder builder(final NutanixApiClientCredentials credentials) {
-        return new Builder(credentials);
+    public static Builder builder(NutanixApiClientCredentials credentials) {
+        return builder()
+                .withPrismUrl(credentials.prismUrl)
+                .withUsername(credentials.username)
+                .withPassword(credentials.password)
+                .withIgnoreSslCertificateValidation(credentials.ignoreSslCertificateValidation);
+
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("orchestratorUrl", this.prismUrl)
+                .add("prismUrl", this.prismUrl)
                 .add("username", this.username)
                 .add("password", this.password)
+                .add("ignoreSslCertificateValidation", this.ignoreSslCertificateValidation)
                 .toString();
     }
 
@@ -93,14 +106,15 @@ public class NutanixApiClientCredentials {
         final NutanixApiClientCredentials that = (NutanixApiClientCredentials) o;
         return Objects.equals(this.prismUrl, that.prismUrl) &&
                 Objects.equals(this.username, that.username) &&
-                Objects.equals(this.password, that.password);
+                Objects.equals(this.password, that.password) &&
+                Objects.equals(this.ignoreSslCertificateValidation, that.ignoreSslCertificateValidation);
 
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(this.prismUrl,
-                 this.username, this.password);
+                 this.username, this.password, this.ignoreSslCertificateValidation);
     }
 
 }

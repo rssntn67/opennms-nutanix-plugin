@@ -30,6 +30,8 @@ public abstract class AbstractStatusPoller implements ServicePoller {
     public static final String ATTR_USERNAME = "username";
     public static final String ATTR_PASSWORD = "password";
 
+    public static final String ATTR_IGNORE_SSL_VALIDATION = "ignoreSslCertificateValidation";
+
     private final ClientManager clientManager;
 
     protected AbstractStatusPoller(final ClientManager clientManager) {
@@ -90,10 +92,12 @@ public abstract class AbstractStatusPoller implements ServicePoller {
             final var connection = this.connectionManager.getConnection(alias)
                                                          .orElseThrow(() -> new NullPointerException("Connection not found for alias: " + alias));
 
-            final var attrs = ImmutableMap.<String, String>builder();
+            final var attrs = ImmutableMap.<String,String>builder();
             attrs.put(ATTR_PRISM_URL, connection.getPrismUrl());
             attrs.put(ATTR_USERNAME, connection.getUsername());
             attrs.put(ATTR_PASSWORD, connection.getPassword());
+            attrs.put(ATTR_IGNORE_SSL_VALIDATION, String.valueOf(connection.isIgnoreSslCertificateValidation()));
+
             return attrs.build();
         }
     }
@@ -114,10 +118,14 @@ public abstract class AbstractStatusPoller implements ServicePoller {
             final var password = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_PASSWORD),
                     "Missing attribute: " + ATTR_PASSWORD);
 
+            final var ignoreSslCertificateValidation = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_IGNORE_SSL_VALIDATION),
+                    "Missing attribute: " + ATTR_IGNORE_SSL_VALIDATION);
+
             return NutanixApiClientCredentials.builder()
                                                 .withPrismUrl(prismUrl)
                                                 .withUsername(username)
                                                 .withPassword(password)
+                                                .withIgnoreSslCertificateValidation(Boolean.parseBoolean(ignoreSslCertificateValidation))
                                                 .build();
         }
 
