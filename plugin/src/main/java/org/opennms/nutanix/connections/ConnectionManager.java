@@ -26,6 +26,7 @@ public class ConnectionManager {
     private static final String PRISM_URL_KEY = "prismUrl";
     private static final String IGNORE_SSH_CERT_VALIDATION_KEY = "ignoreSslCertificateValidation";
 
+    private static final String LENGTH_KEY="length";
     private final RuntimeInfo runtimeInfo;
 
     private final SecureCredentialsVault vault;
@@ -79,8 +80,9 @@ public class ConnectionManager {
      * @param username          the username to authenticate the connection
      * @param password          the password to authenticate the connection
      * @param ignoreSslCerticateValidation          ignore Ssl Certificate Validation
+     * @param length         number of object retrieved by the api client
      */
-    public Connection newConnection(final String alias, final String prismUrl, final String username, final String password, final boolean ignoreSslCerticateValidation) {
+    public Connection newConnection(final String alias, final String prismUrl, final String username, final String password, final boolean ignoreSslCerticateValidation, final int length) {
         this.ensureCore();
 
         return new ConnectionImpl(alias, NutanixApiClientCredentials.builder()
@@ -88,6 +90,7 @@ public class ConnectionManager {
                 .withUsername(username)
                 .withPassword(password)
                 .withIgnoreSslCertificateValidation(ignoreSslCerticateValidation)
+                .withLength(length)
                 .build());
     }
 
@@ -127,6 +130,7 @@ public class ConnectionManager {
                 .withPassword(connection.getPassword())
                 .withPrismUrl(connection.getPrismUrl())
                 .withIgnoreSslCertificateValidation(connection.isIgnoreSslCertificateValidation())
+                .withLength(connection.getLength())
                 .build();
     }
 
@@ -145,7 +149,11 @@ public class ConnectionManager {
         }
 
         if (Strings.isNullOrEmpty(credentials.getAttribute(IGNORE_SSH_CERT_VALIDATION_KEY))) {
-            throw new IllegalStateException("IGnore  SSH CEERTIFICATION Validation is missing");
+            throw new IllegalStateException("Ignore  SSH CEERTIFICATION Validation is missing");
+        }
+
+        if (Strings.isNullOrEmpty(credentials.getAttribute(LENGTH_KEY))) {
+            throw new IllegalStateException("Length key is missing");
         }
 
         final var prismUrl = credentials.getAttribute(PRISM_URL_KEY);
@@ -153,12 +161,14 @@ public class ConnectionManager {
         final var username = credentials.getUsername();
         final var password = credentials.getPassword();
         final var ignoreSslCertificateValidation = Boolean.parseBoolean(credentials.getAttribute(IGNORE_SSH_CERT_VALIDATION_KEY));
+        final var length = Integer.parseInt(credentials.getAttribute(LENGTH_KEY));
 
         return NutanixApiClientCredentials.builder()
                 .withPrismUrl(prismUrl)
                 .withUsername(username)
                 .withPassword(password)
                 .withIgnoreSslCertificateValidation(ignoreSslCertificateValidation)
+                .withLength(length)
                 .build();
         }
 
@@ -171,6 +181,16 @@ public class ConnectionManager {
         private ConnectionImpl(final String alias, final NutanixApiClientCredentials credentials) {
             this.alias = Objects.requireNonNull(alias).toLowerCase();
             this.credentials = Objects.requireNonNull(credentials);
+        }
+
+        @Override
+        public int getLength() {
+            return this.credentials.length;
+        }
+
+        @Override
+        public void setLength(int length) {
+            this.credentials = NutanixApiClientCredentials.builder(this.credentials).withLength(length).build();
         }
 
         @Override

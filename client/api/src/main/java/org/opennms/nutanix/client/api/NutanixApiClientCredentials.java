@@ -28,11 +28,14 @@ public class NutanixApiClientCredentials {
      */
     public final Boolean ignoreSslCertificateValidation;
 
+    public final Integer length;
+
     private NutanixApiClientCredentials(final Builder builder) {
         this.prismUrl = Objects.requireNonNull(builder.prismUrl);
         this.username = builder.username;
         this.password = builder.password;
         this.ignoreSslCertificateValidation = builder.ignoreSslCertificateValidation;
+        this.length = builder.length;
     }
 
     public static class Builder {
@@ -40,8 +43,9 @@ public class NutanixApiClientCredentials {
         private String username;
         private String password;
 
-        private Boolean ignoreSslCertificateValidation;
+        private boolean ignoreSslCertificateValidation = false;
 
+        private int length = 20;
 
         private Builder() {
         }
@@ -67,6 +71,11 @@ public class NutanixApiClientCredentials {
             return this;
         }
 
+        public Builder withLength(final int length){
+            this.length=length;
+            return this;
+        }
+
         public NutanixApiClientCredentials build() {
             return new NutanixApiClientCredentials(this);
         }
@@ -81,7 +90,8 @@ public class NutanixApiClientCredentials {
                 .withPrismUrl(credentials.prismUrl)
                 .withUsername(credentials.username)
                 .withPassword(credentials.password)
-                .withIgnoreSslCertificateValidation(credentials.ignoreSslCertificateValidation);
+                .withIgnoreSslCertificateValidation(credentials.ignoreSslCertificateValidation)
+                .withLength(credentials.length);
 
     }
 

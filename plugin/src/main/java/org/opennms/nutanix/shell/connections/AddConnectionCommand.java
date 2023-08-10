@@ -37,6 +37,9 @@ public class AddConnectionCommand implements Action {
     @Argument(index = 3, name = "password", description = "Nutanix Prism API password", required = true)
     public String password = null;
 
+    @Argument(index = 4, name = "length", description = "Nutanix Prism API object retrivial length defaults to 20")
+    public int length = 20;
+
 
     @Override
     public Object execute() {
@@ -51,7 +54,8 @@ public class AddConnectionCommand implements Action {
                                 this.url,
                                 this.username,
                                 this.password,
-                        this.ignoreSslCertificateValidation
+                        this.ignoreSslCertificateValidation,
+                        this.length
         );
 
         if (!this.skipValidation) {

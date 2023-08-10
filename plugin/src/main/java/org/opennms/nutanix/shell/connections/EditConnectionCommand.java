@@ -33,6 +33,9 @@ public class EditConnectionCommand implements Action {
     @Argument(index = 3, name = "password", description = "Nutanix Prism API password", required = true, censor = true)
     public String password = null;
 
+    @Argument(index = 4, name = "length", description = "Nutanix Prism API object retrivial length defaults to 20")
+    public int length = 20;
+
     @Override
     public Object execute() throws Exception {
         final var connection = this.connectionManager.getConnection(this.alias);
@@ -46,6 +49,7 @@ public class EditConnectionCommand implements Action {
         connection.get().setUsername(username);
         connection.get().setPassword(password);
         connection.get().setIgnoreSslCertificateValidation(ignoreSslCertificateValidation);
+        connection.get().setLength(length);
 
         if (!this.skipValidation) {
             final var error = connection.get().validate();

@@ -32,6 +32,8 @@ public abstract class AbstractStatusPoller implements ServicePoller {
 
     public static final String ATTR_IGNORE_SSL_VALIDATION = "ignoreSslCertificateValidation";
 
+    public static final String ATTR_LENGTH = "length";
+
     private final ClientManager clientManager;
 
     protected AbstractStatusPoller(final ClientManager clientManager) {
@@ -97,6 +99,7 @@ public abstract class AbstractStatusPoller implements ServicePoller {
             attrs.put(ATTR_USERNAME, connection.getUsername());
             attrs.put(ATTR_PASSWORD, connection.getPassword());
             attrs.put(ATTR_IGNORE_SSL_VALIDATION, String.valueOf(connection.isIgnoreSslCertificateValidation()));
+            attrs.put(ATTR_LENGTH, String.valueOf(connection.getLength()));
 
             return attrs.build();
         }
@@ -121,11 +124,15 @@ public abstract class AbstractStatusPoller implements ServicePoller {
             final var ignoreSslCertificateValidation = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_IGNORE_SSL_VALIDATION),
                     "Missing attribute: " + ATTR_IGNORE_SSL_VALIDATION);
 
+            final var length = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_LENGTH),
+                    "Missing attribute: " + ATTR_LENGTH);
+
             return NutanixApiClientCredentials.builder()
                                                 .withPrismUrl(prismUrl)
                                                 .withUsername(username)
                                                 .withPassword(password)
                                                 .withIgnoreSslCertificateValidation(Boolean.parseBoolean(ignoreSslCertificateValidation))
+                                                .withLength(Integer.parseInt(length))
                                                 .build();
         }
 

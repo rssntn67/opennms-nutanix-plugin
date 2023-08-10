@@ -11,12 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class NutanixV3ApiClientProvider implements NutanixApiClientProvider {
-    private final int length;
-
     private static final Logger LOG = LoggerFactory.getLogger(NutanixV3ApiClientProvider.class);
 
-    public NutanixV3ApiClientProvider(int length) {
-        this.length=length;
+    public NutanixV3ApiClientProvider() {
     }
 
     private ApiClientExtention getClient(NutanixApiClientCredentials credentials) {
@@ -25,7 +22,7 @@ public class NutanixV3ApiClientProvider implements NutanixApiClientProvider {
         apiClient.setUsername(credentials.username);
         apiClient.setPassword(credentials.password);
         apiClient.setIgnoreSslCertificateValidation(credentials.ignoreSslCertificateValidation);
-        apiClient.setLength(length);
+        apiClient.setLength(credentials.length);
         return apiClient;
     }
     @Override

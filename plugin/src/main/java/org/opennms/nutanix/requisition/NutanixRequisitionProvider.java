@@ -181,15 +181,9 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
         private boolean ignoreSslCertificateValidation;
         private String location;
 
+        private int length;
+
         public Request() {
-        }
-
-        public boolean isIgnoreSslCertificateValidation() {
-            return ignoreSslCertificateValidation;
-        }
-
-        public void setIgnoreSslCertificateValidation(boolean ignoreSslCertificateValidation) {
-            this.ignoreSslCertificateValidation = ignoreSslCertificateValidation;
         }
 
         public Request(final Connection connection) {
@@ -198,6 +192,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
             this.username = Objects.requireNonNull(connection.getUsername());
             this.password = Objects.requireNonNull(connection.getPassword());
             this.ignoreSslCertificateValidation = connection.isIgnoreSslCertificateValidation();
+            this.length = connection.getLength();
         }
 
 
@@ -267,6 +262,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                     .withUsername(this.request.getUsername())
                     .withPassword(this.request.getPassword())
                     .withIgnoreSslCertificateValidation(this.request.ignoreSslCertificateValidation)
+                    .withLength(this.request.length)
                     .build());
         }
 

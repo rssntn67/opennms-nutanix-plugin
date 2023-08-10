@@ -6,6 +6,10 @@ import java.util.Optional;
 
 public interface Connection {
 
+    int getLength();
+
+    void setLength(int lenght);
+
     boolean isIgnoreSslCertificateValidation();
 
     void setIgnoreSslCertificateValidation(boolean ignoreSslCertificateValidation);

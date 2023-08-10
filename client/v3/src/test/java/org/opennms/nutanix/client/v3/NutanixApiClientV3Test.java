@@ -156,12 +156,13 @@ public class NutanixApiClientV3Test {
 
     @Test
     public void testValidate() {
-        NutanixV3ApiClientProvider provider = new NutanixV3ApiClientProvider( 20);
+        NutanixV3ApiClientProvider provider = new NutanixV3ApiClientProvider();
         NutanixApiClientCredentials credentials = NutanixApiClientCredentials.builder()
                 .withUsername(System.getenv("NTX_USER"))
                 .withPassword(System.getenv("NTX_PASS"))
                 .withPrismUrl("https://nutanix.arsinfo.it:9440/")
                 .withIgnoreSslCertificateValidation(true)
+                .withLength(20)
                 .build();
         Assert.assertTrue(provider.validate(credentials));
 
