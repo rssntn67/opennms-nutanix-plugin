@@ -6,7 +6,7 @@
         <cm:default-properties>
 
             <!-- Ignore if Prism SSL certificate is to be trusted -->
-            <cm:property name="nutanix.ignore.certificate.validation" value="false"/>
+            <cm:property name="nutanix.ignore.certificate.validation" value="true"/>
 
             <!-- Number of objects retrieved for Prism API bulk request -->
             <cm:property name="nutanix.client.length" value="20"/>
@@ -15,7 +15,7 @@
         </cm:default-properties>
     </cm:property-placeholder>
 
-    <bean id="clientProvider" class="org.opennms.nutanix.client.v1.NutanixV1ApiClientProvider">
+    <bean id="nutanixApiClientV1Provider" class="org.opennms.nutanix.client.v1.NutanixV1ApiClientProvider">
         <argument value="${nutanix.ignore.certificate.validation}"/>
         <argument value="${nutanix.client.length}"/>
     </bean>
