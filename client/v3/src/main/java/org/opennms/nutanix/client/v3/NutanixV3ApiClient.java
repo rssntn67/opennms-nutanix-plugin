@@ -2,16 +2,23 @@ package org.opennms.nutanix.client.v3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.opennms.nutanix.client.api.NutanixApiClient;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Alert;
 import org.opennms.nutanix.client.api.model.Cluster;
-import org.opennms.nutanix.client.api.model.Disk;
+import org.opennms.nutanix.client.api.model.ClusterBuildInfo;
+import org.opennms.nutanix.client.api.model.ClusterHttpProxy;
+import org.opennms.nutanix.client.api.model.ClusterHttpWhiteProxy;
+import org.opennms.nutanix.client.api.model.ClusterSmtpServer;
+import org.opennms.nutanix.client.api.model.ClusterSoftware;
+import org.opennms.nutanix.client.api.model.VMDisk;
 import org.opennms.nutanix.client.api.model.Host;
+import org.opennms.nutanix.client.api.model.ClusterHypervisor;
 import org.opennms.nutanix.client.api.model.MetricsCluster;
-import org.opennms.nutanix.client.api.model.Nic;
+import org.opennms.nutanix.client.api.model.VMNic;
 import org.opennms.nutanix.client.api.model.VM;
 import org.opennms.nutanix.client.v3.api.AlertsApi;
 import org.opennms.nutanix.client.v3.api.ClustersApi;
@@ -21,15 +28,20 @@ import org.opennms.nutanix.client.v3.handler.ApiException;
 import org.opennms.nutanix.client.v3.model.AlertIntentResource;
 import org.opennms.nutanix.client.v3.model.AlertListIntentResponse;
 import org.opennms.nutanix.client.v3.model.AlertListMetadata;
+import org.opennms.nutanix.client.v3.model.BuildInfo;
 import org.opennms.nutanix.client.v3.model.ClusterIntentResource;
 import org.opennms.nutanix.client.v3.model.ClusterIntentResponse;
 import org.opennms.nutanix.client.v3.model.ClusterListIntentResponse;
 import org.opennms.nutanix.client.v3.model.ClusterListMetadata;
+import org.opennms.nutanix.client.v3.model.ClusterNetworkEntity;
+import org.opennms.nutanix.client.v3.model.ClusterNodes;
 import org.opennms.nutanix.client.v3.model.HostIntentResource;
 import org.opennms.nutanix.client.v3.model.HostIntentResponse;
 import org.opennms.nutanix.client.v3.model.HostListIntentResponse;
 import org.opennms.nutanix.client.v3.model.HostListMetadata;
+import org.opennms.nutanix.client.v3.model.HttpProxyWhitelist;
 import org.opennms.nutanix.client.v3.model.IpAddress;
+import org.opennms.nutanix.client.v3.model.SmtpServer;
 import org.opennms.nutanix.client.v3.model.VmDiskOutputStatus;
 import org.opennms.nutanix.client.v3.model.VmIntentResource;
 import org.opennms.nutanix.client.v3.model.VmIntentResponse;
@@ -95,14 +107,14 @@ public class NutanixV3ApiClient implements NutanixApiClient {
                 .withMachineType(vmIntentResponse.getStatus().getResources().getMachineType())
                 .withHypervisorType(vmIntentResponse.getStatus().getResources().getHypervisorType())
                 .withDisks(getDisksFromVmResources(vmIntentResponse.getStatus().getResources().getDiskList()))
-                .withNics(getNicsFromVmResources(vmIntentResponse.getStatus().getResources().getNicList()))
+                .withNics(getNicListFromVmResources(vmIntentResponse.getStatus().getResources().getNicList()))
                 .build();
     }
 
-    private static List<Nic> getNicsFromVmResources(List<VmNicOutputStatus> vmNicOutputStatusList) {
+    private static List<VMNic> getNicListFromVmResources(List<VmNicOutputStatus> vmNicOutputStatusList) {
         return vmNicOutputStatusList
                 .stream()
-                .map(n -> Nic.builder()
+                .map(n -> VMNic.builder()
                         .withNicType(n.getNicType())
                         .withKind(n.getSubnetReference().getKind())
                         .withName(n.getSubnetReference().getName())
@@ -116,11 +128,11 @@ public class NutanixV3ApiClient implements NutanixApiClient {
 
     }
 
-    private static List<Disk> getDisksFromVmResources(List<VmDiskOutputStatus> vmDiskOutputStatusList) {
+    private static List<VMDisk> getDisksFromVmResources(List<VmDiskOutputStatus> vmDiskOutputStatusList) {
     return vmDiskOutputStatusList
             .stream()
             .filter(d -> d.getDeviceProperties().getDeviceType().equalsIgnoreCase("DISK"))
-            .map(d -> Disk.builder()
+            .map(d -> VMDisk.builder()
                     .withUuid(d.getUuid())
                     .withDeviceType(d.getDeviceProperties().getDeviceType())
                     .withDeviceIndex(d.getDeviceProperties().getDiskAddress().getDeviceIndex())
@@ -147,7 +159,7 @@ public class NutanixV3ApiClient implements NutanixApiClient {
                 .withMachineType(vmIntentResource.getStatus().getResources().getMachineType())
                 .withHypervisorType(vmIntentResource.getStatus().getResources().getHypervisorType())
                 .withDisks(getDisksFromVmResources(vmIntentResource.getStatus().getResources().getDiskList()))
-                .withNics(getNicsFromVmResources(vmIntentResource.getStatus().getResources().getNicList()))
+                .withNics(getNicListFromVmResources(vmIntentResource.getStatus().getResources().getNicList()))
                 .withKind(vmIntentResource.getMetadata().getKind())
                 .withSpecVersion(vmIntentResource.getMetadata().getSpecVersion())
                 .withEntityVersion(vmIntentResource.getMetadata().getEntityVersion())
@@ -279,11 +291,101 @@ public class NutanixV3ApiClient implements NutanixApiClient {
 
     private Cluster getFromClusterIntentResource(ClusterIntentResource cluster) {
         return Cluster.builder()
-                .withName(cluster.getStatus().getName())
                 .withUuid(cluster.getMetadata().getUuid())
+                .withState(cluster.getStatus().getState())
+                .withName(cluster.getStatus().getName())
+                .withNodes(getFromClusterNodes(cluster.getStatus().getResources().getNodes()))
+                .withSoftware(getFromSoftwareMap(cluster.getStatus().getResources().getConfig().getSoftwareMap()))
+                .withEncryptionStatus(cluster.getStatus().getResources().getConfig().getEncryptionStatus())
+                .withServiceList(cluster.getStatus().getResources().getConfig().getServiceList())
+                .withRedundancyFactor(cluster.getStatus().getResources().getConfig().getRedundancyFactor())
                 .withOperationMode(cluster.getStatus().getResources().getConfig().getOperationMode())
+                .withDomainAwarenessLevel(cluster.getStatus().getResources().getConfig().getDomainAwarenessLevel())
+                .withEnabledFeatureList(cluster.getStatus().getResources().getConfig().getEnabledFeatureList())
                 .withIsAvailable(cluster.getStatus().getResources().getConfig().isIsAvailable())
+                .withBuild(getFromClusterBuild(cluster.getStatus().getResources().getConfig().getBuild()))
+                .withTimeZone(cluster.getStatus().getResources().getConfig().getTimezone())
+                .withClusterArch(cluster.getStatus().getResources().getConfig().getClusterArch())
+                .withExternalIp(cluster.getStatus().getResources().getNetwork().getExternalIp())
+                .withHttpProxyList(getFromClusterHttpProxyList(cluster.getStatus().getResources().getNetwork().getHttpProxyList()))
+                .withSmtpServer(getFromClusterSmtpServer(cluster.getStatus().getResources().getNetwork().getSmtpServer()))
+                .withNtpServerIpList(cluster.getStatus().getResources().getNetwork().getNtpServerIpList())
+                .withExternalSubnet(cluster.getStatus().getResources().getNetwork().getExternalSubnet())
+                .withExternalDataServicesIp(cluster.getStatus().getResources().getNetwork().getExternalDataServicesIp())
+                .withNameServerIpList(cluster.getStatus().getResources().getNetwork().getNameServerIpList())
+                .withHttpProxyWhitelist(getFromClusterWhiteProxyList(cluster.getStatus().getResources().getNetwork().getHttpProxyWhitelist()))
+                .withInternalSubnet(cluster.getStatus().getResources().getNetwork().getInternalSubnet())
                 .build();
+    }
+
+    private List<ClusterHttpWhiteProxy> getFromClusterWhiteProxyList(List<HttpProxyWhitelist> httpProxyWhitelist) {
+        return
+                httpProxyWhitelist.stream()
+                        .map(h -> ClusterHttpWhiteProxy
+                                .builder()
+                                .withTarget(h.getTarget())
+                                .withTargetType(h.getTargetType())
+                                .build())
+                        .collect(Collectors.toUnmodifiableList());
+    }
+
+    private ClusterSmtpServer getFromClusterSmtpServer(SmtpServer smtpServer) {
+        return ClusterSmtpServer.builder()
+                .withType(smtpServer.getType())
+                .withEmailAddress(smtpServer.getEmailAddress())
+                .withIp(smtpServer.getServer().getAddress().getIp())
+                .withFqdn(smtpServer.getServer().getAddress().getFqdn())
+                .withIsBackup(smtpServer.getServer().getAddress().isIsBackup())
+                .withPort(smtpServer.getServer().getAddress().getPort())
+                .withIpv6(smtpServer.getServer().getAddress().getIpv6())
+                .build();
+    }
+
+    private List<ClusterHttpProxy> getFromClusterHttpProxyList(List<ClusterNetworkEntity> httpProxyList) {
+        return
+                httpProxyList
+                        .stream()
+                        .map(p -> ClusterHttpProxy.builder()
+                                .withName(p.getName())
+                                .withProxyTypeList(p.getProxyTypeList())
+                                .withIp(p.getAddress().getIp())
+                                .withFqdn(p.getAddress().getFqdn())
+                                .withIsBackup(p.getAddress().isIsBackup())
+                                .withPort(p.getAddress().getPort())
+                                .withIpv6(p.getAddress().getIpv6())
+                                .build())
+                        .collect(Collectors.toUnmodifiableList());
+    }
+
+    private ClusterBuildInfo getFromClusterBuild(BuildInfo build) {
+        return ClusterBuildInfo
+                .builder()
+                .withBuildType(build.getBuildType())
+                .withCommitDate(build.getCommitDate())
+                .withCommitId(build.getCommitId())
+                .withFullVersion(build.getFullVersion())
+                .withVersion(build.getVersion())
+                .withIsLongTermSupport(build.isIsLongTermSupport())
+                .build();
+    }
+
+    private List<ClusterSoftware> getFromSoftwareMap(Map<String,org.opennms.nutanix.client.v3.model.ClusterSoftware> softwareMap) {
+        return softwareMap.values().stream().map(s ->
+                ClusterSoftware
+                        .builder()
+                        .withSoftwareType(s.getSoftwareType())
+                        .withStatus(s.getStatus())
+                        .withVersion(s.getVersion())
+                        .build())
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    private List<ClusterHypervisor> getFromClusterNodes(ClusterNodes nodes) {
+        return nodes.getHypervisorServerList().stream().map(h -> ClusterHypervisor.builder()
+                .withType(h.getType())
+                .withIp(h.getIp())
+                .withVersion(h.getVersion())
+                .build()).collect(Collectors.toUnmodifiableList());
     }
 
     private Cluster getFromClusterIntentResponse(ClusterIntentResponse cluster) {

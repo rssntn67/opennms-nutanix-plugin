@@ -33,8 +33,8 @@ public class VM {
     public final String machineType;
     public final String hypervisorType;
 
-    public final List<Disk> disks;
-    public final List<Nic> nics;
+    public final List<VMDisk> disks;
+    public final List<VMNic> nics;
 
     private VM(Builder builder) {
         this.name=Objects.requireNonNull(builder.name);
@@ -126,14 +126,14 @@ public class VM {
             return this;
         }
 
-        private List<Disk> disks;
-        public VM.Builder withDisks(final List<Disk> disks) {
+        private List<VMDisk> disks;
+        public VM.Builder withDisks(final List<VMDisk> disks) {
             this.disks = disks;
             return this;
         }
 
-        private List<Nic> nics;
-        public VM.Builder withNics(final List<Nic> nics) {
+        private List<VMNic> nics;
+        public VM.Builder withNics(final List<VMNic> nics) {
             this.nics = nics;
             return this;
         }

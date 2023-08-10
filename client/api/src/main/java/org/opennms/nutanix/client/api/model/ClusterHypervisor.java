@@ -2,13 +2,13 @@ package org.opennms.nutanix.client.api.model;
 
 import java.util.Objects;
 
-public class Hypervisor {
+public class ClusterHypervisor {
     public final String ip;
     public final String version;
     public final String type;
 
 
-    private Hypervisor(Builder builder) {
+    private ClusterHypervisor(Builder builder) {
         this.ip = Objects.requireNonNull(builder.ip);
         this.version = Objects.requireNonNull(builder.version);
         this.type = Objects.requireNonNull(builder.type);
@@ -20,26 +20,26 @@ public class Hypervisor {
         private String version;
         private String type;
 
-        public Builder setIp(String ip) {
+        public Builder withIp(String ip) {
             this.ip = ip;
             return this;
         }
 
-        public Builder setVersion(String version) {
+        public Builder withVersion(String version) {
             this.version = version;
             return this;
         }
 
-        public Builder setType(String type) {
+        public Builder withType(String type) {
             this.type = type;
             return this;
         }
 
-        public Hypervisor build() {
-            return new Hypervisor(this);
+        public ClusterHypervisor build() {
+            return new ClusterHypervisor(this);
         }
     }
-    public static Hypervisor.Builder builder() {
-        return new Hypervisor.Builder();
+    public static ClusterHypervisor.Builder builder() {
+        return new ClusterHypervisor.Builder();
     }
 }

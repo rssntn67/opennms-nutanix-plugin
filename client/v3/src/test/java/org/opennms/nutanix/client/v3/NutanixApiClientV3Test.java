@@ -405,7 +405,6 @@ public class NutanixApiClientV3Test {
         ClustersApi api = new ClustersApi(getApiClient());
         int offset = 0;
         int lenght = 20;
-        Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
@@ -413,18 +412,13 @@ public class NutanixApiClientV3Test {
                 ClusterListIntentResponse response = api.clustersListPost(body);
                 System.out.println(response);
                 total = response.getMetadata().getTotalMatches();
-                response.getEntities().forEach(item -> outputs.add(item.getStatus().toString()));
-                response.getEntities().forEach(item -> System.out.println(item.getStatus().getResources().getConfig().getOperationMode()));
-                response.getEntities().forEach(item -> System.out.println(item.getStatus().getResources().getConfig().isIsAvailable()));
                 lenght = response.getEntities().size();
                 offset+=lenght;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
-        } while (outputs.size() < total );
+        } while (offset < total );
 
-        System.out.println("total outputs: " + outputs.size());
-        outputs.forEach(System.out::println);
     }
 
     @Test
