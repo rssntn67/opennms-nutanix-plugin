@@ -2,6 +2,7 @@
 package org.opennms.nutanix.clients;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,15 +19,18 @@ import org.slf4j.LoggerFactory;
 public class ClientManager {
     private static final Logger LOG = LoggerFactory.getLogger(ClientManager.class);
 
-    Map<ApiVersion.Version, NutanixApiClientProvider> clientProviderMap = new HashMap<>();
+    private final Map<ApiVersion.Version, NutanixApiClientProvider> clientProviderMap = new HashMap<>();
 
-    public ClientManager(NutanixApiClientProvider... apiClientProviders) {
-        Objects.requireNonNull(apiClientProviders);
-        for (NutanixApiClientProvider provider: apiClientProviders) {
-            clientProviderMap.put(provider.getApiVersion().version, provider);
-        }
+    public ClientManager() {
+
     }
 
+    public void setProviders(List<NutanixApiClientProvider> providers) {
+        Objects.requireNonNull(providers);
+         providers.stream()
+                 .filter(p -> p != null)
+                 .forEach( p -> clientProviderMap.put(p.getApiVersion().version,p));
+    }
     public NutanixApiClientProvider getProvider(ApiVersion.Version version) throws NutanixApiException {
         if (clientProviderMap.containsKey(version))
             return clientProviderMap.get(version);

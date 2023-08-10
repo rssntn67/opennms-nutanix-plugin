@@ -22,10 +22,14 @@
     <reference id="nutanixApiClientV08Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider"/>
 
     <bean id="clientManager" class="org.opennms.nutanix.clients.ClientManager">
-        <argument ref="nutanixApiClientV08Provider"/>
-        <argument ref="nutanixApiClientV1Provider"/>
-        <argument ref="nutanixApiClientV2Provider"/>
-        <argument ref="nutanixApiClientV3Provider"/>
+        <property name="providers">
+            <list>
+                <ref component-id="nutanixApiClientV3Provider" />
+                <ref component-id="nutanixApiClientV2Provider" />
+                <ref component-id="nutanixApiClientV1Provider" />
+                <ref component-id="nutanixApiClientV08Provider" />
+            </list>
+        </property>
     </bean>
     <service ref="clientManager" interface="org.opennms.nutanix.clients.ClientManager"/>
 
