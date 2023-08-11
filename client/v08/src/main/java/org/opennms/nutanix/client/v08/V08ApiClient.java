@@ -3,7 +3,7 @@ package org.opennms.nutanix.client.v08;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opennms.nutanix.client.api.NutanixApiClient;
+import org.opennms.nutanix.client.api.ApiClient;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Alert;
 import org.opennms.nutanix.client.api.model.Cluster;
@@ -15,7 +15,7 @@ import org.opennms.nutanix.client.v08.handler.ApiException;
 import org.opennms.nutanix.client.v08.model.GetBaseEntityCollectionltgetDtoAcropolisVMInfoDTOgt;
 import org.opennms.nutanix.client.v08.model.GetDtoAcropolisVMInfoDTO;
 
-public class NutanixV08ApiClient implements NutanixApiClient {
+public class NutanixV08ApiClient implements ApiClient {
 
 
     private final ApiClientExtention apiClient;

@@ -1,8 +1,8 @@
 package org.opennms.nutanix.client.v3;
 
-import org.opennms.nutanix.client.api.NutanixApiClient;
-import org.opennms.nutanix.client.api.NutanixApiClientCredentials;
-import org.opennms.nutanix.client.api.NutanixApiClientProvider;
+import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientCredentials;
+import org.opennms.nutanix.client.api.V3ClientProvider;
 import org.opennms.nutanix.client.api.model.ApiVersion;
 import org.opennms.nutanix.client.v3.api.VersionsApi;
 import org.opennms.nutanix.client.v3.handler.ApiException;
@@ -10,13 +10,13 @@ import org.opennms.nutanix.client.v3.model.Versions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NutanixV3ApiClientProvider implements NutanixApiClientProvider {
+public class NutanixV3ApiClientProvider implements V3ClientProvider {
     private static final Logger LOG = LoggerFactory.getLogger(NutanixV3ApiClientProvider.class);
 
     public NutanixV3ApiClientProvider() {
     }
 
-    private ApiClientExtention getClient(NutanixApiClientCredentials credentials) {
+    private ApiClientExtention getClient(ApiClientCredentials credentials) {
         ApiClientExtention apiClient = new ApiClientExtention();
         apiClient.setBasePath(credentials.prismUrl+"/api/nutanix/v3");
         apiClient.setUsername(credentials.username);
@@ -26,7 +26,7 @@ public class NutanixV3ApiClientProvider implements NutanixApiClientProvider {
         return apiClient;
     }
     @Override
-    public NutanixApiClient client(NutanixApiClientCredentials credentials) {
+    public ApiClient client(ApiClientCredentials credentials) {
         return new NutanixV3ApiClient(getClient(credentials));
     }
 
@@ -36,7 +36,7 @@ public class NutanixV3ApiClientProvider implements NutanixApiClientProvider {
     }
 
     @Override
-    public boolean validate(NutanixApiClientCredentials credentials) {
+    public boolean validate(ApiClientCredentials credentials) {
         VersionsApi versionsApi = new VersionsApi(getClient(credentials));
         Versions versions;
         try {

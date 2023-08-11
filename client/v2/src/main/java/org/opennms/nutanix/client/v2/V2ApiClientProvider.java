@@ -5,25 +5,24 @@ import java.util.Base64;
 
 import javax.ws.rs.core.HttpHeaders;
 
-import org.opennms.nutanix.client.api.NutanixApiClient;
-import org.opennms.nutanix.client.api.NutanixApiClientCredentials;
-import org.opennms.nutanix.client.api.NutanixApiClientProvider;
+import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientCredentials;
+import org.opennms.nutanix.client.api.ApiClientProvider;
 import org.opennms.nutanix.client.api.model.ApiVersion;
 import org.opennms.nutanix.client.v2.api.AuthconfigApi;
 import org.opennms.nutanix.client.v2.handler.ApiException;
-import org.opennms.nutanix.client.v2.model.GetAuthDtoConfigAuthConfigDTO;
 import org.opennms.nutanix.client.v2.model.GetAuthDtoConfigClientAuthDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NutanixV2ApiClientProvider implements NutanixApiClientProvider {
+public class NutanixV2ApiClientProvider implements ApiClientProvider {
 
     private static final Logger LOG = LoggerFactory.getLogger(NutanixV2ApiClientProvider.class);
 
     public NutanixV2ApiClientProvider() {
     }
 
-    private ApiClientExtention getClient(NutanixApiClientCredentials credentials) {
+    private ApiClientExtention getClient(ApiClientCredentials credentials) {
         ApiClientExtention apiClient = new ApiClientExtention();
         apiClient.setBasePath(credentials.prismUrl+"/PrismGateway/services/rest/v2.0");
         String auth = credentials.username + ":" + credentials.password;
@@ -36,7 +35,7 @@ public class NutanixV2ApiClientProvider implements NutanixApiClientProvider {
     }
 
     @Override
-    public NutanixApiClient client(NutanixApiClientCredentials credentials) {
+    public ApiClient client(ApiClientCredentials credentials) {
         return new NutanixV2ApiClient(getClient(credentials));
     }
 
@@ -46,7 +45,7 @@ public class NutanixV2ApiClientProvider implements NutanixApiClientProvider {
     }
 
     @Override
-    public boolean validate(NutanixApiClientCredentials credentials) {
+    public boolean validate(ApiClientCredentials credentials) {
         AuthconfigApi authconfigApi = new AuthconfigApi(getClient(credentials));
         try {
             GetAuthDtoConfigClientAuthDTO dto = authconfigApi.getClientAuth();

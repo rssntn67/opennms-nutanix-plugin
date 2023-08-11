@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.opennms.nutanix.client.api.NutanixApiClient;
+import org.opennms.nutanix.client.api.ApiClient;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Alert;
 import org.opennms.nutanix.client.api.model.Cluster;
@@ -49,7 +49,7 @@ import org.opennms.nutanix.client.v3.model.VmListIntentResponse;
 import org.opennms.nutanix.client.v3.model.VmListMetadata;
 import org.opennms.nutanix.client.v3.model.VmNicOutputStatus;
 
-public class NutanixV3ApiClient implements NutanixApiClient {
+public class NutanixV3ApiClient implements ApiClient {
     private final ApiClientExtention apiClient;
     public NutanixV3ApiClient(ApiClientExtention apiClient) {
         this.apiClient = apiClient;

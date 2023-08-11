@@ -5,17 +5,16 @@ import java.util.Base64;
 
 import javax.ws.rs.core.HttpHeaders;
 
-import org.opennms.nutanix.client.api.NutanixApiClient;
-import org.opennms.nutanix.client.api.NutanixApiClientCredentials;
-import org.opennms.nutanix.client.api.NutanixApiClientProvider;
-import org.opennms.nutanix.client.api.NutanixApiException;
+import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientCredentials;
+import org.opennms.nutanix.client.api.ApiClientProvider;
 import org.opennms.nutanix.client.api.model.ApiVersion;
 
-public class NutanixV1ApiClientProvider implements NutanixApiClientProvider {
+public class NutanixV1ApiClientProvider implements ApiClientProvider {
     public NutanixV1ApiClientProvider() {
     }
 
-    private ApiClientExtention getClient(NutanixApiClientCredentials credentials) {
+    private ApiClientExtention getClient(ApiClientCredentials credentials) {
         ApiClientExtention apiClient = new ApiClientExtention();
         apiClient.setBasePath(credentials.prismUrl+"/PrismGateway/services/rest/v1");
         String auth = credentials.username + ":" + credentials.password;
@@ -28,7 +27,7 @@ public class NutanixV1ApiClientProvider implements NutanixApiClientProvider {
     }
 
     @Override
-    public NutanixApiClient client(NutanixApiClientCredentials credentials) {
+    public ApiClient client(ApiClientCredentials credentials) {
         return new NutanixV1ApiClient(getClient(credentials));
     }
 
@@ -38,7 +37,7 @@ public class NutanixV1ApiClientProvider implements NutanixApiClientProvider {
     }
 
     @Override
-    public boolean validate(NutanixApiClientCredentials credentials) {
+    public boolean validate(ApiClientCredentials credentials) {
         return false;
     }
 }
