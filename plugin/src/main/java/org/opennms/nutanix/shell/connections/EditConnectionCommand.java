@@ -45,11 +45,15 @@ public class EditConnectionCommand implements Action {
             return null;
         }
 
+
         connection.get().setPrismUrl(url);
         connection.get().setUsername(username);
         connection.get().setPassword(password);
         connection.get().setIgnoreSslCertificateValidation(ignoreSslCertificateValidation);
         connection.get().setLength(length);
+
+        System.err.println("updating: " + connection);
+
 
         if (!this.skipValidation) {
             final var error = connection.get().validate();

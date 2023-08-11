@@ -277,7 +277,9 @@ public class ConnectionManager {
                               .add(PRISM_URL_KEY, this.credentials.prismUrl)
                               .add("username", this.credentials.username)
                               .add("password", "******")
-                              .toString();
+                              .add(IGNORE_SSH_CERT_VALIDATION_KEY, this.credentials.ignoreSslCertificateValidation)
+                              .add(LENGTH_KEY, this.credentials.length)
+                    .toString();
         }
     }
 

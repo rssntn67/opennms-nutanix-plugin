@@ -28,7 +28,7 @@ public class ClientManager {
     public void setProviders(List<NutanixApiClientProvider> providers) {
         Objects.requireNonNull(providers);
          providers.stream()
-                 .filter(p -> p != null)
+                 .filter(Objects::nonNull)
                  .forEach( p -> clientProviderMap.put(p.getApiVersion().version,p));
     }
     public NutanixApiClientProvider getProvider(ApiVersion.Version version) throws NutanixApiException {
@@ -39,15 +39,30 @@ public class ClientManager {
     public NutanixApiClient client(final NutanixApiClientCredentials credentials, ApiVersion.Version version) throws NutanixApiException {
         return getProvider(version).client(credentials);
     }
-    public Optional<ConnectionValidationError> validate(final NutanixApiClientCredentials credentials) {
 
-        for (NutanixApiClientProvider provider: clientProviderMap.values()) {
-            if (provider.validate(credentials)) {
-                return Optional.empty();
-
-            }
+    private boolean validate (final NutanixApiClientCredentials credentials, ApiVersion.Version version) {
+        try {
+            boolean validated = getProvider(version).validate(credentials);
+            LOG.info("validate: {}, version {} - {}", credentials,version,validated);
+            return validated;
+        } catch (NutanixApiException e) {
+            LOG.warn("validate: cannot validate {}, {}: exception: {}",credentials,version, e.getMessage() );
         }
-        LOG.info("validate: cannot validate: {}", credentials);
+        return false;
+    }
+    public Optional<ConnectionValidationError> validate(final NutanixApiClientCredentials credentials) {
+        if (validate(credentials, ApiVersion.Version.VERSION_3)) {
+            return Optional.empty();
+        }
+        if (validate(credentials, ApiVersion.Version.VERSION_2)) {
+            return Optional.empty();
+        }
+        if (validate(credentials, ApiVersion.Version.VERSION_1)) {
+            return Optional.empty();
+        }
+        if (validate(credentials, ApiVersion.Version.VERSION_0_8)) {
+            return Optional.empty();
+        }
         return Optional.of(new ConnectionValidationError("Credentials could not be validated"));
     }
 

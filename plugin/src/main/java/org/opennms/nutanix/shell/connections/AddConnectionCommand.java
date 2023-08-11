@@ -57,6 +57,7 @@ public class AddConnectionCommand implements Action {
                         this.ignoreSslCertificateValidation,
                         this.length
         );
+        System.err.println("saving: " + connection);
 
         if (!this.skipValidation) {
             final var error = connection.validate();

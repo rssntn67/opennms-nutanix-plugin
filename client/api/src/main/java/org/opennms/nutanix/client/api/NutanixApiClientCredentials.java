@@ -100,8 +100,9 @@ public class NutanixApiClientCredentials {
         return MoreObjects.toStringHelper(this)
                 .add("prismUrl", this.prismUrl)
                 .add("username", this.username)
-                .add("password", this.password)
+                .add("password", "*****")
                 .add("ignoreSslCertificateValidation", this.ignoreSslCertificateValidation)
+                .add("length", this.length)
                 .toString();
     }
 

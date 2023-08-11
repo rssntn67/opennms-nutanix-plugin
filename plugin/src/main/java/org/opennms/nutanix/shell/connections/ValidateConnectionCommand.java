@@ -14,7 +14,7 @@ public class ValidateConnectionCommand implements Action {
     @Reference
     private ConnectionManager connectionManager;
 
-    @Argument(index = 0, name = "alias", description = "Alias", required = true, multiValued = false)
+    @Argument(name = "alias", description = "Alias", required = true)
     public String alias = null;
 
     @Override

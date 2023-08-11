@@ -24,7 +24,11 @@ public class ListConnectionsCommand implements Action {
         final var table = new ShellTable()
                 .size(session.getTerminal().getWidth() - 1)
                 .column(new Col("alias").maxSize(36))
-                .column(new Col("prismUrl").maxSize(72));
+                .column(new Col("prismUrl").maxSize(72))
+                .column(new Col("username").maxSize(36))
+                .column(new Col("ignoreSslVal").maxSize(6))
+                .column(new Col("length").maxSize(6))
+                ;
 
         this.connectionManager.getAliases().stream()
                                       .map(alias -> this.connectionManager.getConnection(alias).orElseThrow())
@@ -32,6 +36,10 @@ public class ListConnectionsCommand implements Action {
                                           final var row = table.addRow();
                                           row.addContent(connection.getAlias());
                                           row.addContent(connection.getPrismUrl());
+                                          row.addContent(connection.getUsername());
+                                          row.addContent("*****");
+                                          row.addContent(connection.isIgnoreSslCertificateValidation());
+                                          row.addContent(connection.getLength());
                                       });
 
         table.print(System.out, true);
