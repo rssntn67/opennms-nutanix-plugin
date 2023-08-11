@@ -9,8 +9,15 @@ import org.opennms.nutanix.client.api.ApiClient;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.V1ClientProvider;
 import org.opennms.nutanix.client.api.model.ApiVersion;
+import org.opennms.nutanix.client.v1.api.AuthconfigApi;
+import org.opennms.nutanix.client.v1.handler.ApiException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class V1ApiClientProvider implements V1ClientProvider {
+
+    private static final Logger LOG = LoggerFactory.getLogger(V1ApiClientProvider.class);
+
     public V1ApiClientProvider() {
     }
 
@@ -37,7 +44,15 @@ public class V1ApiClientProvider implements V1ClientProvider {
     }
 
     @Override
-    public boolean validate(ApiClientCredentials credentials) {
-        return false;
+    public boolean validate(ApiClientCredentials credentials)  {
+        AuthconfigApi authconfigApi = new AuthconfigApi(getClient(credentials));
+
+        try {
+            authconfigApi.getClientAuth();
+        } catch (ApiException e) {
+            LOG.info("validate: cannot connect to {}, -> {}", credentials,e.getMessage());
+            return false;
+        }
+        return true;
     }
 }

@@ -22,13 +22,13 @@ import org.opennms.integration.api.v1.collectors.resource.immutables.ImmutableNo
 import org.opennms.nutanix.client.api.ApiClient;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.NutanixApiException;
-import org.opennms.nutanix.client.api.NutanixApiServiceCollector;
+import org.opennms.nutanix.client.api.ApiServiceCollector;
 import org.opennms.nutanix.client.api.model.Aggregate;
 import org.opennms.nutanix.client.api.model.Traffic;
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
 
-public abstract class AbstractNutanixServiceCollector implements NutanixApiServiceCollector {
+public abstract class AbstractNutanixServiceCollector implements ApiServiceCollector {
 
     public static final String SERVICE_INTERVAL = "SERVICE_INTERVAL";
 

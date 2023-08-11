@@ -5,9 +5,9 @@ import java.util.concurrent.CompletableFuture;
 
 import org.opennms.integration.api.v1.collectors.CollectionRequest;
 import org.opennms.integration.api.v1.collectors.CollectionSet;
-import org.opennms.nutanix.client.api.NutanixApiServiceCollector;
+import org.opennms.nutanix.client.api.ApiServiceCollector;
 
-public class V1ApiServiceCollector implements NutanixApiServiceCollector {
+public class V1ApiServiceCollector implements ApiServiceCollector {
     @Override
     public void initialize() {
 
