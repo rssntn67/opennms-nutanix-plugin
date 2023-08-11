@@ -4,23 +4,19 @@
                 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
                 http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0
                 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
-    
+
     <!-- Pull in service implementations from the OSGi registry -->
     <reference id="nodeDao" interface="org.opennms.integration.api.v1.dao.NodeDao" availability="optional"/>
-    <reference id="nutanixApiClientV3Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider"/>
-    <reference id="nutanixApiClientV2Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider"/>
-    <reference id="nutanixApiClientV1Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider"/>
+    <reference id="nutanixApiClientV3Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" />
+    <reference id="nutanixApiClientV2Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" />
+    <reference id="nutanixApiClientV1Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" />
     <reference id="nutanixApiClientV08Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider"/>
 
     <bean id="clientManager" class="org.opennms.nutanix.clients.ClientManager">
-        <property name="init">
-            <list>
-                <ref component-id="nutanixApiClientV3Provider" />
-                <ref component-id="nutanixApiClientV2Provider" />
-                <ref component-id="nutanixApiClientV1Provider" />
-                <ref component-id="nutanixApiClientV08Provider" />
-            </list>
-        </property>
+        <argument ref="nutanixApiClientV3Provider" />
+        <argument ref="nutanixApiClientV2Provider" />
+        <argument ref="nutanixApiClientV1Provider" />
+        <argument ref="nutanixApiClientV08Provider" />
     </bean>
     <service ref="clientManager" interface="org.opennms.nutanix.clients.ClientManager"/>
 

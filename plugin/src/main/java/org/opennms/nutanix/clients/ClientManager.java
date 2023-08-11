@@ -21,20 +21,23 @@ public class ClientManager {
 
     private final Map<ApiVersion.Version, NutanixApiClientProvider> clientProviderMap = new HashMap<>();
 
-    public ClientManager() {
-
-    }
-
-    public void init(List<NutanixApiClientProvider> providers) {
-        Objects.requireNonNull(providers);
-        LOG.info("init: providers {}", providers.size());
-         providers.stream()
-                 .filter(Objects::nonNull)
-                 .forEach( p -> clientProviderMap.put(p.getApiVersion().version,p));
-        LOG.info("init: versions {}", clientProviderMap.keySet());
-
+    public ClientManager(NutanixApiClientProvider providerA,NutanixApiClientProvider providerB, NutanixApiClientProvider providerC, NutanixApiClientProvider providerD) {
+        LOG.warn("constructor:");
+        Objects.requireNonNull(providerA);
+        Objects.requireNonNull(providerB);
+        Objects.requireNonNull(providerC);
+        Objects.requireNonNull(providerD);
+        LOG.warn("constructor: {}", providerA.getApiVersion().version);
+        LOG.warn("constructor: {}", providerB.getApiVersion().version);
+        LOG.warn("constructor: {}", providerC.getApiVersion().version);
+        LOG.warn("constructor: {}", providerD.getApiVersion().version);
+        clientProviderMap.put(providerD.getApiVersion().version, providerD);
+        clientProviderMap.put(providerC.getApiVersion().version, providerC);
+        clientProviderMap.put(providerB.getApiVersion().version, providerB);
+        clientProviderMap.put(providerA.getApiVersion().version, providerA);
     }
     public NutanixApiClientProvider getProvider(ApiVersion.Version version) throws NutanixApiException {
+        LOG.warn("getProvider: supported API: {}", clientProviderMap.keySet());
         if (clientProviderMap.containsKey(version))
             return clientProviderMap.get(version);
         throw new NutanixApiException("Version not Supported: " + version);
