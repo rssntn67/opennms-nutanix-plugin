@@ -4,16 +4,7 @@
                 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
                 http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0
                 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
-
-    <!-- Configuration stored in $OPENNMS_HOME/etc/nutanix.myplugin.cfg file -->
-    <cm:property-placeholder id="myNutanixPluginProperties" persistent-id="nutanix.myplugin" update-strategy="reload">
-        <cm:default-properties>
-            <cm:property name="url" value="http://127.0.0.1:9440/" />
-            <cm:property name="username" value="opennms" />
-            <cm:property name="password" value="TOKEN" />
-        </cm:default-properties>
-    </cm:property-placeholder>
-
+    
     <!-- Pull in service implementations from the OSGi registry -->
     <reference id="nodeDao" interface="org.opennms.integration.api.v1.dao.NodeDao" availability="optional"/>
     <reference id="nutanixApiClientV3Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider"/>
@@ -22,7 +13,7 @@
     <reference id="nutanixApiClientV08Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider"/>
 
     <bean id="clientManager" class="org.opennms.nutanix.clients.ClientManager">
-        <property name="providers">
+        <property name="init">
             <list>
                 <ref component-id="nutanixApiClientV3Provider" />
                 <ref component-id="nutanixApiClientV2Provider" />

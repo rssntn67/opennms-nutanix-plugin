@@ -26,8 +26,9 @@ public class ListConnectionsCommand implements Action {
                 .column(new Col("alias").maxSize(36))
                 .column(new Col("prismUrl").maxSize(72))
                 .column(new Col("username").maxSize(36))
-                .column(new Col("ignoreSslVal").maxSize(6))
-                .column(new Col("length").maxSize(6))
+                .column(new Col("password").maxSize(36))
+                .column(new Col("ignoreSslVal").maxSize(12))
+                .column(new Col("length").maxSize(5))
                 ;
 
         this.connectionManager.getAliases().stream()

@@ -25,11 +25,14 @@ public class ClientManager {
 
     }
 
-    public void setProviders(List<NutanixApiClientProvider> providers) {
+    public void init(List<NutanixApiClientProvider> providers) {
         Objects.requireNonNull(providers);
+        LOG.info("init: providers {}", providers.size());
          providers.stream()
                  .filter(Objects::nonNull)
                  .forEach( p -> clientProviderMap.put(p.getApiVersion().version,p));
+        LOG.info("init: versions {}", clientProviderMap.keySet());
+
     }
     public NutanixApiClientProvider getProvider(ApiVersion.Version version) throws NutanixApiException {
         if (clientProviderMap.containsKey(version))
