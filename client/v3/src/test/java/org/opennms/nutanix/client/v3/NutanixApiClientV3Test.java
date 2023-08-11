@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.opennms.nutanix.client.api.NutanixApiClientCredentials;
+import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.v3.api.AccessControlPoliciesApi;
 import org.opennms.nutanix.client.v3.api.AlertsApi;
@@ -156,8 +156,8 @@ public class NutanixApiClientV3Test {
 
     @Test
     public void testValidate() {
-        NutanixV3ApiClientProvider provider = new NutanixV3ApiClientProvider();
-        NutanixApiClientCredentials credentials = NutanixApiClientCredentials.builder()
+        V3ApiClientProvider provider = new V3ApiClientProvider();
+        ApiClientCredentials credentials = ApiClientCredentials.builder()
                 .withUsername(System.getenv("NTX_USER"))
                 .withPassword(System.getenv("NTX_PASS"))
                 .withPrismUrl("https://nutanix.arsinfo.it:9440/")

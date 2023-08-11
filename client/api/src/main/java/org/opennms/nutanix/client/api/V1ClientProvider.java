@@ -1,4 +1,4 @@
 package org.opennms.nutanix.client.api;
 
-public interface NutanixApiV1ClientProvider extends NutanixApiClientProvider {
+public interface V1ClientProvider extends ApiClientProvider {
 }

@@ -7,16 +7,16 @@
 
     <!-- Pull in service implementations from the OSGi registry -->
     <reference id="nodeDao" interface="org.opennms.integration.api.v1.dao.NodeDao" availability="optional"/>
-    <reference id="nutanixApiClientV3Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" />
-    <reference id="nutanixApiClientV2Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" />
-    <reference id="nutanixApiClientV1Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider" />
-    <reference id="nutanixApiClientV08Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider"/>
+    <reference id="v3Provider" interface="org.opennms.nutanix.client.api.V3ClientProvider" />
+    <reference id="v2Provider" interface="org.opennms.nutanix.client.api.V2ClientProvider" />
+    <reference id="v1Provider" interface="org.opennms.nutanix.client.api.V1ClientProvider" />
+    <reference id="v08Provider" interface="org.opennms.nutanix.client.api.V08ClientProvider"/>
 
     <bean id="clientManager" class="org.opennms.nutanix.clients.ClientManager">
-        <argument ref="nutanixApiClientV3Provider" />
-        <argument ref="nutanixApiClientV2Provider" />
-        <argument ref="nutanixApiClientV1Provider" />
-        <argument ref="nutanixApiClientV08Provider" />
+        <argument ref="v3Provider" />
+        <argument ref="v2Provider" />
+        <argument ref="v1Provider" />
+        <argument ref="v08Provider" />
     </bean>
     <service ref="clientManager" interface="org.opennms.nutanix.clients.ClientManager"/>
 

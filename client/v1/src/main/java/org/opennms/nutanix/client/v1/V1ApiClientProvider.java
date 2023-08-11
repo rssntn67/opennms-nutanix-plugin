@@ -7,11 +7,11 @@ import javax.ws.rs.core.HttpHeaders;
 
 import org.opennms.nutanix.client.api.ApiClient;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
-import org.opennms.nutanix.client.api.ApiClientProvider;
+import org.opennms.nutanix.client.api.V1ClientProvider;
 import org.opennms.nutanix.client.api.model.ApiVersion;
 
-public class NutanixV1ApiClientProvider implements ApiClientProvider {
-    public NutanixV1ApiClientProvider() {
+public class V1ApiClientProvider implements V1ClientProvider {
+    public V1ApiClientProvider() {
     }
 
     private ApiClientExtention getClient(ApiClientCredentials credentials) {
@@ -28,7 +28,7 @@ public class NutanixV1ApiClientProvider implements ApiClientProvider {
 
     @Override
     public ApiClient client(ApiClientCredentials credentials) {
-        return new NutanixV1ApiClient(getClient(credentials));
+        return new V1ApiClient(getClient(credentials));
     }
 
     @Override

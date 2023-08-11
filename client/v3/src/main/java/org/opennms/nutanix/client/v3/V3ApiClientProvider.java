@@ -10,10 +10,10 @@ import org.opennms.nutanix.client.v3.model.Versions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NutanixV3ApiClientProvider implements V3ClientProvider {
-    private static final Logger LOG = LoggerFactory.getLogger(NutanixV3ApiClientProvider.class);
+public class V3ApiClientProvider implements V3ClientProvider {
+    private static final Logger LOG = LoggerFactory.getLogger(V3ApiClientProvider.class);
 
-    public NutanixV3ApiClientProvider() {
+    public V3ApiClientProvider() {
     }
 
     private ApiClientExtention getClient(ApiClientCredentials credentials) {
@@ -27,7 +27,7 @@ public class NutanixV3ApiClientProvider implements V3ClientProvider {
     }
     @Override
     public ApiClient client(ApiClientCredentials credentials) {
-        return new NutanixV3ApiClient(getClient(credentials));
+        return new V3ApiClient(getClient(credentials));
     }
 
     @Override

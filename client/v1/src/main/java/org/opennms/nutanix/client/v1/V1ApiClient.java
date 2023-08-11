@@ -15,12 +15,12 @@ import org.opennms.nutanix.client.v1.handler.ApiException;
 import org.opennms.nutanix.client.v1.model.VMEntity;
 import org.opennms.nutanix.client.v1.model.VMCollectionEntity;
 
-public class NutanixV1ApiClient implements ApiClient {
+public class V1ApiClient implements ApiClient {
 
 
     private final ApiClientExtention apiClient;
 
-    public NutanixV1ApiClient(ApiClientExtention apiClient) {
+    public V1ApiClient(ApiClientExtention apiClient) {
         this.apiClient = apiClient;
     }
     @Override

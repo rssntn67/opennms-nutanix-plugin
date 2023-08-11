@@ -12,8 +12,8 @@ import org.opennms.integration.api.v1.runtime.RuntimeInfo;
 import org.opennms.integration.api.v1.scv.Credentials;
 import org.opennms.integration.api.v1.scv.SecureCredentialsVault;
 import org.opennms.integration.api.v1.scv.immutables.ImmutableCredentials;
-import org.opennms.nutanix.client.api.NutanixApiClient;
-import org.opennms.nutanix.client.api.NutanixApiClientCredentials;
+import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.clients.ClientManager;
 
@@ -85,7 +85,7 @@ public class ConnectionManager {
     public Connection newConnection(final String alias, final String prismUrl, final String username, final String password, final boolean ignoreSslCerticateValidation, final int length) {
         this.ensureCore();
 
-        return new ConnectionImpl(alias, NutanixApiClientCredentials.builder()
+        return new ConnectionImpl(alias, ApiClientCredentials.builder()
                 .withPrismUrl(prismUrl)
                 .withUsername(username)
                 .withPassword(password)
@@ -112,7 +112,7 @@ public class ConnectionManager {
         return true;
     }
 
-    public Optional<NutanixApiClient> getClient(final String alias) throws NutanixApiException {
+    public Optional<ApiClient> getClient(final String alias) throws NutanixApiException {
         this.ensureCore();
 
         final var connection = this.getConnection(alias);
@@ -124,8 +124,8 @@ public class ConnectionManager {
     }
 
 
-    private static NutanixApiClientCredentials asNutanixCredentials(Connection connection) {
-        return NutanixApiClientCredentials.builder()
+    private static ApiClientCredentials asNutanixCredentials(Connection connection) {
+        return ApiClientCredentials.builder()
                 .withUsername(connection.getUsername())
                 .withPassword(connection.getPassword())
                 .withPrismUrl(connection.getPrismUrl())
@@ -134,7 +134,7 @@ public class ConnectionManager {
                 .build();
     }
 
-    private static NutanixApiClientCredentials fromStore(final Credentials credentials) {
+    private static ApiClientCredentials fromStore(final Credentials credentials) {
 
 
         if (Strings.isNullOrEmpty(credentials.getPassword())) {
@@ -163,7 +163,7 @@ public class ConnectionManager {
         final var ignoreSslCertificateValidation = Boolean.parseBoolean(credentials.getAttribute(IGNORE_SSH_CERT_VALIDATION_KEY));
         final var length = Integer.parseInt(credentials.getAttribute(LENGTH_KEY));
 
-        return NutanixApiClientCredentials.builder()
+        return ApiClientCredentials.builder()
                 .withPrismUrl(prismUrl)
                 .withUsername(username)
                 .withPassword(password)
@@ -176,9 +176,9 @@ public class ConnectionManager {
     private class ConnectionImpl implements Connection {
         private final String alias;
 
-        private NutanixApiClientCredentials credentials;
+        private ApiClientCredentials credentials;
 
-        private ConnectionImpl(final String alias, final NutanixApiClientCredentials credentials) {
+        private ConnectionImpl(final String alias, final ApiClientCredentials credentials) {
             this.alias = Objects.requireNonNull(alias).toLowerCase();
             this.credentials = Objects.requireNonNull(credentials);
         }
@@ -190,7 +190,7 @@ public class ConnectionManager {
 
         @Override
         public void setLength(int length) {
-            this.credentials = NutanixApiClientCredentials.builder(this.credentials).withLength(length).build();
+            this.credentials = ApiClientCredentials.builder(this.credentials).withLength(length).build();
         }
 
         @Override
@@ -200,7 +200,7 @@ public class ConnectionManager {
 
         @Override
         public void setIgnoreSslCertificateValidation(boolean ignoreSslCertificateValidation) {
-            this.credentials = NutanixApiClientCredentials.builder(this.credentials)
+            this.credentials = ApiClientCredentials.builder(this.credentials)
                     .withIgnoreSslCertificateValidation(ignoreSslCertificateValidation)
                     .build();
         }
@@ -217,7 +217,7 @@ public class ConnectionManager {
 
         @Override
         public void setPrismUrl(final String url) {
-            this.credentials = NutanixApiClientCredentials.builder()
+            this.credentials = ApiClientCredentials.builder()
                                                             .withPrismUrl(url)
                                                             .build();
         }
@@ -228,7 +228,7 @@ public class ConnectionManager {
 
         @Override
         public void setUsername(final String username) {
-            this.credentials = NutanixApiClientCredentials.builder(this.credentials)
+            this.credentials = ApiClientCredentials.builder(this.credentials)
                     .withUsername(username)
                     .build();
         }
@@ -240,7 +240,7 @@ public class ConnectionManager {
 
         @Override
         public void setPassword(final String password) {
-            this.credentials = NutanixApiClientCredentials.builder(this.credentials)
+            this.credentials = ApiClientCredentials.builder(this.credentials)
                     .withPassword(password)
                     .build();
         }

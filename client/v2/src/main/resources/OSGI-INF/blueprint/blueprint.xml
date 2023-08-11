@@ -2,6 +2,6 @@
            xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
-    <bean id="nutanixApiClientV2Provider" class="org.opennms.nutanix.client.v2.NutanixV2ApiClientProvider"/>
-    <service ref="nutanixApiClientV2Provider" interface="org.opennms.nutanix.client.api.NutanixApiClientProvider"/>
+    <bean id="clientProvider" class="org.opennms.nutanix.client.v2.V2ApiClientProvider"/>
+    <service ref="clientProvider" interface="org.opennms.nutanix.client.api.V2ClientProvider"/>
 </blueprint>

@@ -14,10 +14,10 @@ import org.opennms.nutanix.client.v08.handler.ApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NutanixV08ApiClientProvider implements ApiClientProvider {
-    private static final Logger LOG = LoggerFactory.getLogger(NutanixV08ApiClientProvider.class);
+public class V08ApiClientProvider implements ApiClientProvider {
+    private static final Logger LOG = LoggerFactory.getLogger(V08ApiClientProvider.class);
 
-    public NutanixV08ApiClientProvider() {
+    public V08ApiClientProvider() {
     }
 
     private ApiClientExtention getClient(ApiClientCredentials credentials) {
@@ -34,7 +34,7 @@ public class NutanixV08ApiClientProvider implements ApiClientProvider {
 
     @Override
     public ApiClient client(ApiClientCredentials credentials)  {
-        return new NutanixV08ApiClient(getClient(credentials));
+        return new V08ApiClient(getClient(credentials));
     }
 
     @Override

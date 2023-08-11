@@ -11,8 +11,8 @@ import org.opennms.integration.api.v1.pollers.ServicePoller;
 import org.opennms.integration.api.v1.pollers.ServicePollerFactory;
 import org.opennms.integration.api.v1.pollers.Status;
 import org.opennms.integration.api.v1.pollers.immutables.ImmutablePollerResult;
-import org.opennms.nutanix.client.api.NutanixApiClient;
-import org.opennms.nutanix.client.api.NutanixApiClientCredentials;
+import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
@@ -112,7 +112,7 @@ public abstract class AbstractStatusPoller implements ServicePoller {
             this.request = Objects.requireNonNull(request);
         }
 
-        public NutanixApiClientCredentials getClientCredentials() {
+        public ApiClientCredentials getClientCredentials() {
             final var prismUrl = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_PRISM_URL),
                                                                "Missing attribute: " + ATTR_PRISM_URL);
             final var username = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_USERNAME),
@@ -127,7 +127,7 @@ public abstract class AbstractStatusPoller implements ServicePoller {
             final var length = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_LENGTH),
                     "Missing attribute: " + ATTR_LENGTH);
 
-            return NutanixApiClientCredentials.builder()
+            return ApiClientCredentials.builder()
                                                 .withPrismUrl(prismUrl)
                                                 .withUsername(username)
                                                 .withPassword(password)
@@ -136,7 +136,7 @@ public abstract class AbstractStatusPoller implements ServicePoller {
                                                 .build();
         }
 
-        public NutanixApiClient client() throws NutanixApiException {
+        public ApiClient client() throws NutanixApiException {
             return AbstractStatusPoller.this.clientManager.getClient(this.getClientCredentials());
         }
 

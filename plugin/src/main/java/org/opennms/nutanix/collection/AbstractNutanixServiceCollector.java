@@ -19,8 +19,8 @@ import org.opennms.integration.api.v1.collectors.resource.StringAttribute;
 import org.opennms.integration.api.v1.collectors.resource.immutables.ImmutableCollectionSet;
 import org.opennms.integration.api.v1.collectors.resource.immutables.ImmutableCollectionSetResource;
 import org.opennms.integration.api.v1.collectors.resource.immutables.ImmutableNodeResource;
-import org.opennms.nutanix.client.api.NutanixApiClient;
-import org.opennms.nutanix.client.api.NutanixApiClientCredentials;
+import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.NutanixApiServiceCollector;
 import org.opennms.nutanix.client.api.model.Aggregate;
@@ -83,12 +83,12 @@ public abstract class AbstractNutanixServiceCollector implements NutanixApiServi
         }
     }
 
-    protected NutanixApiClient getPartnerClient(Map<String, Object> attributes) throws NutanixApiException {
+    protected ApiClient getPartnerClient(Map<String, Object> attributes) throws NutanixApiException {
         return clientManager.getClient(getCredentials(attributes));
     }
 
-    private static NutanixApiClientCredentials getCredentials(Map<String, Object> attributes) {
-        return NutanixApiClientCredentials.builder()
+    private static ApiClientCredentials getCredentials(Map<String, Object> attributes) {
+        return ApiClientCredentials.builder()
                 .withUsername(attributes.get(ATTR_USERNAME).toString())
                 .withPassword(attributes.get(ATTR_PASSWORD).toString())
                 .withPrismUrl(attributes.get(ATTR_PRISM_URL).toString())

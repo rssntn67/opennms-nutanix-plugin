@@ -15,11 +15,11 @@ import org.opennms.nutanix.client.v2.handler.ApiException;
 import org.opennms.nutanix.client.v2.model.GetBaseEntityCollectionltgetDtoUhuraVmConfigDTOgt;
 import org.opennms.nutanix.client.v2.model.GetDtoUhuraVmConfigDTO;
 
-public class NutanixV2ApiClient implements ApiClient {
+public class V2ApiClient implements ApiClient {
 
     private final ApiClientExtention apiClient;
 
-    public NutanixV2ApiClient(ApiClientExtention apiClient) {
+    public V2ApiClient(ApiClientExtention apiClient) {
         this.apiClient = apiClient;
     }
 

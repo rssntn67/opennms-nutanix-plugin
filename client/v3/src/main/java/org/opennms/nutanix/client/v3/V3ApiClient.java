@@ -49,9 +49,9 @@ import org.opennms.nutanix.client.v3.model.VmListIntentResponse;
 import org.opennms.nutanix.client.v3.model.VmListMetadata;
 import org.opennms.nutanix.client.v3.model.VmNicOutputStatus;
 
-public class NutanixV3ApiClient implements ApiClient {
+public class V3ApiClient implements ApiClient {
     private final ApiClientExtention apiClient;
-    public NutanixV3ApiClient(ApiClientExtention apiClient) {
+    public V3ApiClient(ApiClientExtention apiClient) {
         this.apiClient = apiClient;
     }
 

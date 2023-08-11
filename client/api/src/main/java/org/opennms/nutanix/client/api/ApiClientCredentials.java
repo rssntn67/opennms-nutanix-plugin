@@ -7,7 +7,7 @@ import com.google.common.base.MoreObjects;
 /**
  * Credentials for a Nutanix API connection.
  */
-public class NutanixApiClientCredentials {
+public class ApiClientCredentials {
     /**
      * The URL of the Nutanix orchestrator.
      */
@@ -30,7 +30,7 @@ public class NutanixApiClientCredentials {
 
     public final Integer length;
 
-    private NutanixApiClientCredentials(final Builder builder) {
+    private ApiClientCredentials(final Builder builder) {
         this.prismUrl = Objects.requireNonNull(builder.prismUrl);
         this.username = builder.username;
         this.password = builder.password;
@@ -76,8 +76,8 @@ public class NutanixApiClientCredentials {
             return this;
         }
 
-        public NutanixApiClientCredentials build() {
-            return new NutanixApiClientCredentials(this);
+        public ApiClientCredentials build() {
+            return new ApiClientCredentials(this);
         }
     }
 
@@ -85,7 +85,7 @@ public class NutanixApiClientCredentials {
         return new Builder();
     }
 
-    public static Builder builder(NutanixApiClientCredentials credentials) {
+    public static Builder builder(ApiClientCredentials credentials) {
         return builder()
                 .withPrismUrl(credentials.prismUrl)
                 .withUsername(credentials.username)
@@ -111,10 +111,10 @@ public class NutanixApiClientCredentials {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof NutanixApiClientCredentials)) {
+        if (!(o instanceof ApiClientCredentials)) {
             return false;
         }
-        final NutanixApiClientCredentials that = (NutanixApiClientCredentials) o;
+        final ApiClientCredentials that = (ApiClientCredentials) o;
         return Objects.equals(this.prismUrl, that.prismUrl) &&
                 Objects.equals(this.username, that.username) &&
                 Objects.equals(this.password, that.password) &&

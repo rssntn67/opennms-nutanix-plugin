@@ -2,14 +2,13 @@
 package org.opennms.nutanix.clients;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.opennms.nutanix.client.api.NutanixApiClient;
-import org.opennms.nutanix.client.api.NutanixApiClientCredentials;
-import org.opennms.nutanix.client.api.NutanixApiClientProvider;
+import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientCredentials;
+import org.opennms.nutanix.client.api.ApiClientProvider;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.ApiVersion;
 import org.opennms.nutanix.connections.ConnectionValidationError;
@@ -19,9 +18,9 @@ import org.slf4j.LoggerFactory;
 public class ClientManager {
     private static final Logger LOG = LoggerFactory.getLogger(ClientManager.class);
 
-    private final Map<ApiVersion.Version, NutanixApiClientProvider> clientProviderMap = new HashMap<>();
+    private final Map<ApiVersion.Version, ApiClientProvider> clientProviderMap = new HashMap<>();
 
-    public ClientManager(NutanixApiClientProvider providerA,NutanixApiClientProvider providerB, NutanixApiClientProvider providerC, NutanixApiClientProvider providerD) {
+    public ClientManager(ApiClientProvider providerA, ApiClientProvider providerB, ApiClientProvider providerC, ApiClientProvider providerD) {
         LOG.warn("constructor:");
         Objects.requireNonNull(providerA);
         Objects.requireNonNull(providerB);
@@ -36,17 +35,17 @@ public class ClientManager {
         clientProviderMap.put(providerB.getApiVersion().version, providerB);
         clientProviderMap.put(providerA.getApiVersion().version, providerA);
     }
-    public NutanixApiClientProvider getProvider(ApiVersion.Version version) throws NutanixApiException {
+    public ApiClientProvider getProvider(ApiVersion.Version version) throws NutanixApiException {
         LOG.warn("getProvider: supported API: {}", clientProviderMap.keySet());
         if (clientProviderMap.containsKey(version))
             return clientProviderMap.get(version);
         throw new NutanixApiException("Version not Supported: " + version);
     }
-    public NutanixApiClient client(final NutanixApiClientCredentials credentials, ApiVersion.Version version) throws NutanixApiException {
+    public ApiClient client(final ApiClientCredentials credentials, ApiVersion.Version version) throws NutanixApiException {
         return getProvider(version).client(credentials);
     }
 
-    private boolean validate (final NutanixApiClientCredentials credentials, ApiVersion.Version version) {
+    private boolean validate (final ApiClientCredentials credentials, ApiVersion.Version version) {
         try {
             boolean validated = getProvider(version).validate(credentials);
             LOG.info("validate: {}, version {} - {}", credentials,version,validated);
@@ -56,7 +55,7 @@ public class ClientManager {
         }
         return false;
     }
-    public Optional<ConnectionValidationError> validate(final NutanixApiClientCredentials credentials) {
+    public Optional<ConnectionValidationError> validate(final ApiClientCredentials credentials) {
         if (validate(credentials, ApiVersion.Version.VERSION_3)) {
             return Optional.empty();
         }
@@ -73,7 +72,7 @@ public class ClientManager {
     }
 
 
-    public NutanixApiClient getClient(NutanixApiClientCredentials credentials) throws NutanixApiException{
+    public ApiClient getClient(ApiClientCredentials credentials) throws NutanixApiException{
         if (clientProviderMap.containsKey(ApiVersion.Version.VERSION_3))
             return client(credentials, ApiVersion.Version.VERSION_3);
         if (clientProviderMap.containsKey(ApiVersion.Version.VERSION_2))

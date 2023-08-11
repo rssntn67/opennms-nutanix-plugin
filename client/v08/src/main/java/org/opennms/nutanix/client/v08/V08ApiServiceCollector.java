@@ -7,7 +7,7 @@ import org.opennms.integration.api.v1.collectors.CollectionRequest;
 import org.opennms.integration.api.v1.collectors.CollectionSet;
 import org.opennms.nutanix.client.api.NutanixApiServiceCollector;
 
-public class NutanixV08ApiServiceCollector implements NutanixApiServiceCollector {
+public class V08ApiServiceCollector implements NutanixApiServiceCollector {
     @Override
     public void initialize() {
 

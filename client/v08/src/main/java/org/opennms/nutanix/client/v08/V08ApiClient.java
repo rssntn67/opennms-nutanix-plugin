@@ -15,12 +15,12 @@ import org.opennms.nutanix.client.v08.handler.ApiException;
 import org.opennms.nutanix.client.v08.model.GetBaseEntityCollectionltgetDtoAcropolisVMInfoDTOgt;
 import org.opennms.nutanix.client.v08.model.GetDtoAcropolisVMInfoDTO;
 
-public class NutanixV08ApiClient implements ApiClient {
+public class V08ApiClient implements ApiClient {
 
 
     private final ApiClientExtention apiClient;
 
-    public NutanixV08ApiClient(ApiClientExtention apiClient) {
+    public V08ApiClient(ApiClientExtention apiClient) {
         this.apiClient = apiClient;
     }
 

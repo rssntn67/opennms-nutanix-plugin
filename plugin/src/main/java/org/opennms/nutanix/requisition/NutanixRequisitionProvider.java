@@ -11,8 +11,8 @@ import org.opennms.integration.api.v1.config.requisition.immutables.ImmutableReq
 import org.opennms.integration.api.v1.dao.NodeDao;
 import org.opennms.integration.api.v1.requisition.RequisitionProvider;
 import org.opennms.integration.api.v1.requisition.RequisitionRequest;
-import org.opennms.nutanix.client.api.NutanixApiClient;
-import org.opennms.nutanix.client.api.NutanixApiClientCredentials;
+import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.client.api.model.Host;
@@ -110,7 +110,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
         final var requisition = ImmutableRequisition.newBuilder()
                 .setForeignSource(context.getForeignSource());
 
-        NutanixApiClient apiClient = context.getClient();
+        ApiClient apiClient = context.getClient();
         if (request.importClusters) {
             for (Cluster cluster: apiClient.getClusters()) {
                 final var node = ImmutableRequisitionNode.newBuilder()
@@ -256,8 +256,8 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
             this.request = Objects.requireNonNull(request);
         }
 
-        public NutanixApiClient getClient() throws NutanixApiException {
-            return clientManager.getClient(NutanixApiClientCredentials.builder()
+        public ApiClient getClient() throws NutanixApiException {
+            return clientManager.getClient(ApiClientCredentials.builder()
                     .withPrismUrl(this.request.getPrismUrl())
                     .withUsername(this.request.getUsername())
                     .withPassword(this.request.getPassword())

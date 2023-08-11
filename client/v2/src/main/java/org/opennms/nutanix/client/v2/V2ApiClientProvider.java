@@ -7,19 +7,18 @@ import javax.ws.rs.core.HttpHeaders;
 
 import org.opennms.nutanix.client.api.ApiClient;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
-import org.opennms.nutanix.client.api.ApiClientProvider;
+import org.opennms.nutanix.client.api.V2ClientProvider;
 import org.opennms.nutanix.client.api.model.ApiVersion;
 import org.opennms.nutanix.client.v2.api.AuthconfigApi;
 import org.opennms.nutanix.client.v2.handler.ApiException;
-import org.opennms.nutanix.client.v2.model.GetAuthDtoConfigClientAuthDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NutanixV2ApiClientProvider implements ApiClientProvider {
+public class V2ApiClientProvider implements V2ClientProvider {
 
-    private static final Logger LOG = LoggerFactory.getLogger(NutanixV2ApiClientProvider.class);
+    private static final Logger LOG = LoggerFactory.getLogger(V2ApiClientProvider.class);
 
-    public NutanixV2ApiClientProvider() {
+    public V2ApiClientProvider() {
     }
 
     private ApiClientExtention getClient(ApiClientCredentials credentials) {
@@ -36,7 +35,7 @@ public class NutanixV2ApiClientProvider implements ApiClientProvider {
 
     @Override
     public ApiClient client(ApiClientCredentials credentials) {
-        return new NutanixV2ApiClient(getClient(credentials));
+        return new V2ApiClient(getClient(credentials));
     }
 
     @Override
@@ -48,7 +47,7 @@ public class NutanixV2ApiClientProvider implements ApiClientProvider {
     public boolean validate(ApiClientCredentials credentials) {
         AuthconfigApi authconfigApi = new AuthconfigApi(getClient(credentials));
         try {
-            GetAuthDtoConfigClientAuthDTO dto = authconfigApi.getClientAuth();
+            authconfigApi.getClientAuth();
         } catch (ApiException e) {
             LOG.info("validate: cannot connect to {}, -> {}", credentials,e.getMessage());
             return false;
