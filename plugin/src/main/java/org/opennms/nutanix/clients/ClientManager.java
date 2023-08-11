@@ -21,7 +21,6 @@ public class ClientManager {
     private final Map<ApiVersion.Version, ApiClientProvider> clientProviderMap = new HashMap<>();
 
     public ClientManager(ApiClientProvider providerA, ApiClientProvider providerB, ApiClientProvider providerC, ApiClientProvider providerD) {
-        LOG.warn("constructor:");
         Objects.requireNonNull(providerA);
         Objects.requireNonNull(providerB);
         Objects.requireNonNull(providerC);
