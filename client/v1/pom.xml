@@ -424,6 +424,11 @@
             <version>${jackson.version}</version>
         </dependency>
         <dependency>
+            <artifactId>jersey-common</artifactId>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson.version}</version>

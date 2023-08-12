@@ -302,6 +302,11 @@
             <version>${jersey.version}</version>
         </dependency>
         <dependency>
+            <artifactId>jersey-common</artifactId>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-multipart</artifactId>
             <version>${jersey.version}</version>
