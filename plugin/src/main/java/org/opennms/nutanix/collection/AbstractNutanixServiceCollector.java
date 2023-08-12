@@ -1,10 +1,10 @@
 package org.opennms.nutanix.collection;
 
-import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_IGNORE_SSL_VALIDATION;
-import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_LENGTH;
-import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_PASSWORD;
-import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_PRISM_URL;
-import static org.opennms.nutanix.pollers.AbstractStatusPoller.ATTR_USERNAME;
+import static org.opennms.nutanix.connections.ConnectionManager.IGNORE_SSL_CERTIFICATE_VALIDATION_KEY;
+import static org.opennms.nutanix.connections.ConnectionManager.LENGTH_KEY;
+import static org.opennms.nutanix.connections.ConnectionManager.PASSWORD_KEY;
+import static org.opennms.nutanix.connections.ConnectionManager.PRISM_URL_KEY;
+import static org.opennms.nutanix.connections.ConnectionManager.USERNAME_KEY;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -21,8 +21,8 @@ import org.opennms.integration.api.v1.collectors.resource.immutables.ImmutableCo
 import org.opennms.integration.api.v1.collectors.resource.immutables.ImmutableNodeResource;
 import org.opennms.nutanix.client.api.ApiClient;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
-import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.ApiServiceCollector;
+import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Aggregate;
 import org.opennms.nutanix.client.api.model.Traffic;
 import org.opennms.nutanix.clients.ClientManager;
@@ -83,17 +83,17 @@ public abstract class AbstractNutanixServiceCollector implements ApiServiceColle
         }
     }
 
-    protected ApiClient getPartnerClient(Map<String, Object> attributes) throws NutanixApiException {
+    protected ApiClient getClient(Map<String, Object> attributes) throws NutanixApiException {
         return clientManager.getClient(getCredentials(attributes));
     }
 
     private static ApiClientCredentials getCredentials(Map<String, Object> attributes) {
         return ApiClientCredentials.builder()
-                .withUsername(attributes.get(ATTR_USERNAME).toString())
-                .withPassword(attributes.get(ATTR_PASSWORD).toString())
-                .withPrismUrl(attributes.get(ATTR_PRISM_URL).toString())
-                .withIgnoreSslCertificateValidation(Boolean.parseBoolean(attributes.get(ATTR_IGNORE_SSL_VALIDATION).toString()))
-                .withLength(Integer.parseInt(attributes.get(ATTR_LENGTH).toString()))
+                .withPrismUrl(attributes.get(PRISM_URL_KEY).toString())
+                .withUsername(attributes.get(USERNAME_KEY).toString())
+                .withPassword(attributes.get(PASSWORD_KEY).toString())
+                .withIgnoreSslCertificateValidation(Boolean.parseBoolean(attributes.get(IGNORE_SSL_CERTIFICATE_VALIDATION_KEY).toString()))
+                .withLength(Integer.parseInt(attributes.get(LENGTH_KEY).toString()))
                 .build();
     }
 

@@ -213,7 +213,7 @@ public class NutanixApiClientV3Test {
                         clusternames.add(vm.getStatus().getClusterReference().getName());
                         clusterkinds.add(vm.getStatus().getClusterReference().getKind());
                         powerStateVms.add(vm.getStatus().getResources().getPowerState());
-                    });
+                        Assert.assertNotNull(vm.getStatus().getResources().getHostReference());                    });
 
                     offset+=vmListIntentResponse.getEntities().size();
                 } catch (ApiException e) {

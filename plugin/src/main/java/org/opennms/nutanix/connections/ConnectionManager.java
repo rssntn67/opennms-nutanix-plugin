@@ -23,10 +23,18 @@ import com.google.common.base.Strings;
 public class ConnectionManager {
 
     private static final String PREFIX = "nutanix_connection_";
-    private static final String PRISM_URL_KEY = "prismUrl";
-    private static final String IGNORE_SSH_CERT_VALIDATION_KEY = "ignoreSslCertificateValidation";
+    public static final String PRISM_URL_KEY = "prismUrl";
+    public static final String IGNORE_SSL_CERTIFICATE_VALIDATION_KEY = "ignoreSslCertificateValidation";
 
-    private static final String LENGTH_KEY="length";
+    public static final String LENGTH_KEY="length";
+    public static final String ALIAS_KEY = "alias";
+
+    public static final String USERNAME_KEY = "username";
+    public static final String PASSWORD_KEY = "password";
+
+
+
+
     private final RuntimeInfo runtimeInfo;
 
     private final SecureCredentialsVault vault;
@@ -148,8 +156,8 @@ public class ConnectionManager {
             throw new IllegalStateException("Prism URL is missing");
         }
 
-        if (Strings.isNullOrEmpty(credentials.getAttribute(IGNORE_SSH_CERT_VALIDATION_KEY))) {
-            throw new IllegalStateException("Ignore  SSH CEERTIFICATION Validation is missing");
+        if (Strings.isNullOrEmpty(credentials.getAttribute(IGNORE_SSL_CERTIFICATE_VALIDATION_KEY))) {
+            throw new IllegalStateException("Ignore  SSL CERTIFICATION Validation is missing");
         }
 
         if (Strings.isNullOrEmpty(credentials.getAttribute(LENGTH_KEY))) {
@@ -160,7 +168,7 @@ public class ConnectionManager {
 
         final var username = credentials.getUsername();
         final var password = credentials.getPassword();
-        final var ignoreSslCertificateValidation = Boolean.parseBoolean(credentials.getAttribute(IGNORE_SSH_CERT_VALIDATION_KEY));
+        final var ignoreSslCertificateValidation = Boolean.parseBoolean(credentials.getAttribute(IGNORE_SSL_CERTIFICATE_VALIDATION_KEY));
         final var length = Integer.parseInt(credentials.getAttribute(LENGTH_KEY));
 
         return ApiClientCredentials.builder()
@@ -265,7 +273,7 @@ public class ConnectionManager {
         private Credentials asCredentials() {
             Map<String,String> credentialMap = new HashMap<>();
             credentialMap.put(PRISM_URL_KEY, this.credentials.prismUrl);
-            credentialMap.put(IGNORE_SSH_CERT_VALIDATION_KEY, String.valueOf(this.credentials.ignoreSslCertificateValidation));
+            credentialMap.put(IGNORE_SSL_CERTIFICATE_VALIDATION_KEY, String.valueOf(this.credentials.ignoreSslCertificateValidation));
             credentialMap.put(LENGTH_KEY, this.credentials.length.toString());
             return new ImmutableCredentials(this.credentials.username, this.credentials.password, credentialMap);
 
@@ -279,7 +287,7 @@ public class ConnectionManager {
                               .add(PRISM_URL_KEY, this.credentials.prismUrl)
                               .add("username", this.credentials.username)
                               .add("password", "******")
-                              .add(IGNORE_SSH_CERT_VALIDATION_KEY, this.credentials.ignoreSslCertificateValidation)
+                              .add(IGNORE_SSL_CERTIFICATE_VALIDATION_KEY, this.credentials.ignoreSslCertificateValidation)
                               .add(LENGTH_KEY, this.credentials.length)
                     .toString();
         }

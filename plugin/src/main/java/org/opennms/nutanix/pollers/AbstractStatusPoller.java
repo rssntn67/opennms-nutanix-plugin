@@ -1,6 +1,13 @@
 
 package org.opennms.nutanix.pollers;
 
+import static org.opennms.nutanix.connections.ConnectionManager.ALIAS_KEY;
+import static org.opennms.nutanix.connections.ConnectionManager.PASSWORD_KEY;
+import static org.opennms.nutanix.connections.ConnectionManager.PRISM_URL_KEY;
+import static org.opennms.nutanix.connections.ConnectionManager.USERNAME_KEY;
+import static org.opennms.nutanix.connections.ConnectionManager.IGNORE_SSL_CERTIFICATE_VALIDATION_KEY;
+import static org.opennms.nutanix.connections.ConnectionManager.LENGTH_KEY;
+
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -23,17 +30,6 @@ import com.google.common.collect.ImmutableMap;
 
 public abstract class AbstractStatusPoller implements ServicePoller {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractStatusPoller.class);
-
-    public static final String ATTR_ALIAS = "alias";
-
-    public static final String ATTR_PRISM_URL = "prismUrl";
-    public static final String ATTR_USERNAME = "username";
-    public static final String ATTR_PASSWORD = "password";
-
-    public static final String ATTR_IGNORE_SSL_VALIDATION = "ignoreSslCertificateValidation";
-
-    public static final String ATTR_LENGTH = "length";
-
     private final ClientManager clientManager;
 
     protected AbstractStatusPoller(final ClientManager clientManager) {
@@ -90,16 +86,16 @@ public abstract class AbstractStatusPoller implements ServicePoller {
         //TODO get this to my factory
         @Override
         public final Map<String, String> getRuntimeAttributes(final PollerRequest pollerRequest) {
-            final var alias = Objects.requireNonNull(pollerRequest.getPollerAttributes().get(ATTR_ALIAS), "Missing property: " + ATTR_ALIAS);
+            final var alias = Objects.requireNonNull(pollerRequest.getPollerAttributes().get(ALIAS_KEY), "Missing property: " + ALIAS_KEY);
             final var connection = this.connectionManager.getConnection(alias)
                                                          .orElseThrow(() -> new NullPointerException("Connection not found for alias: " + alias));
 
             final var attrs = ImmutableMap.<String,String>builder();
-            attrs.put(ATTR_PRISM_URL, connection.getPrismUrl());
-            attrs.put(ATTR_USERNAME, connection.getUsername());
-            attrs.put(ATTR_PASSWORD, connection.getPassword());
-            attrs.put(ATTR_IGNORE_SSL_VALIDATION, String.valueOf(connection.isIgnoreSslCertificateValidation()));
-            attrs.put(ATTR_LENGTH, String.valueOf(connection.getLength()));
+            attrs.put(ConnectionManager.PRISM_URL_KEY, connection.getPrismUrl());
+            attrs.put(USERNAME_KEY, connection.getUsername());
+            attrs.put(PASSWORD_KEY, connection.getPassword());
+            attrs.put(IGNORE_SSL_CERTIFICATE_VALIDATION_KEY, String.valueOf(connection.isIgnoreSslCertificateValidation()));
+            attrs.put(LENGTH_KEY, String.valueOf(connection.getLength()));
 
             return attrs.build();
         }
@@ -113,19 +109,19 @@ public abstract class AbstractStatusPoller implements ServicePoller {
         }
 
         public ApiClientCredentials getClientCredentials() {
-            final var prismUrl = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_PRISM_URL),
-                                                               "Missing attribute: " + ATTR_PRISM_URL);
-            final var username = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_USERNAME),
-                                                      "Missing attribute: " + ATTR_USERNAME);
+            final var prismUrl = Objects.requireNonNull(this.request.getPollerAttributes().get(PRISM_URL_KEY),
+                                                               "Missing attribute: " + PRISM_URL_KEY);
+            final var username = Objects.requireNonNull(this.request.getPollerAttributes().get(USERNAME_KEY),
+                                                      "Missing attribute: " + USERNAME_KEY);
 
-            final var password = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_PASSWORD),
-                    "Missing attribute: " + ATTR_PASSWORD);
+            final var password = Objects.requireNonNull(this.request.getPollerAttributes().get(PASSWORD_KEY),
+                    "Missing attribute: " + PASSWORD_KEY);
 
-            final var ignoreSslCertificateValidation = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_IGNORE_SSL_VALIDATION),
-                    "Missing attribute: " + ATTR_IGNORE_SSL_VALIDATION);
+            final var ignoreSslCertificateValidation = Objects.requireNonNull(this.request.getPollerAttributes().get(IGNORE_SSL_CERTIFICATE_VALIDATION_KEY),
+                    "Missing attribute: " + IGNORE_SSL_CERTIFICATE_VALIDATION_KEY);
 
-            final var length = Objects.requireNonNull(this.request.getPollerAttributes().get(ATTR_LENGTH),
-                    "Missing attribute: " + ATTR_LENGTH);
+            final var length = Objects.requireNonNull(this.request.getPollerAttributes().get(LENGTH_KEY),
+                    "Missing attribute: " + LENGTH_KEY);
 
             return ApiClientCredentials.builder()
                                                 .withPrismUrl(prismUrl)
