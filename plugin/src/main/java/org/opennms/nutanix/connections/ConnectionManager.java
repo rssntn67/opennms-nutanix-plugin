@@ -265,6 +265,8 @@ public class ConnectionManager {
         private Credentials asCredentials() {
             Map<String,String> credentialMap = new HashMap<>();
             credentialMap.put(PRISM_URL_KEY, this.credentials.prismUrl);
+            credentialMap.put(IGNORE_SSH_CERT_VALIDATION_KEY, String.valueOf(this.credentials.ignoreSslCertificateValidation));
+            credentialMap.put(LENGTH_KEY, this.credentials.length.toString());
             return new ImmutableCredentials(this.credentials.username, this.credentials.password, credentialMap);
 
 
