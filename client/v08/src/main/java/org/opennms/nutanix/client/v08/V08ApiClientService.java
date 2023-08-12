@@ -1,66 +1,60 @@
-package org.opennms.nutanix.client.v1;
+package org.opennms.nutanix.client.v08;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Alert;
 import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.client.api.model.MetricsCluster;
 import org.opennms.nutanix.client.api.model.VM;
-import org.opennms.nutanix.client.v1.api.VmsApi;
-import org.opennms.nutanix.client.v1.handler.ApiException;
-import org.opennms.nutanix.client.v1.model.VMEntity;
-import org.opennms.nutanix.client.v1.model.VMCollectionEntity;
+import org.opennms.nutanix.client.v08.api.VmsApi;
+import org.opennms.nutanix.client.v08.handler.ApiException;
+import org.opennms.nutanix.client.v08.model.GetBaseEntityCollectionltgetDtoAcropolisVMInfoDTOgt;
+import org.opennms.nutanix.client.v08.model.GetDtoAcropolisVMInfoDTO;
 
-public class V1ApiClient implements ApiClient {
+public class V08ApiClientService implements ApiClientService {
 
 
     private final ApiClientExtention apiClient;
 
-    public V1ApiClient(ApiClientExtention apiClient) {
+    public V08ApiClientService(ApiClientExtention apiClient) {
         this.apiClient = apiClient;
     }
+
     @Override
     public List<VM> getVMS() throws NutanixApiException {
-        VmsApi vmsApi= new VmsApi(apiClient);
+        VmsApi vmsApi = new VmsApi(apiClient);
         List<VM> vms = new ArrayList<>();
-        int page = 1;
-        int endIndex;
-        int total;
-        do {
-            try {
-                VMCollectionEntity dto = vmsApi.getVMs(page, apiClient.getLength());
-                dto.getEntities().forEach(vm -> vms.add(getFromVmEntity(vm)));
-                endIndex=dto.getMetadata().getEndIndex();
-                total = dto.getMetadata().getGrandTotalEntities();
-            } catch (ApiException e) {
-                throw new NutanixApiException(e.getMessage(), e);
-            }
-        } while (endIndex < total );
 
+        try {
+            GetBaseEntityCollectionltgetDtoAcropolisVMInfoDTOgt vmsdto = vmsApi.getVMs(true,true,true);
+            vmsdto.getEntities().forEach(vmdto -> vms.add(getFromVmAcropolisDto(vmdto)));
+        } catch (ApiException e) {
+            throw new NutanixApiException(e.getMessage(), e);
+        }
         return vms;
     }
 
-    private VM getFromVmEntity(VMEntity vmdto) {
+    private VM getFromVmAcropolisDto(GetDtoAcropolisVMInfoDTO vmdto) {
         return VM.builder()
-                .withName(vmdto.getVmName())
+                .withName(vmdto.getConfig().getName())
                 .withUuid(vmdto.getUuid())
                 .build();
     }
 
     @Override
     public VM getVM(String uuid) throws NutanixApiException {
-        VmsApi vmsApi= new VmsApi(apiClient);
-        VMEntity vmEntity;
+        VmsApi vmsApi = new VmsApi(apiClient);
+        GetDtoAcropolisVMInfoDTO dto;
         try {
-            vmEntity = vmsApi.getVM(uuid);
+            dto = vmsApi.getVM(uuid, true, true, true);
         } catch (ApiException e) {
             throw new NutanixApiException(e.getMessage(), e);
         }
-        return getFromVmEntity(vmEntity);
+        return getFromVmAcropolisDto(dto);
     }
 
     @Override
@@ -86,12 +80,12 @@ public class V1ApiClient implements ApiClient {
     @Override
     public List<Alert> getAlerts() throws NutanixApiException {
         throw new NutanixApiException("not supported");
-
     }
 
     @Override
     public MetricsCluster getClusterMetric(String uuid) throws NutanixApiException {
         throw new NutanixApiException("not supported");
+
     }
 
 

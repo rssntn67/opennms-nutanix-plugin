@@ -11,7 +11,7 @@ import org.opennms.integration.api.v1.config.requisition.immutables.ImmutableReq
 import org.opennms.integration.api.v1.dao.NodeDao;
 import org.opennms.integration.api.v1.requisition.RequisitionProvider;
 import org.opennms.integration.api.v1.requisition.RequisitionRequest;
-import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Cluster;
@@ -110,9 +110,9 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
         final var requisition = ImmutableRequisition.newBuilder()
                 .setForeignSource(context.getForeignSource());
 
-        ApiClient apiClient = context.getClient();
+        ApiClientService apiClientService = context.getClient();
         if (request.importClusters) {
-            for (Cluster cluster: apiClient.getClusters()) {
+            for (Cluster cluster: apiClientService.getClusters()) {
                 final var node = ImmutableRequisitionNode.newBuilder()
                         .setNodeLabel(cluster.name)
                         .setForeignId(cluster.uuid)
@@ -126,7 +126,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
             }
         }
         if (request.importHosts) {
-            for (Host host: apiClient.getHosts()) {
+            for (Host host: apiClientService.getHosts()) {
                 final var node = ImmutableRequisitionNode.newBuilder()
                         .setNodeLabel(host.name)
                         .setForeignId(host.uuid)
@@ -140,7 +140,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
             }
         }
         if (request.importVms) {
-            for (VM vm: apiClient.getVMS()) {
+            for (VM vm: apiClientService.getVMS()) {
                 if (!request.importAllVms && !vm.powerState.equalsIgnoreCase("ON"))
                     continue;
                 final var node = ImmutableRequisitionNode.newBuilder()
@@ -256,7 +256,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
             this.request = Objects.requireNonNull(request);
         }
 
-        public ApiClient getClient() throws NutanixApiException {
+        public ApiClientService getClient() throws NutanixApiException {
             return clientManager.getClient(ApiClientCredentials.builder()
                     .withPrismUrl(this.request.getPrismUrl())
                     .withUsername(this.request.getUsername())

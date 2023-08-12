@@ -12,7 +12,7 @@ import org.opennms.integration.api.v1.runtime.RuntimeInfo;
 import org.opennms.integration.api.v1.scv.Credentials;
 import org.opennms.integration.api.v1.scv.SecureCredentialsVault;
 import org.opennms.integration.api.v1.scv.immutables.ImmutableCredentials;
-import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.clients.ClientManager;
@@ -120,7 +120,7 @@ public class ConnectionManager {
         return true;
     }
 
-    public Optional<ApiClient> getClient(final String alias) throws NutanixApiException {
+    public Optional<ApiClientService> getClient(final String alias) throws NutanixApiException {
         this.ensureCore();
 
         final var connection = this.getConnection(alias);

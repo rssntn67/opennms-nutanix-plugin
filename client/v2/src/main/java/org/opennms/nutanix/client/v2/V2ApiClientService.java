@@ -3,7 +3,7 @@ package org.opennms.nutanix.client.v2;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Alert;
 import org.opennms.nutanix.client.api.model.Cluster;
@@ -15,11 +15,11 @@ import org.opennms.nutanix.client.v2.handler.ApiException;
 import org.opennms.nutanix.client.v2.model.GetBaseEntityCollectionltgetDtoUhuraVmConfigDTOgt;
 import org.opennms.nutanix.client.v2.model.GetDtoUhuraVmConfigDTO;
 
-public class V2ApiClient implements ApiClient {
+public class V2ApiClientService implements ApiClientService {
 
     private final ApiClientExtention apiClient;
 
-    public V2ApiClient(ApiClientExtention apiClient) {
+    public V2ApiClientService(ApiClientExtention apiClient) {
         this.apiClient = apiClient;
     }
 

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Alert;
 import org.opennms.nutanix.client.api.model.Cluster;
@@ -41,6 +41,7 @@ import org.opennms.nutanix.client.v3.model.HostListIntentResponse;
 import org.opennms.nutanix.client.v3.model.HostListMetadata;
 import org.opennms.nutanix.client.v3.model.HttpProxyWhitelist;
 import org.opennms.nutanix.client.v3.model.IpAddress;
+import org.opennms.nutanix.client.v3.model.Reference;
 import org.opennms.nutanix.client.v3.model.SmtpServer;
 import org.opennms.nutanix.client.v3.model.VmDiskOutputStatus;
 import org.opennms.nutanix.client.v3.model.VmIntentResource;
@@ -49,9 +50,9 @@ import org.opennms.nutanix.client.v3.model.VmListIntentResponse;
 import org.opennms.nutanix.client.v3.model.VmListMetadata;
 import org.opennms.nutanix.client.v3.model.VmNicOutputStatus;
 
-public class V3ApiClient implements ApiClient {
+public class V3ApiClientService implements ApiClientService {
     private final ApiClientExtention apiClient;
-    public V3ApiClient(ApiClientExtention apiClient) {
+    public V3ApiClientService(ApiClientExtention apiClient) {
         this.apiClient = apiClient;
     }
 
@@ -95,8 +96,8 @@ public class V3ApiClient implements ApiClient {
                 .withUuid(vmIntentResponse.getMetadata().getUuid())
                 .withClusterName(vmIntentResponse.getStatus().getClusterReference().getName())
                 .withClusterUuid(vmIntentResponse.getStatus().getClusterReference().getUuid())
-                .withHostName(vmIntentResponse.getStatus().getResources().getHostReference().getName())
-                .withHostUuid(vmIntentResponse.getStatus().getResources().getHostReference().getUuid())
+                .withHostName(getHostName(vmIntentResponse.getStatus().getResources().getHostReference()))
+                .withHostUuid(getHostUuid(vmIntentResponse.getStatus().getResources().getHostReference()))
                 .withState(vmIntentResponse.getStatus().getState())
                 .withNumThreadsPerCore(vmIntentResponse.getStatus().getResources().getNumThreadsPerCore())
                 .withMemorySizeMib(vmIntentResponse.getStatus().getResources().getMemorySizeMib())
@@ -140,6 +141,17 @@ public class V3ApiClient implements ApiClient {
                     .withDiskSizeMib(d.getDiskSizeMib()).build())
             .collect(Collectors.toUnmodifiableList());
 }
+
+    private static String getHostName(Reference hostReference) {
+        var hostName = (hostReference == null)  ?  null :  hostReference.getName();
+        return hostName;
+    }
+
+    private static String getHostUuid(Reference hostReference) {
+        var hostUuid = (hostReference == null)  ?  null :  hostReference.getUuid();
+        return hostUuid;
+    }
+
     private static VM getFromVmIntentResource(VmIntentResource vmIntentResource) {
         return VM.builder()
                 .withName(vmIntentResource.getStatus().getName())
@@ -147,8 +159,8 @@ public class V3ApiClient implements ApiClient {
                 .withUuid(vmIntentResource.getMetadata().getUuid())
                 .withClusterName(vmIntentResource.getStatus().getClusterReference().getName())
                 .withClusterUuid(vmIntentResource.getStatus().getClusterReference().getUuid())
-                .withHostName(vmIntentResource.getStatus().getResources().getHostReference().getName())
-                .withHostUuid(vmIntentResource.getStatus().getResources().getHostReference().getUuid())
+                .withHostName(getHostName(vmIntentResource.getStatus().getResources().getHostReference()))
+                .withHostUuid(getHostUuid(vmIntentResource.getStatus().getResources().getHostReference()))
                 .withState(vmIntentResource.getStatus().getState())
                 .withNumThreadsPerCore(vmIntentResource.getStatus().getResources().getNumThreadsPerCore())
                 .withMemorySizeMib(vmIntentResource.getStatus().getResources().getMemorySizeMib())

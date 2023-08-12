@@ -18,7 +18,7 @@ import org.opennms.integration.api.v1.pollers.ServicePoller;
 import org.opennms.integration.api.v1.pollers.ServicePollerFactory;
 import org.opennms.integration.api.v1.pollers.Status;
 import org.opennms.integration.api.v1.pollers.immutables.ImmutablePollerResult;
-import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.clients.ClientManager;
@@ -132,7 +132,7 @@ public abstract class AbstractStatusPoller implements ServicePoller {
                                                 .build();
         }
 
-        public ApiClient client() throws NutanixApiException {
+        public ApiClientService client() throws NutanixApiException {
             return AbstractStatusPoller.this.clientManager.getClient(this.getClientCredentials());
         }
 

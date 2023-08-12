@@ -1,6 +1,6 @@
 package org.opennms.nutanix.client.v3;
 
-import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.V3ClientProvider;
 import org.opennms.nutanix.client.api.model.ApiVersion;
@@ -26,8 +26,8 @@ public class V3ApiClientProvider implements V3ClientProvider {
         return apiClient;
     }
     @Override
-    public ApiClient client(ApiClientCredentials credentials) {
-        return new V3ApiClient(getClient(credentials));
+    public ApiClientService client(ApiClientCredentials credentials) {
+        return new V3ApiClientService(getClient(credentials));
     }
 
     @Override

@@ -41,8 +41,8 @@ public class VM {
         this.uuid=Objects.requireNonNull(builder.uuid);
         this.clusterName=Objects.requireNonNull(builder.clusterName);
         this.clusterUuid=Objects.requireNonNull(builder.clusterUuid);
-        this.hostName=Objects.requireNonNull(builder.hostName);
-        this.hostUuid=Objects.requireNonNull(builder.hostUuid);
+        this.hostName=builder.hostName;
+        this.hostUuid=builder.hostUuid;
         this.state=Objects.requireNonNull(builder.state);
         this.numThreadsPerCore=Objects.requireNonNull(builder.numThreadsPerCore);
         this.memorySizeMib=Objects.requireNonNull(builder.memorySizeMib);
@@ -52,7 +52,7 @@ public class VM {
         this.machineType=Objects.requireNonNull(builder.machineType);
         this.protectionType=Objects.requireNonNull(builder.protectionType);
         this.hypervisorType=Objects.requireNonNull(builder.hypervisorType);
-        this.description=Objects.requireNonNull(builder.description);
+        this.description=builder.description;
         this.disks=Objects.requireNonNull(builder.disks);
         this.nics=Objects.requireNonNull(builder.nics);
         this.kind=Objects.requireNonNull(builder.kind);

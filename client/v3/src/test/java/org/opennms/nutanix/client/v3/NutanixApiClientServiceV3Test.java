@@ -8,6 +8,7 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
+import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.v3.api.AccessControlPoliciesApi;
 import org.opennms.nutanix.client.v3.api.AlertsApi;
@@ -134,7 +135,7 @@ import org.opennms.nutanix.client.v3.model.VolumeGroupListMetadata;
 import org.opennms.nutanix.client.v3.model.WebhookListIntentResponse;
 import org.opennms.nutanix.client.v3.model.WebhookListMetadata;
 
-public class NutanixApiClientV3Test {
+public class NutanixApiClientServiceV3Test {
 
     private ApiClientExtention getApiClient() {
         ApiClientExtention apiClient = new ApiClientExtention();
@@ -167,6 +168,16 @@ public class NutanixApiClientV3Test {
         Assert.assertTrue(provider.validate(credentials));
 
     }
+
+    @Test
+    public void testApiClientService() throws NutanixApiException {
+        ApiClientService apiClientService = new V3ApiClientService(getApiClient());
+        apiClientService.getVMS();
+        apiClientService.getAlerts();
+        apiClientService.getClusters();
+        apiClientService.getHosts();
+    }
+
     @Test
     public void testVmsApi() {
 
@@ -183,6 +194,7 @@ public class NutanixApiClientV3Test {
         Set<String> clusterkinds = new HashSet<>();
         Set<String> nicType = new HashSet<>();
         Set<String> diskType = new HashSet<>();
+        List<VmIntentResource> vmWithoutHostReference = new ArrayList<>();
         List<VmIntentResource> errorVms = new ArrayList<>();
         int total;
             do {
@@ -213,13 +225,15 @@ public class NutanixApiClientV3Test {
                         clusternames.add(vm.getStatus().getClusterReference().getName());
                         clusterkinds.add(vm.getStatus().getClusterReference().getKind());
                         powerStateVms.add(vm.getStatus().getResources().getPowerState());
-                        Assert.assertNotNull(vm.getStatus().getResources().getHostReference());                    });
+                    });
 
+                    vmListIntentResponse.getEntities().stream().filter(vm -> vm.getStatus().getResources().getHostReference() == null).forEach(vmWithoutHostReference::add);
                     offset+=vmListIntentResponse.getEntities().size();
                 } catch (ApiException e) {
                     throw new RuntimeException(e);
                 }
             } while (vmnames.size() < total );
+            System.out.println("----------------------------------");
             System.out.println(stateVms);
             System.out.println(powerStateVms);
             System.out.println(clusterkinds);
@@ -228,12 +242,17 @@ public class NutanixApiClientV3Test {
             System.out.println(nicType);
             System.out.println(diskType);
 
+            vmWithoutHostReference.forEach(vm -> Assert.assertEquals("OFF", vm.getStatus().getResources().getPowerState()));
+            System.out.println("----------------------------------");
+            System.out.println("no host vms: " + vmWithoutHostReference.size());
             System.out.println("total vms: " + vmnames.size());
             System.out.println("error vms: " + errorVms.size());
             System.out.println("off vms: " + offVms.size());
             System.out.println("on vms: " + onVms.size());
+            System.out.println("----------------------------------");
 
-            Assert.assertEquals(vmnames.size(),total);
+
+        Assert.assertEquals(vmnames.size(),total);
 
 
     }

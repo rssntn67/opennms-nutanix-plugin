@@ -5,9 +5,8 @@ import java.util.Base64;
 
 import javax.ws.rs.core.HttpHeaders;
 
-import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
-import org.opennms.nutanix.client.api.ApiClientProvider;
 import org.opennms.nutanix.client.api.V08ClientProvider;
 import org.opennms.nutanix.client.api.model.ApiVersion;
 import org.opennms.nutanix.client.v08.api.HaApi;
@@ -34,8 +33,8 @@ public class V08ApiClientProvider implements V08ClientProvider {
     }
 
     @Override
-    public ApiClient client(ApiClientCredentials credentials)  {
-        return new V08ApiClient(getClient(credentials));
+    public ApiClientService client(ApiClientCredentials credentials)  {
+        return new V08ApiClientService(getClient(credentials));
     }
 
     @Override

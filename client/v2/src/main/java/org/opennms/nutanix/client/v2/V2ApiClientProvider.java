@@ -5,7 +5,7 @@ import java.util.Base64;
 
 import javax.ws.rs.core.HttpHeaders;
 
-import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.V2ClientProvider;
 import org.opennms.nutanix.client.api.model.ApiVersion;
@@ -34,8 +34,8 @@ public class V2ApiClientProvider implements V2ClientProvider {
     }
 
     @Override
-    public ApiClient client(ApiClientCredentials credentials) {
-        return new V2ApiClient(getClient(credentials));
+    public ApiClientService client(ApiClientCredentials credentials) {
+        return new V2ApiClientService(getClient(credentials));
     }
 
     @Override

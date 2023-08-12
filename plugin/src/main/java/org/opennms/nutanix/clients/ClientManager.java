@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.ApiClientProvider;
 import org.opennms.nutanix.client.api.NutanixApiException;
@@ -40,7 +40,7 @@ public class ClientManager {
             return clientProviderMap.get(version);
         throw new NutanixApiException("Version not Supported: " + version);
     }
-    public ApiClient client(final ApiClientCredentials credentials, ApiVersion.Version version) throws NutanixApiException {
+    public ApiClientService client(final ApiClientCredentials credentials, ApiVersion.Version version) throws NutanixApiException {
         return getProvider(version).client(credentials);
     }
 
@@ -71,7 +71,7 @@ public class ClientManager {
     }
 
 
-    public ApiClient getClient(ApiClientCredentials credentials) throws NutanixApiException{
+    public ApiClientService getClient(ApiClientCredentials credentials) throws NutanixApiException{
         if (clientProviderMap.containsKey(ApiVersion.Version.VERSION_3))
             return client(credentials, ApiVersion.Version.VERSION_3);
         if (clientProviderMap.containsKey(ApiVersion.Version.VERSION_2))

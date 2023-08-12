@@ -19,7 +19,7 @@ import org.opennms.integration.api.v1.collectors.resource.StringAttribute;
 import org.opennms.integration.api.v1.collectors.resource.immutables.ImmutableCollectionSet;
 import org.opennms.integration.api.v1.collectors.resource.immutables.ImmutableCollectionSetResource;
 import org.opennms.integration.api.v1.collectors.resource.immutables.ImmutableNodeResource;
-import org.opennms.nutanix.client.api.ApiClient;
+import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.ApiServiceCollector;
 import org.opennms.nutanix.client.api.NutanixApiException;
@@ -83,7 +83,7 @@ public abstract class AbstractNutanixServiceCollector implements ApiServiceColle
         }
     }
 
-    protected ApiClient getClient(Map<String, Object> attributes) throws NutanixApiException {
+    protected ApiClientService getClient(Map<String, Object> attributes) throws NutanixApiException {
         return clientManager.getClient(getCredentials(attributes));
     }
 

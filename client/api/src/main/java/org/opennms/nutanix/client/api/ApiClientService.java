@@ -8,7 +8,7 @@ import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.client.api.model.MetricsCluster;
 import org.opennms.nutanix.client.api.model.VM;
 
-public interface ApiClient {
+public interface ApiClientService {
     /**
      * Get the VMS.
      *

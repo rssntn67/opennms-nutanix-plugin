@@ -9,7 +9,7 @@ public interface ApiClientProvider {
      * @param credentials the credentials to use for the client.
      * @return a NutanixApiClient client
      */
-    ApiClient client(final ApiClientCredentials credentials);
+    ApiClientService client(final ApiClientCredentials credentials);
 
     ApiVersion getApiVersion();
 

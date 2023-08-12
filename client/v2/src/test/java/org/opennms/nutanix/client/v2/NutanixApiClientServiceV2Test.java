@@ -17,7 +17,7 @@ import org.opennms.nutanix.client.v2.api.VmsApi;
 import org.opennms.nutanix.client.v2.handler.ApiException;
 import org.opennms.nutanix.client.v2.model.GetBaseEntityCollectionltgetDtoUhuraVmConfigDTOgt;
 
-public class NutanixApiClientV2Test {
+public class NutanixApiClientServiceV2Test {
 
     private ApiClientExtention getApiClient() {
         ApiClientExtention apiClient = new ApiClientExtention();
