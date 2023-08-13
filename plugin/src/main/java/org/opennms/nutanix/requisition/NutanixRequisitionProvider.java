@@ -11,12 +11,14 @@ import org.opennms.integration.api.v1.config.requisition.immutables.ImmutableReq
 import org.opennms.integration.api.v1.dao.NodeDao;
 import org.opennms.integration.api.v1.requisition.RequisitionProvider;
 import org.opennms.integration.api.v1.requisition.RequisitionRequest;
-import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
+import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.client.api.model.VM;
+import org.opennms.nutanix.client.api.model.VMDisk;
+import org.opennms.nutanix.client.api.model.VMNic;
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.Connection;
 import org.opennms.nutanix.connections.ConnectionManager;
@@ -111,6 +113,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                 .setForeignSource(context.getForeignSource());
 
         ApiClientService apiClientService = context.getClient();
+
         if (request.importClusters) {
             for (Cluster cluster: apiClientService.getClusters()) {
                 final var node = ImmutableRequisitionNode.newBuilder()
@@ -122,9 +125,11 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         .setKey("alias")
                         .setValue(context.getAlias())
                         .build());
+                node.addCategory("NutanixCluster");
                 requisition.addNode(node.build());
             }
         }
+
         if (request.importHosts) {
             for (Host host: apiClientService.getHosts()) {
                 final var node = ImmutableRequisitionNode.newBuilder()
@@ -136,6 +141,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         .setKey("alias")
                         .setValue(context.getAlias())
                         .build());
+                node.addCategory("NutanixHost");
                 requisition.addNode(node.build());
             }
         }
@@ -146,12 +152,199 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                 final var node = ImmutableRequisitionNode.newBuilder()
                         .setNodeLabel(vm.name)
                         .setForeignId(vm.uuid)
-                        .setLocation(context.getLocation());
-                node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                        .setContext(NUTANIX_METADATA_CONTEXT)
-                        .setKey("alias")
-                        .setValue(context.getAlias())
-                        .build());
+                        .setLocation(context.getLocation())
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("uuid")
+                                .setValue(vm.uuid)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("alias")
+                            .setValue(context.getAlias())
+                            .build())
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("powerState")
+                                .setValue(vm.powerState)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("clusterName")
+                                .setValue(vm.clusterName)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("clusterUuid")
+                                .setValue(vm.clusterUuid)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("entityVersion")
+                                .setValue(vm.entityVersion)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("description")
+                                .setValue(vm.description)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("hostName")
+                                .setValue(vm.hostName)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("hostUuid")
+                                .setValue(vm.hostUuid)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("hypervisorType")
+                                .setValue(vm.hypervisorType)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("kind")
+                                .setValue(vm.kind)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("machineType")
+                                .setValue(vm.machineType)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("protectionType")
+                                .setValue(vm.protectionType)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("state")
+                                .setValue(vm.state)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("numSockets")
+                                .setValue(String.valueOf(vm.numSockets))
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("numVcpusPerSocket")
+                                .setValue(String.valueOf(vm.numVcpusPerSocket))
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("numThreadsPerCore")
+                                .setValue(String.valueOf(vm.numThreadsPerCore))
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("memorySizeMib")
+                                .setValue(String.valueOf(vm.memorySizeMib))
+                                .build()
+                        )
+                        .addCategory("NutanixVM");
+
+                node.addAsset("category", "NutanixVM");
+                node.addAsset("description", vm.description);
+                node.addAsset("ram", String.valueOf(vm.memorySizeMib));
+
+                for (VMDisk disk: vm.disks) {
+
+                }
+                for (VMNic nic: vm.nics) {
+
+                }
+
+                /*
+                opennms=# \d assets
+                                            Table "public.assets"
+        Column         |           Type           | Collation | Nullable |              Default
+-----------------------+--------------------------+-----------+----------+-----------------------------------
+ category              | text                     |           | not null |
+ manufacturer          | text                     |           |          |
+ vendor                | text                     |           |          |
+ modelnumber           | text                     |           |          |
+ serialnumber          | text                     |           |          |
+ description           | text                     |           |          |
+ circuitid             | text                     |           |          |
+ assetnumber           | text                     |           |          |
+ operatingsystem       | text                     |           |          |
+ rack                  | text                     |           |          |
+ slot                  | text                     |           |          |
+ port                  | text                     |           |          |
+ region                | text                     |           |          |
+ division              | text                     |           |          |
+ department            | text                     |           |          |
+ address1              | text                     |           |          |
+ address2              | text                     |           |          |
+ city                  | text                     |           |          |
+ state                 | text                     |           |          |
+ zip                   | text                     |           |          |
+ building              | text                     |           |          |
+ floor                 | text                     |           |          |
+ room                  | text                     |           |          |
+ vendorphone           | text                     |           |          |
+ vendorfax             | text                     |           |          |
+ vendorassetnumber     | text                     |           |          |
+ userlastmodified      | character varying(20)    |           | not null |
+ lastmodifieddate      | timestamp with time zone |           | not null |
+ dateinstalled         | character varying(64)    |           |          |
+ lease                 | text                     |           |          |
+ leaseexpires          | character varying(64)    |           |          |
+ supportphone          | text                     |           |          |
+ maintcontract         | text                     |           |          |
+ maintcontractexpires  | character varying(64)    |           |          |
+ displaycategory       | text                     |           |          |
+ notifycategory        | text                     |           |          |
+ pollercategory        | text                     |           |          |
+ thresholdcategory     | text                     |           |          |
+ comment               | text                     |           |          |
+ managedobjectinstance | text                     |           |          |
+ managedobjecttype     | text                     |           |          |
+ username              | text                     |           |          |
+ password              | text                     |           |          |
+ enable                | text                     |           |          |
+ autoenable            | character(1)             |           |          |
+ connection            | character varying(32)    |           |          |
+ cpu                   | text                     |           |          |
+ ram                   | text                     |           |          |
+ storagectrl           | text                     |           |          |
+ hdd1                  | text                     |           |          |
+ hdd2                  | text                     |           |          |
+ hdd3                  | text                     |           |          |
+ hdd4                  | text                     |           |          |
+ hdd5                  | text                     |           |          |
+ hdd6                  | text                     |           |          |
+ numpowersupplies      | character varying(1)     |           |          |
+ inputpower            | character varying(11)    |           |          |
+ additionalhardware    | text                     |           |          |
+ admin                 | text                     |           |          |
+ snmpcommunity         | character varying(32)    |           |          |
+ rackunitheight        | character varying(2)     |           |          |
+ country               | text                     |           |          |
+ longitude             | double precision         |           |          |
+ latitude              | double precision         |           |          |
+
+                assets
+                 */
                 requisition.addNode(node.build());
             }
 
@@ -162,9 +355,9 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
     public static class Request implements RequisitionRequest {
 
         private boolean importVms = true;
-        private boolean importHosts = true;
+        private boolean importHosts = false;
 
-        private boolean importClusters = true;
+        private boolean importClusters = false;
 
         private boolean importAllVms = false;
 
