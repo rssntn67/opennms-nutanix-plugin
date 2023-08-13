@@ -25,17 +25,12 @@ public class ClientManager {
         Objects.requireNonNull(providerB);
         Objects.requireNonNull(providerC);
         Objects.requireNonNull(providerD);
-        LOG.warn("constructor: {}", providerA.getApiVersion().version);
-        LOG.warn("constructor: {}", providerB.getApiVersion().version);
-        LOG.warn("constructor: {}", providerC.getApiVersion().version);
-        LOG.warn("constructor: {}", providerD.getApiVersion().version);
         clientProviderMap.put(providerD.getApiVersion().version, providerD);
         clientProviderMap.put(providerC.getApiVersion().version, providerC);
         clientProviderMap.put(providerB.getApiVersion().version, providerB);
         clientProviderMap.put(providerA.getApiVersion().version, providerA);
     }
     public ApiClientProvider getProvider(ApiVersion.Version version) throws NutanixApiException {
-        LOG.warn("getProvider: supported API: {}", clientProviderMap.keySet());
         if (clientProviderMap.containsKey(version))
             return clientProviderMap.get(version);
         throw new NutanixApiException("Version not Supported: " + version);

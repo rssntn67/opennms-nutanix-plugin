@@ -35,7 +35,7 @@ public class ListClusterCommand implements Action {
 
         final var table = new ShellTable()
                 .size(session.getTerminal().getWidth() - 1)
-                .column(new Col("Cluster UIID").maxSize(24).bold(true))
+                .column(new Col("Uuid").maxSize(24).bold(true))
                 .column(new Col("Name").maxSize(24));
 
         for (final var vm : client.get().getClusters()) {
