@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import org.opennms.integration.api.v1.config.requisition.Requisition;
 import org.opennms.integration.api.v1.config.requisition.immutables.ImmutableRequisition;
+import org.opennms.integration.api.v1.config.requisition.immutables.ImmutableRequisitionInterface;
 import org.opennms.integration.api.v1.config.requisition.immutables.ImmutableRequisitionMetaData;
 import org.opennms.integration.api.v1.config.requisition.immutables.ImmutableRequisitionNode;
 import org.opennms.integration.api.v1.dao.NodeDao;
@@ -14,6 +15,7 @@ import org.opennms.integration.api.v1.requisition.RequisitionRequest;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.NutanixApiException;
+import org.opennms.nutanix.client.api.internal.Utils;
 import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.client.api.model.VM;
@@ -36,6 +38,9 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
 
     public static final String NUTANIX_METADATA_CONTEXT = "nutanix";
     public static final String PARAMETER_FOREIGN_SOURCE = "foreignSource";
+
+    public final static String PARAMETER_ALIAS="alias";
+    public final static String PARAMETER_LOCATION="location";
 
     public final static String PARAMETER_IMPORT_VMS="importVms";
     public final static String PARAMETER_IMPORT_ALL_VMS="importALLVms";
@@ -62,8 +67,8 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
 
     @Override
     public final RequisitionRequest getRequest(final Map<String, String> parameters) {
-        final var alias = Objects.requireNonNull(parameters.get("alias"), "Missing requisition parameter: alias");
-        final var location = Objects.requireNonNullElse(parameters.get("location"), nodeDao.getDefaultLocationName());
+        final var alias = Objects.requireNonNull(parameters.get(PARAMETER_ALIAS), "Missing requisition parameter: alias");
+        final var location = Objects.requireNonNullElse(parameters.get(PARAMETER_LOCATION), nodeDao.getDefaultLocationName());
 
         final var connection = this.connectionManager.getConnection(alias)
                 .orElseThrow(() -> new NullPointerException("Connection not found for alias: " + alias));
@@ -155,19 +160,18 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         .setLocation(context.getLocation())
                         .addMetaData(ImmutableRequisitionMetaData.newBuilder()
                                 .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("uuid")
-                                .setValue(vm.uuid)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                            .setContext(NUTANIX_METADATA_CONTEXT)
-                            .setKey("alias")
-                            .setValue(context.getAlias())
-                            .build())
+                                .setKey("alias")
+                                .setValue(context.getAlias())
+                                .build())
                         .addMetaData(ImmutableRequisitionMetaData.newBuilder()
                                 .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("powerState")
-                                .setValue(vm.powerState)
+                                .setKey("name")
+                                .setValue(vm.name)
+                                .build()
+                        ).addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("uuid")
+                                .setValue(vm.uuid)
                                 .build()
                         )
                         .addMetaData(ImmutableRequisitionMetaData.newBuilder()
@@ -184,18 +188,6 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         )
                         .addMetaData(ImmutableRequisitionMetaData.newBuilder()
                                 .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("entityVersion")
-                                .setValue(vm.entityVersion)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("description")
-                                .setValue(vm.description)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
                                 .setKey("hostName")
                                 .setValue(vm.hostName)
                                 .build()
@@ -208,32 +200,26 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         )
                         .addMetaData(ImmutableRequisitionMetaData.newBuilder()
                                 .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("hypervisorType")
-                                .setValue(vm.hypervisorType)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("kind")
-                                .setValue(vm.kind)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("machineType")
-                                .setValue(vm.machineType)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("protectionType")
-                                .setValue(vm.protectionType)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
                                 .setKey("state")
                                 .setValue(vm.state)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("numThreadsPerCore")
+                                .setValue(String.valueOf(vm.numThreadsPerCore))
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("memorySizeMib")
+                                .setValue(String.valueOf(vm.memorySizeMib))
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("powerState")
+                                .setValue(vm.powerState)
                                 .build()
                         )
                         .addMetaData(ImmutableRequisitionMetaData.newBuilder()
@@ -250,26 +236,128 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         )
                         .addMetaData(ImmutableRequisitionMetaData.newBuilder()
                                 .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("numThreadsPerCore")
-                                .setValue(String.valueOf(vm.numThreadsPerCore))
+                                .setKey("machineType")
+                                .setValue(vm.machineType)
                                 .build()
                         )
                         .addMetaData(ImmutableRequisitionMetaData.newBuilder()
                                 .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("memorySizeMib")
-                                .setValue(String.valueOf(vm.memorySizeMib))
+                                .setKey("protectionType")
+                                .setValue(vm.protectionType)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("hypervisorType")
+                                .setValue(vm.hypervisorType)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("description")
+                                .setValue(vm.description)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("kind")
+                                .setValue(vm.kind)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("entityVersion")
+                                .setValue(vm.entityVersion)
+                                .build()
+                        )
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("specVersion")
+                                .setValue(String.valueOf(vm.specVersion))
                                 .build()
                         )
                         .addCategory("NutanixVM");
 
                 node.addAsset("category", "NutanixVM");
-                node.addAsset("description", vm.description);
-                node.addAsset("ram", String.valueOf(vm.memorySizeMib));
+                node.addAsset("cpu", "NutanixVM CPU: " + "numSockets:"+ vm.numSockets + " numVcpusPerSocket:" + vm.numVcpusPerSocket+" numThreadsPerCore:" + vm.numThreadsPerCore);
+                node.addAsset("ram", "NutanixVM RAM: " +vm.memorySizeMib + "MB");
 
-                for (VMDisk disk: vm.disks) {
-
+                for (VMDisk vdisk: vm.disks) {
+                    node.addAsset("hdd"+(vdisk.deviceIndex+1), "Nutanix: " + vdisk.adapterType + ":" + vdisk.deviceType+vdisk.deviceIndex + " size:" + vdisk.diskSizeMib + "MB");
+                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("VMDisk."+vdisk.deviceIndex+".deviceIndex")
+                            .setValue(String.valueOf(vdisk.deviceIndex))
+                            .build())
+                            .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                    .setContext(NUTANIX_METADATA_CONTEXT)
+                                    .setKey("VMDisk."+vdisk.deviceIndex+".uuid")
+                                    .setValue(vdisk.uuid)
+                                    .build())
+                            .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                    .setContext(NUTANIX_METADATA_CONTEXT)
+                                    .setKey("VMDisk."+vdisk.deviceIndex+".adapterType")
+                                    .setValue(vdisk.adapterType)
+                                    .build())
+                            .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                    .setContext(NUTANIX_METADATA_CONTEXT)
+                                    .setKey("VMDisk."+vdisk.deviceIndex+".deviceType")
+                                    .setValue(vdisk.deviceType)
+                                    .build())
+                            .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                    .setContext(NUTANIX_METADATA_CONTEXT)
+                                    .setKey("VMDisk."+vdisk.deviceIndex+".diskSizeMib")
+                                    .setValue(String.valueOf(vdisk.diskSizeMib))
+                                    .build());
                 }
+                int nicIndex = 0;
                 for (VMNic nic: vm.nics) {
+                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("nic."+nicIndex+".nicIndex")
+                            .setValue(String.valueOf(nicIndex))
+                            .build());
+                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("nic."+nicIndex+".kind")
+                            .setValue(nic.kind)
+                            .build());
+                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("nic."+nicIndex+".nicType")
+                            .setValue(nic.nicType)
+                            .build());
+                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("nic."+nicIndex+".macAddress")
+                            .setValue(nic.macAddress)
+                            .build());
+                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("nic."+nicIndex+".name")
+                            .setValue(nic.name)
+                            .build());
+                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("nic."+nicIndex+".vlanMode")
+                            .setValue(nic.vlanMode)
+                            .build());
+                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("nic."+nicIndex+".isConnected")
+                            .setValue(String.valueOf(nic.isConnected))
+                            .build());
+                    for (String ipAddress: nic.ipList) {
+                        final var iface = ImmutableRequisitionInterface.newBuilder()
+                                .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(ipAddress)));
+                        iface.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("nicIndex")
+                                .setValue(String.valueOf(nicIndex)).build());
+                        iface.addMonitoredService("NutanixEntity");
+                        iface.addMonitoredService("NutanixVM");
+                        node.addInterface(iface.build());
+                    }
 
                 }
 
