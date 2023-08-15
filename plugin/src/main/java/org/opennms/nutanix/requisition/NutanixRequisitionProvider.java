@@ -239,6 +239,11 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                                 .build())
                         .addCategory("NutanixHost");
 
+                node.addAsset("category", "NutanixHost");
+                node.addAsset("cpu", host.cpuModel);
+                node.addAsset("ram",  host.memoryCapacityMib + "MB");
+                node.addAsset("serialnumber", host.serialNumber);
+
                 final var controllerVmIface = ImmutableRequisitionInterface.newBuilder()
                         .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(host.controllerVmIp)))
                         .setDescription("controllerVmIp")
@@ -261,6 +266,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         .setDescription("hypervisorIp")
                         .addMonitoredService("NutanixEntity")
                         .addMonitoredService("NutanixHost");
+                node.addInterface(hypervisorIface.build());
 
 
                 requisition.addNode(node.build());
