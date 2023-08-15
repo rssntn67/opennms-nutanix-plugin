@@ -52,12 +52,12 @@ public class Cluster {
     public final String internalSubnet;
 
     private Cluster(Builder builder) {
-        this.state = Objects.requireNonNull(builder.state);
         this.name = Objects.requireNonNull(builder.name);
-        this.nodes = Objects.requireNonNull(builder.nodes);
         this.uuid = Objects.requireNonNull(builder.uuid);
-        this.operationMode = Objects.requireNonNull(builder.operationMode);
         this.isAvailable = Objects.requireNonNull(builder.isAvailable);
+        this.operationMode = Objects.requireNonNull(builder.operationMode);
+        this.state = Objects.requireNonNull(builder.state);
+        this.nodes = Objects.requireNonNull(builder.nodes);
         this.domainAwarenessLevel = Objects.requireNonNull(builder.domainAwarenessLevel);
         this.enabledFeatureList = Objects.requireNonNull(builder.enabledFeatureList);
         this.software = Objects.requireNonNull(builder.software);

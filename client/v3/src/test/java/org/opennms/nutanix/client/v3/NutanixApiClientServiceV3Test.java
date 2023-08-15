@@ -448,6 +448,7 @@ public class NutanixApiClientServiceV3Test {
                 total = response.getMetadata().getTotalMatches();
                 lenght = response.getEntities().size();
                 offset+=lenght;
+                response.getEntities().forEach( e -> System.out.println(e.getStatus().getResources().getConfig().getEnabledFeatureList()));
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }

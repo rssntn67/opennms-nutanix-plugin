@@ -1,10 +1,12 @@
 package org.opennms.nutanix.requisition;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 import org.opennms.integration.api.v1.config.requisition.Requisition;
+import org.opennms.integration.api.v1.config.requisition.RequisitionNode;
 import org.opennms.integration.api.v1.config.requisition.immutables.ImmutableRequisition;
 import org.opennms.integration.api.v1.config.requisition.immutables.ImmutableRequisitionInterface;
 import org.opennms.integration.api.v1.config.requisition.immutables.ImmutableRequisitionMetaData;
@@ -17,6 +19,10 @@ import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.internal.Utils;
 import org.opennms.nutanix.client.api.model.Cluster;
+import org.opennms.nutanix.client.api.model.ClusterHttpProxy;
+import org.opennms.nutanix.client.api.model.ClusterHttpWhiteProxy;
+import org.opennms.nutanix.client.api.model.ClusterHypervisor;
+import org.opennms.nutanix.client.api.model.ClusterSoftware;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.client.api.model.VM;
 import org.opennms.nutanix.client.api.model.VMDisk;
@@ -111,6 +117,293 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
             throw new RuntimeException("Nutanix prism communication failed", e);
         }
     }
+
+    private RequisitionNode getClusterNode(Cluster cluster, RequestContext context) {
+        final var node = ImmutableRequisitionNode.newBuilder()
+                .setNodeLabel(cluster.name)
+                .setForeignId(cluster.uuid)
+                .setLocation(context.getLocation())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("alias")
+                        .setValue(context.getAlias())
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("name")
+                        .setValue(cluster.name)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("uuid")
+                        .setValue(cluster.uuid)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("isAvailable")
+                        .setValue(String.valueOf(cluster.isAvailable))
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("operationMode")
+                        .setValue(cluster.operationMode)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("state")
+                        .setValue(cluster.state)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("domainAwarenessLevel")
+                        .setValue(cluster.domainAwarenessLevel)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("enabledFeatureList")
+                        .setValue(cluster.enabledFeatureList.toString())
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("encryptionStatus")
+                        .setValue(cluster.encryptionStatus)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("serviceList")
+                        .setValue(cluster.serviceList.toString())
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("redundancyFactor")
+                        .setValue(String.valueOf(cluster.redundancyFactor))
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("build.isLongTermSupport")
+                        .setValue(String.valueOf(cluster.build.isLongTermSupport))
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("build.version")
+                        .setValue(cluster.build.version)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("build.buildType")
+                        .setValue(cluster.build.buildType)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("build.commitId")
+                        .setValue(cluster.build.commitId)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("build.shortCommitId")
+                        .setValue(cluster.build.shortCommitId)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("build.fullVersion")
+                        .setValue(cluster.build.fullVersion)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("build.commitDate")
+                        .setValue(cluster.build.commitDate.toString())
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("timeZone")
+                        .setValue(cluster.timeZone)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("clusterArch")
+                        .setValue(cluster.clusterArch)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("smtpServer.emailAddress")
+                        .setValue(cluster.smtpServer.emailAddress)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("smtpServer.type")
+                        .setValue(cluster.smtpServer.type)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("ntpServerIpList")
+                        .setValue(cluster.ntpServerIpList.toString())
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("nameServerIpList")
+                        .setValue(cluster.nameServerIpList.toString())
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("externalSubnet")
+                        .setValue(cluster.externalSubnet)
+                        .build())
+                .addInterface(
+                        ImmutableRequisitionInterface.newBuilder()
+                                .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(cluster.externalDataServicesIp)))
+                                .setDescription("externalDataServicesIp")
+                                .addMonitoredService("NutanixEntity")
+                                .addMonitoredService("NutanixCluster")
+                                .build())
+                .addInterface(
+                        ImmutableRequisitionInterface.newBuilder()
+                                .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(cluster.externalIp)))
+                                .setDescription("externalIp")
+                                .addMonitoredService("NutanixEntity")
+                                .addMonitoredService("NutanixCluster")
+                                .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("internalSubnet")
+                        .setValue(cluster.internalSubnet)
+                        .build())
+                .addCategory("NutanixCluster");
+
+        if (cluster.smtpServer.isBackup != null) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("smtpServer.isBackup")
+                    .setValue(String.valueOf(cluster.smtpServer.isBackup))
+                    .build());
+        }
+        if (cluster.smtpServer.ip != null) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("smtpServer.ip")
+                    .setValue(cluster.smtpServer.ip)
+                    .build());
+        }
+        if (cluster.smtpServer.ipv6 != null) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("smtpServer.ipv6")
+                    .setValue(cluster.smtpServer.ipv6)
+                    .build());
+        }
+        if (cluster.smtpServer.port != null) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("smtpServer.port")
+                    .setValue(String.valueOf(cluster.smtpServer.port))
+                    .build());
+        }
+        if (cluster.smtpServer.fqdn != null) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("smtpServer.fqdn")
+                    .setValue(cluster.smtpServer.fqdn)
+                    .build());
+        }
+
+        for (ClusterHypervisor hypervisor : cluster.nodes) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("hypervisor." + hypervisor.ip + ".ip")
+                            .setValue(hypervisor.ip)
+                            .build())
+                    .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("hypervisor." + hypervisor.ip + ".type")
+                            .setValue(hypervisor.type)
+                            .build())
+                    .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("hypervisor." + hypervisor.ip + ".version")
+                            .setValue(hypervisor.version)
+                            .build());
+        }
+
+        for (ClusterSoftware software : cluster.software) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("softwareType." + software.softwareType + ".type")
+                            .setValue(software.softwareType)
+                            .build())
+                    .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("softwareType." + software.softwareType + ".version")
+                            .setValue(software.version)
+                            .build())
+                    .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("softwareType." + software.softwareType + ".status")
+                            .setValue(software.status)
+                            .build());
+        }
+
+        for (ClusterHttpProxy httpProxy : cluster.httpProxyList) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("httpProxy." + httpProxy.name + ".name")
+                            .setValue(httpProxy.name)
+                            .build())
+                    .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("httpProxy." + httpProxy.name + ".proxyTypeList")
+                            .setValue(httpProxy.proxyTypeList.toString())
+                            .build());
+            if (httpProxy.isBackup != null) {
+                node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("httpProxy." + httpProxy.name + ".isBackup")
+                        .setValue(String.valueOf(httpProxy.isBackup))
+                        .build());
+            }
+            if (httpProxy.ip != null) {
+                node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("httpProxy." + httpProxy.name + ".ip")
+                        .setValue(httpProxy.ip)
+                        .build());
+            }
+            if (httpProxy.ipv6 != null) {
+                node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("httpProxy." + httpProxy.name + ".ipv6")
+                        .setValue(httpProxy.ipv6)
+                        .build());
+            }
+            if (httpProxy.port != null) {
+                node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("httpProxy." + httpProxy.name + ".port")
+                        .setValue(String.valueOf(httpProxy.port))
+                        .build());
+            }
+            if (httpProxy.fqdn != null) {
+                node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("httpProxy." + httpProxy.name + ".fqdn")
+                        .setValue(httpProxy.fqdn)
+                        .build());
+            }
+        }
+
+        for (ClusterHttpWhiteProxy httpWhiteProxy : cluster.httpProxyWhitelist) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("httpWhiteProxy." + httpWhiteProxy.target + ".target")
+                    .setValue(httpWhiteProxy.target)
+                    .build())
+                    .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("httpWhiteProxy." + httpWhiteProxy.target + ".targetType")
+                            .setValue(httpWhiteProxy.targetType)
+                            .build())
+            ;
+        }
+            return node.build();
+    }
     protected Requisition handleRequest(final RequestContext context) throws NutanixApiException {
         var request = (Request) context.getRequest();
 
@@ -118,21 +411,12 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                 .setForeignSource(context.getForeignSource());
 
         ApiClientService apiClientService = context.getClient();
+        Map<String,String> clusterUuidToNameMap = new HashMap<>();
 
-        if (request.importClusters) {
-            for (Cluster cluster: apiClientService.getClusters()) {
-                final var node = ImmutableRequisitionNode.newBuilder()
-                        .setNodeLabel(cluster.name)
-                        .setForeignId(cluster.uuid)
-                        .setLocation(context.getLocation())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                            .setContext(NUTANIX_METADATA_CONTEXT)
-                            .setKey("alias")
-                            .setValue(context.getAlias())
-
-                        .build());
-                node.addCategory("NutanixCluster");
-                requisition.addNode(node.build());
+        for (Cluster cluster: apiClientService.getClusters()) {
+            clusterUuidToNameMap.put(cluster.uuid, cluster.name);
+            if (request.importClusters) {
+                requisition.addNode(getClusterNode(cluster, context));
             }
         }
 
@@ -231,6 +515,11 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                                 .setContext(NUTANIX_METADATA_CONTEXT)
                                 .setKey("clusterUuid")
                                 .setValue(host.clusterUuid)
+                                .build())
+                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                                .setContext(NUTANIX_METADATA_CONTEXT)
+                                .setKey("clusterName")
+                                .setValue(clusterUuidToNameMap.get(host.uuid))
                                 .build())
                         .addMetaData(ImmutableRequisitionMetaData.newBuilder()
                                 .setContext(NUTANIX_METADATA_CONTEXT)
