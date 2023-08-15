@@ -13,6 +13,8 @@ public class Host {
     //Controller VM is a Virtual Machine Fundamentally used for sharing data over cluster
     // this is the ip of such VM
     public final String controllerVmIp;
+
+    //This is an interesting value for monitoring, with opLogDiskPct to be monitored
     public final Float oplogDiskPct;
     public final Long oplogDiskSize;
 
