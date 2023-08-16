@@ -58,4 +58,18 @@
         </bean>
     </service>
 
+    <service interface="org.opennms.integration.api.v1.pollers.cluster.ServicePollerFactory">
+        <bean class="org.opennms.nutanix.pollers.host.HostStatusPollerFactory">
+            <argument ref="clientManager"/>
+            <argument ref="connectionManager"/>
+        </bean>
+    </service>
+
+    <service interface="org.opennms.integration.api.v1.pollers.cluster.ServicePollerFactory">
+        <bean class="org.opennms.nutanix.pollers.vm.VMStatusPollerFactory">
+            <argument ref="clientManager"/>
+            <argument ref="connectionManager"/>
+        </bean>
+    </service>
+
 </blueprint>

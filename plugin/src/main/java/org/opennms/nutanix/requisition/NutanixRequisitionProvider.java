@@ -549,7 +549,6 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                                 .setContext(NUTANIX_METADATA_CONTEXT)
                                 .setKey("oplogDiskSize")
                                 .setValue(String.valueOf(host.oplogDiskSize)).build())
-                        .addMonitoredService("NutanixEntity")
                         .addMonitoredService("NutanixControllerVm");
                 node.addInterface(controllerVmIface.build());
 
