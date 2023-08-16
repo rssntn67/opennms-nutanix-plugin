@@ -3,15 +3,9 @@ package org.opennms.nutanix.client.api.model;
 import java.util.List;
 import java.util.Objects;
 
-public class Cluster {
+public class Cluster extends Entity {
 
     //From Cluster metadata
-    public final String uuid;
-
-    //From Cluster.status
-    public final String state;
-    public final String name;
-
     //From Cluster.status.resources
     public final List<ClusterHypervisor> nodes;
 
@@ -52,11 +46,9 @@ public class Cluster {
     public final String internalSubnet;
 
     private Cluster(Builder builder) {
-        this.name = Objects.requireNonNull(builder.name);
-        this.uuid = Objects.requireNonNull(builder.uuid);
+        super(Objects.requireNonNull(builder.state),Objects.requireNonNull(builder.name),Objects.requireNonNull(builder.uuid));
         this.isAvailable = Objects.requireNonNull(builder.isAvailable);
         this.operationMode = Objects.requireNonNull(builder.operationMode);
-        this.state = Objects.requireNonNull(builder.state);
         this.nodes = Objects.requireNonNull(builder.nodes);
         this.domainAwarenessLevel = Objects.requireNonNull(builder.domainAwarenessLevel);
         this.enabledFeatureList = Objects.requireNonNull(builder.enabledFeatureList);

@@ -1,0 +1,50 @@
+<poller-configuration xmlns="http://xmlns.opennms.org/xsd/config/poller/api">
+    <package name="nutanix">
+        <filter>IPADDR != '255.255.255.255'</filter>u
+
+        <rrd step="300">
+            <rra>RRA:AVERAGE:0.5:1:2016</rra>
+            <rra>RRA:AVERAGE:0.5:12:1488</rra>
+            <rra>RRA:AVERAGE:0.5:288:366</rra>
+            <rra>RRA:MAX:0.5:288:366</rra>
+            <rra>RRA:MIN:0.5:288:366</rra>
+        </rrd>
+
+        <service name="NutanixEntity" interval="300000">
+            <parameter key="uuid" value="${nutanix:uuid}"/>
+            <parameter key="alias" value="${nutanix:alias}"/>
+            <parameter key="type" value="${nutanix:type}"/>
+        </service>
+
+        <service name="NutanixCluster" interval="300000">
+            <parameter key="uuid" value="${nutanix:uuid}"/>
+            <parameter key="alias" value="${nutanix:alias}"/>
+        </service>
+        <service name="NutanixClusterService" interval="300000">
+            <parameter key="uuid" value="${nutanix:uuid}"/>
+            <parameter key="alias" value="${nutanix:alias}"/>
+        </service>
+
+        <service name="NutanixHost" interval="300000">
+            <parameter key="uuid" value="${nutanix:uuid}"/>
+            <parameter key="alias" value="${nutanix:alias}"/>
+        </service>
+
+        <service name="NutanixVM" interval="300000">
+            <parameter key="uuid" value="${nutanix:uuid}"/>
+            <parameter key="alias" value="${nutanix:alias}"/>
+        </service>
+
+        <downtime begin="0" end="300000" interval="30000"/><!-- 30s, 0, 5m -->
+        <downtime begin="300000" end="43200000" interval="300000"/><!-- 5m, 5m, 12h -->
+        <downtime begin="43200000" end="432000000" interval="600000"/><!-- 10m, 12h, 5d -->
+        <downtime begin="432000000" interval="3600000"/><!-- 1h, 5d -->
+    </package>
+
+    <monitor service="NutanixEntity"
+             class-name="org.opennms.nutanix.pollers.EntityStatusPoller"/>
+    <monitor service="NutanixCluster"
+             class-name="org.opennms.nutanix.pollers.cluster.ClusterStatusPoller"/>
+    <monitor service="NutanixClusterService"
+             class-name="org.opennms.nutanix.pollers.cluster.ClusterServiceStatusPoller"/>
+</poller-configuration>

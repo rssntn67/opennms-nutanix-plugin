@@ -3,14 +3,11 @@ package org.opennms.nutanix.client.api.model;
 import java.util.List;
 import java.util.Objects;
 
-public class VM {
+public class VM extends Entity {
     //from Status
-    public final String name;
     public final String description;
-    public final String state;
 
     //from metadata
-    public final String uuid;
     public final String kind;
     public final Integer specVersion;
     public final String entityVersion;
@@ -37,13 +34,11 @@ public class VM {
     public final List<VMNic> nics;
 
     private VM(Builder builder) {
-        this.name=Objects.requireNonNull(builder.name);
-        this.uuid=Objects.requireNonNull(builder.uuid);
+        super(Objects.requireNonNull(builder.state),Objects.requireNonNull(builder.name),Objects.requireNonNull(builder.uuid));
         this.clusterName=Objects.requireNonNull(builder.clusterName);
         this.clusterUuid=Objects.requireNonNull(builder.clusterUuid);
         this.hostName=builder.hostName;
         this.hostUuid=builder.hostUuid;
-        this.state=Objects.requireNonNull(builder.state);
         this.numThreadsPerCore=Objects.requireNonNull(builder.numThreadsPerCore);
         this.memorySizeMib=Objects.requireNonNull(builder.memorySizeMib);
         this.powerState=Objects.requireNonNull(builder.powerState);

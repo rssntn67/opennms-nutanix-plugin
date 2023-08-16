@@ -44,7 +44,7 @@ public abstract class AbstractStatusPoller implements ServicePoller {
             return this.poll(new Context(pollerRequest));
 
         } catch (final NutanixApiException e) {
-            LOG.error("Nutanix orchestrator communication failed", e);
+            LOG.error("Nutanix prism communication failed", e);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
                                                                           .setStatus(Status.Down)
                                                                           .setReason(e.getMessage())
@@ -83,7 +83,6 @@ public abstract class AbstractStatusPoller implements ServicePoller {
 
 
 
-        //TODO get this to my factory
         @Override
         public final Map<String, String> getRuntimeAttributes(final PollerRequest pollerRequest) {
             final var alias = Objects.requireNonNull(pollerRequest.getPollerAttributes().get(ALIAS_KEY), "Missing property: " + ALIAS_KEY);
@@ -91,7 +90,7 @@ public abstract class AbstractStatusPoller implements ServicePoller {
                                                          .orElseThrow(() -> new NullPointerException("Connection not found for alias: " + alias));
 
             final var attrs = ImmutableMap.<String,String>builder();
-            attrs.put(ConnectionManager.PRISM_URL_KEY, connection.getPrismUrl());
+            attrs.put(PRISM_URL_KEY, connection.getPrismUrl());
             attrs.put(USERNAME_KEY, connection.getUsername());
             attrs.put(PASSWORD_KEY, connection.getPassword());
             attrs.put(IGNORE_SSL_CERTIFICATE_VALIDATION_KEY, String.valueOf(connection.isIgnoreSslCertificateValidation()));

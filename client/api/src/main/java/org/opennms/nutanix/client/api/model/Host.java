@@ -2,12 +2,9 @@ package org.opennms.nutanix.client.api.model;
 
 import java.util.Objects;
 
-public class Host {
-    public final String name;
-    public final String uuid;
+public class Host extends Entity {
     public final Integer specVersion;
     public final String kind;
-    public final String state;
 
     //
     //Controller VM is a Virtual Machine Fundamentally used for sharing data over cluster
@@ -45,11 +42,9 @@ public class Host {
     public final String clusterKind;
 
     public Host(Builder builder) {
-        this.name = Objects.requireNonNull(builder.name);
-        this.uuid = Objects.requireNonNull(builder.uuid);
+        super(Objects.requireNonNull(builder.state),Objects.requireNonNull(builder.name),Objects.requireNonNull(builder.uuid));
         this.specVersion = Objects.requireNonNull(builder.specVersion);
         this.kind = Objects.requireNonNull(builder.kind);
-        this.state = Objects.requireNonNull(builder.state);
         this.controllerVmIp = Objects.requireNonNull(builder.controllerVmIp);
         this.oplogDiskPct = Objects.requireNonNull(builder.oplogDiskPct);
         this.oplogDiskSize = Objects.requireNonNull(builder.oplogDiskSize);
