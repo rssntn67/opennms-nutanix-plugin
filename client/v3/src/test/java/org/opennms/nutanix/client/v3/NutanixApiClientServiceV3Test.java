@@ -234,13 +234,6 @@ public class NutanixApiClientServiceV3Test {
                 }
             } while (vmnames.size() < total );
             System.out.println("----------------------------------");
-            System.out.println(stateVms);
-            System.out.println(powerStateVms);
-            System.out.println(clusterkinds);
-            System.out.println(clusternames);
-            System.out.println(clusteruuids);
-            System.out.println(nicType);
-            System.out.println(diskType);
 
             vmWithoutHostReference.forEach(vm -> Assert.assertEquals("OFF", vm.getStatus().getResources().getPowerState()));
             System.out.println("----------------------------------");
@@ -250,6 +243,13 @@ public class NutanixApiClientServiceV3Test {
             System.out.println("off vms: " + offVms.size());
             System.out.println("on vms: " + onVms.size());
             System.out.println("----------------------------------");
+            System.out.println(stateVms);
+            System.out.println(powerStateVms);
+            System.out.println(clusterkinds);
+            System.out.println(clusternames);
+            System.out.println(clusteruuids);
+            System.out.println(nicType);
+            System.out.println(diskType);
 
 
         Assert.assertEquals(vmnames.size(),total);
@@ -282,6 +282,7 @@ public class NutanixApiClientServiceV3Test {
         int offset = 0;
         int lenght = 20;
         Set<String> hostnames = new HashSet<>();
+        Set<String> stateHost = new HashSet<>();
         Set<String> hyperConvergentHostTypes = new HashSet<>();
         Set<String> notHyperConvergentHostTypes = new HashSet<>();
         int total;
@@ -303,6 +304,7 @@ public class NutanixApiClientServiceV3Test {
                         .stream().filter(h -> !h.getStatus().getResources().getHostType().equalsIgnoreCase("HYPER_CONVERGED"))
                         .forEach(h -> notHyperConvergentHostTypes.add(h.getStatus().getName()));
                 lenght = hostListIntentResponse.getEntities().size();
+                hostListIntentResponse.getEntities().forEach(h -> stateHost.add(h.getStatus().getState()));
                 offset+=lenght;
         } catch (ApiException e) {
             throw new RuntimeException(e);
@@ -310,6 +312,7 @@ public class NutanixApiClientServiceV3Test {
         } while (hostnames.size() < total );
 
         System.out.println(hostnames);
+        System.out.println(stateHost);
         System.out.println("total hosts: " + hostnames.size());
         System.out.println("hyper_converged hosts: " + hyperConvergentHostTypes.size());
         System.out.println("not hyper_converged hosts: " + notHyperConvergentHostTypes.size());
@@ -449,6 +452,9 @@ public class NutanixApiClientServiceV3Test {
                 lenght = response.getEntities().size();
                 offset+=lenght;
                 response.getEntities().forEach( e -> System.out.println(e.getStatus().getResources().getConfig().getEnabledFeatureList()));
+                response.getEntities().forEach( e -> System.out.println(e.getStatus().getState()));
+                response.getEntities().forEach( e -> System.out.println(e.getStatus().getResources().getConfig().isIsAvailable()));
+                response.getEntities().forEach( e -> System.out.println(e.getStatus().getResources().getConfig().getOperationMode()));
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
