@@ -72,4 +72,8 @@
         </bean>
     </service>
 
+    <!-- Configuration -->
+    <bean id="nutanixPollerConfig" class="org.opennms.nutanix.configuration.NutanixPollerConfigurationExtension"/>
+    <service ref="nutanixPollerConfig"
+             interface="org.opennms.integration.api.v1.config.poller.PollerConfigurationExtension"/>
 </blueprint>
