@@ -408,6 +408,362 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
         }
             return node.build();
     }
+
+    private RequisitionNode getHostNode(Host host, RequestContext context, String clusterName) {
+        final var node = ImmutableRequisitionNode.newBuilder()
+                .setNodeLabel(host.name)
+                .setForeignId(host.uuid)
+                .setLocation(context.getLocation())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("alias")
+                        .setValue(context.getAlias())
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("name")
+                        .setValue(host.name)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("type")
+                        .setValue("Host")
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("uuid")
+                        .setValue(host.uuid)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("specVersion")
+                        .setValue(String.valueOf(host.specVersion))
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("kind")
+                        .setValue(host.kind)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("state")
+                        .setValue(host.state)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("hypervisorFullName")
+                        .setValue(host.hypervisorFullName)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("hostType")
+                        .setValue(host.hostType)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("cpuModel")
+                        .setValue(host.cpuModel)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("numCpuSockets")
+                        .setValue(String.valueOf(host.numCpuSockets))
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("numCpuCores")
+                        .setValue(String.valueOf(host.numCpuCores))
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("cpuCapacityHz")
+                        .setValue(String.valueOf(host.cpuCapacityHz))
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("serialNumber")
+                        .setValue(host.serialNumber)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("memoryCapacityMib")
+                        .setValue(String.valueOf(host.memoryCapacityMib))
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("numVms")
+                        .setValue(String.valueOf(host.numVms))
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("blockSerialNumber")
+                        .setValue(host.blockSerialNumber)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("blockModel")
+                        .setValue(host.blockModel)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("clusterUuid")
+                        .setValue(host.clusterUuid)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("clusterName")
+                        .setValue(clusterName)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("clusterKind")
+                        .setValue(host.clusterKind)
+                        .build())
+                .addCategory("NutanixHost");
+
+        node.addAsset("category", "NutanixHost");
+        node.addAsset("cpu", host.cpuModel);
+        node.addAsset("ram",  host.memoryCapacityMib + "MB");
+        node.addAsset("serialnumber", host.serialNumber);
+
+        final var controllerVmIface = ImmutableRequisitionInterface.newBuilder()
+                .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(host.controllerVmIp)))
+                .setDescription("controllerVmIp")
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("oplogDiskSize")
+                        .setValue(String.valueOf(host.oplogDiskSize)).build())
+                .addMonitoredService("NutanixControllerVm");
+        node.addInterface(controllerVmIface.build());
+
+        final var miIface = ImmutableRequisitionInterface.newBuilder()
+                .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(host.ipmi)))
+                .setDescription("ipmi")
+                .addMonitoredService("NutanixMi");
+        node.addInterface(miIface.build());
+
+        final var hypervisorIface = ImmutableRequisitionInterface.newBuilder()
+                .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(host.hypervisorIp)))
+                .setDescription("hypervisorIp")
+                .addMonitoredService("NutanixEntity")
+                .addMonitoredService("NutanixHost");
+        node.addInterface(hypervisorIface.build());
+        return node.build();
+    }
+
+    private RequisitionNode getVMNode(final VM vm, RequestContext context) {
+        final var node = ImmutableRequisitionNode.newBuilder()
+                .setNodeLabel(vm.name)
+                .setForeignId(vm.uuid)
+                .setLocation(context.getLocation())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("alias")
+                        .setValue(context.getAlias())
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("type")
+                        .setValue("VirtualMachine")
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("name")
+                        .setValue(vm.name)
+                        .build()
+                ).addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("uuid")
+                        .setValue(vm.uuid)
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("clusterName")
+                        .setValue(vm.clusterName)
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("clusterUuid")
+                        .setValue(vm.clusterUuid)
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("hostName")
+                        .setValue(vm.hostName)
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("hostUuid")
+                        .setValue(vm.hostUuid)
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("state")
+                        .setValue(vm.state)
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("numThreadsPerCore")
+                        .setValue(String.valueOf(vm.numThreadsPerCore))
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("memorySizeMib")
+                        .setValue(String.valueOf(vm.memorySizeMib))
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("powerState")
+                        .setValue(vm.powerState)
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("numSockets")
+                        .setValue(String.valueOf(vm.numSockets))
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("numVcpusPerSocket")
+                        .setValue(String.valueOf(vm.numVcpusPerSocket))
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("machineType")
+                        .setValue(vm.machineType)
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("protectionType")
+                        .setValue(vm.protectionType)
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("hypervisorType")
+                        .setValue(vm.hypervisorType)
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("description")
+                        .setValue(vm.description)
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("kind")
+                        .setValue(vm.kind)
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("entityVersion")
+                        .setValue(vm.entityVersion)
+                        .build()
+                )
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("specVersion")
+                        .setValue(String.valueOf(vm.specVersion))
+                        .build()
+                )
+                .addCategory("NutanixVM");
+
+        node.addAsset("category", "NutanixVM");
+        node.addAsset("cpu", "NutanixVM CPU: " + "numSockets:"+ vm.numSockets + " numVcpusPerSocket:" + vm.numVcpusPerSocket+" numThreadsPerCore:" + vm.numThreadsPerCore);
+        node.addAsset("ram", "NutanixVM RAM: " +vm.memorySizeMib + "MB");
+
+        for (VMDisk vdisk: vm.disks) {
+            node.addAsset("hdd"+(vdisk.deviceIndex+1), "Nutanix: " + vdisk.adapterType + ":" + vdisk.deviceType+vdisk.deviceIndex + " size:" + vdisk.diskSizeMib + "MB");
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("VMDisk."+vdisk.deviceIndex+".deviceIndex")
+                            .setValue(String.valueOf(vdisk.deviceIndex))
+                            .build())
+                    .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("VMDisk."+vdisk.deviceIndex+".uuid")
+                            .setValue(vdisk.uuid)
+                            .build())
+                    .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("VMDisk."+vdisk.deviceIndex+".adapterType")
+                            .setValue(vdisk.adapterType)
+                            .build())
+                    .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("VMDisk."+vdisk.deviceIndex+".deviceType")
+                            .setValue(vdisk.deviceType)
+                            .build())
+                    .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                            .setContext(NUTANIX_METADATA_CONTEXT)
+                            .setKey("VMDisk."+vdisk.deviceIndex+".diskSizeMib")
+                            .setValue(String.valueOf(vdisk.diskSizeMib))
+                            .build());
+        }
+        int nicIndex = 0;
+        for (VMNic nic: vm.nics) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("nic."+nicIndex+".nicIndex")
+                    .setValue(String.valueOf(nicIndex))
+                    .build());
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("nic."+nicIndex+".kind")
+                    .setValue(nic.kind)
+                    .build());
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("nic."+nicIndex+".nicType")
+                    .setValue(nic.nicType)
+                    .build());
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("nic."+nicIndex+".macAddress")
+                    .setValue(nic.macAddress)
+                    .build());
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("nic."+nicIndex+".name")
+                    .setValue(nic.name)
+                    .build());
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("nic."+nicIndex+".vlanMode")
+                    .setValue(nic.vlanMode)
+                    .build());
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("nic."+nicIndex+".isConnected")
+                    .setValue(String.valueOf(nic.isConnected))
+                    .build());
+            for (String ipAddress: nic.ipList) {
+                final var iface = ImmutableRequisitionInterface.newBuilder()
+                        .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(ipAddress)));
+                iface.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("nicIndex")
+                        .setValue(String.valueOf(nicIndex)).build());
+                iface.addMonitoredService("NutanixEntity");
+                iface.addMonitoredService("NutanixVM");
+                node.addInterface(iface.build());
+            }
+        }
+        return node.build();
+    }
     protected Requisition handleRequest(final RequestContext context) throws NutanixApiException {
         var request = (Request) context.getRequest();
 
@@ -426,442 +782,16 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
 
         if (request.importHosts) {
             for (Host host: apiClientService.getHosts()) {
-                final var node = ImmutableRequisitionNode.newBuilder()
-                        .setNodeLabel(host.name)
-                        .setForeignId(host.uuid)
-                        .setLocation(context.getLocation())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                        .setContext(NUTANIX_METADATA_CONTEXT)
-                            .setKey("alias")
-                            .setValue(context.getAlias())
-                            .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("name")
-                                .setValue(host.name)
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("type")
-                                .setValue("Host")
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                            .setContext(NUTANIX_METADATA_CONTEXT)
-                            .setKey("uuid")
-                            .setValue(host.uuid)
-                            .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("specVersion")
-                                .setValue(String.valueOf(host.specVersion))
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("kind")
-                                .setValue(host.kind)
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("state")
-                                .setValue(host.state)
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("hypervisorFullName")
-                                .setValue(host.hypervisorFullName)
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("hostType")
-                                .setValue(host.hostType)
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("cpuModel")
-                                .setValue(host.cpuModel)
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("numCpuSockets")
-                                .setValue(String.valueOf(host.numCpuSockets))
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("numCpuCores")
-                                .setValue(String.valueOf(host.numCpuCores))
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("cpuCapacityHz")
-                                .setValue(String.valueOf(host.cpuCapacityHz))
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("serialNumber")
-                                .setValue(host.serialNumber)
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("memoryCapacityMib")
-                                .setValue(String.valueOf(host.memoryCapacityMib))
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("numVms")
-                                .setValue(String.valueOf(host.numVms))
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("blockSerialNumber")
-                                .setValue(host.blockSerialNumber)
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("blockModel")
-                                .setValue(host.blockModel)
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("clusterUuid")
-                                .setValue(host.clusterUuid)
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("clusterName")
-                                .setValue(clusterUuidToNameMap.get(host.uuid))
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("clusterKind")
-                                .setValue(host.clusterKind)
-                                .build())
-                        .addCategory("NutanixHost");
-
-                node.addAsset("category", "NutanixHost");
-                node.addAsset("cpu", host.cpuModel);
-                node.addAsset("ram",  host.memoryCapacityMib + "MB");
-                node.addAsset("serialnumber", host.serialNumber);
-
-                final var controllerVmIface = ImmutableRequisitionInterface.newBuilder()
-                        .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(host.controllerVmIp)))
-                        .setDescription("controllerVmIp")
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("oplogDiskSize")
-                                .setValue(String.valueOf(host.oplogDiskSize)).build())
-                        .addMonitoredService("NutanixControllerVm");
-                node.addInterface(controllerVmIface.build());
-
-                final var miIface = ImmutableRequisitionInterface.newBuilder()
-                        .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(host.ipmi)))
-                        .setDescription("ipmi")
-                        .addMonitoredService("NutanixMi");
-                node.addInterface(miIface.build());
-
-                final var hypervisorIface = ImmutableRequisitionInterface.newBuilder()
-                        .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(host.hypervisorIp)))
-                        .setDescription("hypervisorIp")
-                        .addMonitoredService("NutanixEntity")
-                        .addMonitoredService("NutanixHost");
-                node.addInterface(hypervisorIface.build());
-
-
-                requisition.addNode(node.build());
+                requisition.addNode(getHostNode(host,context,clusterUuidToNameMap.get(host.uuid)));
             }
         }
         if (request.importVms) {
             for (VM vm: apiClientService.getVMS()) {
                 if (!request.importAllVms && !vm.powerState.equalsIgnoreCase("ON"))
                     continue;
-                final var node = ImmutableRequisitionNode.newBuilder()
-                        .setNodeLabel(vm.name)
-                        .setForeignId(vm.uuid)
-                        .setLocation(context.getLocation())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("alias")
-                                .setValue(context.getAlias())
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("type")
-                                .setValue("VirtualMachine")
-                                .build())
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("name")
-                                .setValue(vm.name)
-                                .build()
-                        ).addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("uuid")
-                                .setValue(vm.uuid)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("clusterName")
-                                .setValue(vm.clusterName)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("clusterUuid")
-                                .setValue(vm.clusterUuid)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("hostName")
-                                .setValue(vm.hostName)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("hostUuid")
-                                .setValue(vm.hostUuid)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("state")
-                                .setValue(vm.state)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("numThreadsPerCore")
-                                .setValue(String.valueOf(vm.numThreadsPerCore))
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("memorySizeMib")
-                                .setValue(String.valueOf(vm.memorySizeMib))
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("powerState")
-                                .setValue(vm.powerState)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("numSockets")
-                                .setValue(String.valueOf(vm.numSockets))
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("numVcpusPerSocket")
-                                .setValue(String.valueOf(vm.numVcpusPerSocket))
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("machineType")
-                                .setValue(vm.machineType)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("protectionType")
-                                .setValue(vm.protectionType)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("hypervisorType")
-                                .setValue(vm.hypervisorType)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("description")
-                                .setValue(vm.description)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("kind")
-                                .setValue(vm.kind)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("entityVersion")
-                                .setValue(vm.entityVersion)
-                                .build()
-                        )
-                        .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("specVersion")
-                                .setValue(String.valueOf(vm.specVersion))
-                                .build()
-                        )
-                        .addCategory("NutanixVM");
-
-                node.addAsset("category", "NutanixVM");
-                node.addAsset("cpu", "NutanixVM CPU: " + "numSockets:"+ vm.numSockets + " numVcpusPerSocket:" + vm.numVcpusPerSocket+" numThreadsPerCore:" + vm.numThreadsPerCore);
-                node.addAsset("ram", "NutanixVM RAM: " +vm.memorySizeMib + "MB");
-
-                for (VMDisk vdisk: vm.disks) {
-                    node.addAsset("hdd"+(vdisk.deviceIndex+1), "Nutanix: " + vdisk.adapterType + ":" + vdisk.deviceType+vdisk.deviceIndex + " size:" + vdisk.diskSizeMib + "MB");
-                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                            .setContext(NUTANIX_METADATA_CONTEXT)
-                            .setKey("VMDisk."+vdisk.deviceIndex+".deviceIndex")
-                            .setValue(String.valueOf(vdisk.deviceIndex))
-                            .build())
-                            .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                    .setContext(NUTANIX_METADATA_CONTEXT)
-                                    .setKey("VMDisk."+vdisk.deviceIndex+".uuid")
-                                    .setValue(vdisk.uuid)
-                                    .build())
-                            .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                    .setContext(NUTANIX_METADATA_CONTEXT)
-                                    .setKey("VMDisk."+vdisk.deviceIndex+".adapterType")
-                                    .setValue(vdisk.adapterType)
-                                    .build())
-                            .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                    .setContext(NUTANIX_METADATA_CONTEXT)
-                                    .setKey("VMDisk."+vdisk.deviceIndex+".deviceType")
-                                    .setValue(vdisk.deviceType)
-                                    .build())
-                            .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                    .setContext(NUTANIX_METADATA_CONTEXT)
-                                    .setKey("VMDisk."+vdisk.deviceIndex+".diskSizeMib")
-                                    .setValue(String.valueOf(vdisk.diskSizeMib))
-                                    .build());
-                }
-                int nicIndex = 0;
-                for (VMNic nic: vm.nics) {
-                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                            .setContext(NUTANIX_METADATA_CONTEXT)
-                            .setKey("nic."+nicIndex+".nicIndex")
-                            .setValue(String.valueOf(nicIndex))
-                            .build());
-                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                            .setContext(NUTANIX_METADATA_CONTEXT)
-                            .setKey("nic."+nicIndex+".kind")
-                            .setValue(nic.kind)
-                            .build());
-                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                            .setContext(NUTANIX_METADATA_CONTEXT)
-                            .setKey("nic."+nicIndex+".nicType")
-                            .setValue(nic.nicType)
-                            .build());
-                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                            .setContext(NUTANIX_METADATA_CONTEXT)
-                            .setKey("nic."+nicIndex+".macAddress")
-                            .setValue(nic.macAddress)
-                            .build());
-                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                            .setContext(NUTANIX_METADATA_CONTEXT)
-                            .setKey("nic."+nicIndex+".name")
-                            .setValue(nic.name)
-                            .build());
-                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                            .setContext(NUTANIX_METADATA_CONTEXT)
-                            .setKey("nic."+nicIndex+".vlanMode")
-                            .setValue(nic.vlanMode)
-                            .build());
-                    node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                            .setContext(NUTANIX_METADATA_CONTEXT)
-                            .setKey("nic."+nicIndex+".isConnected")
-                            .setValue(String.valueOf(nic.isConnected))
-                            .build());
-                    for (String ipAddress: nic.ipList) {
-                        final var iface = ImmutableRequisitionInterface.newBuilder()
-                                .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(ipAddress)));
-                        iface.addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                                .setContext(NUTANIX_METADATA_CONTEXT)
-                                .setKey("nicIndex")
-                                .setValue(String.valueOf(nicIndex)).build());
-                        iface.addMonitoredService("NutanixEntity");
-                        iface.addMonitoredService("NutanixVM");
-                        node.addInterface(iface.build());
-                    }
-
-                }
-
-                /*
-                opennms=# \d assets
-                                            Table "public.assets"
-        Column         |           Type           | Collation | Nullable |              Default
------------------------+--------------------------+-----------+----------+-----------------------------------
- category              | text                     |           | not null |
- manufacturer          | text                     |           |          |
- vendor                | text                     |           |          |
- modelnumber           | text                     |           |          |
- serialnumber          | text                     |           |          |
- description           | text                     |           |          |
- circuitid             | text                     |           |          |
- assetnumber           | text                     |           |          |
- operatingsystem       | text                     |           |          |
- rack                  | text                     |           |          |
- slot                  | text                     |           |          |
- port                  | text                     |           |          |
- region                | text                     |           |          |
- division              | text                     |           |          |
- department            | text                     |           |          |
- address1              | text                     |           |          |
- address2              | text                     |           |          |
- city                  | text                     |           |          |
- state                 | text                     |           |          |
- zip                   | text                     |           |          |
- building              | text                     |           |          |
- floor                 | text                     |           |          |
- room                  | text                     |           |          |
- vendorphone           | text                     |           |          |
- vendorfax             | text                     |           |          |
- vendorassetnumber     | text                     |           |          |
- userlastmodified      | character varying(20)    |           | not null |
- lastmodifieddate      | timestamp with time zone |           | not null |
- dateinstalled         | character varying(64)    |           |          |
- lease                 | text                     |           |          |
- leaseexpires          | character varying(64)    |           |          |
- supportphone          | text                     |           |          |
- maintcontract         | text                     |           |          |
- maintcontractexpires  | character varying(64)    |           |          |
- displaycategory       | text                     |           |          |
- notifycategory        | text                     |           |          |
- pollercategory        | text                     |           |          |
- thresholdcategory     | text                     |           |          |
- comment               | text                     |           |          |
- managedobjectinstance | text                     |           |          |
- managedobjecttype     | text                     |           |          |
- username              | text                     |           |          |
- password              | text                     |           |          |
- enable                | text                     |           |          |
- autoenable            | character(1)             |           |          |
- connection            | character varying(32)    |           |          |
- cpu                   | text                     |           |          |
- ram                   | text                     |           |          |
- storagectrl           | text                     |           |          |
- hdd1                  | text                     |           |          |
- hdd2                  | text                     |           |          |
- hdd3                  | text                     |           |          |
- hdd4                  | text                     |           |          |
- hdd5                  | text                     |           |          |
- hdd6                  | text                     |           |          |
- numpowersupplies      | character varying(1)     |           |          |
- inputpower            | character varying(11)    |           |          |
- additionalhardware    | text                     |           |          |
- admin                 | text                     |           |          |
- snmpcommunity         | character varying(32)    |           |          |
- rackunitheight        | character varying(2)     |           |          |
- country               | text                     |           |          |
- longitude             | double precision         |           |          |
- latitude              | double precision         |           |          |
-
-                assets
-                 */
-                requisition.addNode(node.build());
+                requisition.addNode(getVMNode(vm, context));
             }
-
         }
-
         return requisition.build();
     }
     public static class Request implements RequisitionRequest {
