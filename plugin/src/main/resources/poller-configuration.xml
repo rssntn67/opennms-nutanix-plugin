@@ -35,6 +35,10 @@
             <parameter key="alias" value="${nutanix:alias}"/>
         </service>
 
+        <service name="NutanixControllerVm" interval="300000" user-defined="false" status="on">
+            <parameter key="retry" value="0" />
+            <parameter key="port" value="2020" />
+        </service>
         <downtime begin="0" end="300000" interval="30000"/><!-- 30s, 0, 5m -->
         <downtime begin="300000" end="43200000" interval="300000"/><!-- 5m, 5m, 12h -->
         <downtime begin="43200000" end="432000000" interval="600000"/><!-- 10m, 12h, 5d -->
@@ -51,5 +55,7 @@
              class-name="org.opennms.nutanix.pollers.host.HostServiceStatusPoller"/>
     <monitor service="NutanixVM"
              class-name="org.opennms.nutanix.pollers.vm.VMServiceStatusPoller"/>
+    <monitor service="NutanixControllerVm"
+             class-name="org.opennms.netmgt.poller.monitors.TcpMonitor"/>
 
 </poller-configuration>
