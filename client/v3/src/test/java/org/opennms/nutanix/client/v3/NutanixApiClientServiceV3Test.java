@@ -1,8 +1,10 @@
 package org.opennms.nutanix.client.v3;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -10,6 +12,9 @@ import org.junit.Test;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.NutanixApiException;
+import org.opennms.nutanix.client.api.model.Cluster;
+import org.opennms.nutanix.client.api.model.Host;
+import org.opennms.nutanix.client.api.model.VM;
 import org.opennms.nutanix.client.v3.api.AccessControlPoliciesApi;
 import org.opennms.nutanix.client.v3.api.AlertsApi;
 import org.opennms.nutanix.client.v3.api.AppBlueprintApi;
@@ -172,10 +177,32 @@ public class NutanixApiClientServiceV3Test {
     @Test
     public void testApiClientService() throws NutanixApiException {
         ApiClientService apiClientService = new V3ApiClientService(getApiClient());
-        apiClientService.getVMS();
         apiClientService.getAlerts();
-        apiClientService.getClusters();
-        apiClientService.getHosts();
+        List<Cluster> clusters = apiClientService.getClusters();
+        List<Host> hosts = apiClientService.getHosts();
+        List<VM> vms = apiClientService.getVMS();
+        Map<String,String> clusterUuidToNameMap = new HashMap<>();
+        for (Cluster cluster: clusters) {
+            clusterUuidToNameMap.put(cluster.uuid, cluster.name);
+            System.out.println(cluster);
+        }
+        Map<String, String> controllerVmHostMap = new HashMap<>();
+        for (Host host: hosts) {
+            controllerVmHostMap.put(host.controllerVmIp, host.uuid);
+        }
+        Map<String, VM> controllerVmMap = new HashMap<>();
+        for (VM vm: vms) {
+            vm.nics.forEach(nic -> nic.ipList.stream().filter(controllerVmHostMap::containsKey).forEach(ip -> controllerVmMap.put(ip, vm)));
+        }
+        Set<String> vmips = new HashSet<>();
+        vms.forEach(vm -> vm.nics.forEach(nic -> vmips.addAll(nic.ipList)));
+        System.out.println(vmips);
+        vmips.retainAll(controllerVmMap.keySet());
+        Assert.assertEquals(0, vmips.size());
+        //No controllerVM is exposed as VM
+        Assert.assertEquals(0, controllerVmMap.size());
+        System.out.println(controllerVmHostMap);
+        System.out.println(clusterUuidToNameMap);
     }
 
     @Test
@@ -282,6 +309,7 @@ public class NutanixApiClientServiceV3Test {
         int offset = 0;
         int lenght = 20;
         Set<String> hostnames = new HashSet<>();
+        Set<String> hostuuids= new HashSet<>();
         Set<String> stateHost = new HashSet<>();
         Set<String> hyperConvergentHostTypes = new HashSet<>();
         Set<String> notHyperConvergentHostTypes = new HashSet<>();
@@ -293,7 +321,10 @@ public class NutanixApiClientServiceV3Test {
                 HostListIntentResponse hostListIntentResponse = hostsApi.hostsListPost(body);
                 total = hostListIntentResponse.getMetadata().getTotalMatches();
 
-                hostListIntentResponse.getEntities().forEach(h -> hostnames.add(h.getStatus().getName()));
+                hostListIntentResponse.getEntities().forEach(h -> {
+                    hostnames.add(h.getStatus().getName());
+                    hostuuids.add(h.getMetadata().getUuid());
+                });
                 hostListIntentResponse.getEntities().forEach(System.out::println);
                 System.out.println(hostListIntentResponse.getMetadata());
                 System.out.println(hostListIntentResponse.getApiVersion());
@@ -312,6 +343,7 @@ public class NutanixApiClientServiceV3Test {
         } while (hostnames.size() < total );
 
         System.out.println(hostnames);
+        System.out.println(hostuuids);
         System.out.println(stateHost);
         System.out.println("total hosts: " + hostnames.size());
         System.out.println("hyper_converged hosts: " + hyperConvergentHostTypes.size());

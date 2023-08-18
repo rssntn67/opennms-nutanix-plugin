@@ -34,7 +34,7 @@ public class VM extends Entity {
     public final List<VMNic> nics;
 
     private VM(Builder builder) {
-        super(Objects.requireNonNull(builder.state),Objects.requireNonNull(builder.name),Objects.requireNonNull(builder.uuid));
+        super(Objects.requireNonNull(builder.state),Objects.requireNonNull(builder.uuid),Objects.requireNonNull(builder.name));
         this.clusterName=Objects.requireNonNull(builder.clusterName);
         this.clusterUuid=Objects.requireNonNull(builder.clusterUuid);
         this.hostName=builder.hostName;

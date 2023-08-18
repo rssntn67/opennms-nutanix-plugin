@@ -46,7 +46,7 @@ public class Cluster extends Entity {
     public final String internalSubnet;
 
     private Cluster(Builder builder) {
-        super(Objects.requireNonNull(builder.state),Objects.requireNonNull(builder.name),Objects.requireNonNull(builder.uuid));
+        super(Objects.requireNonNull(builder.state),Objects.requireNonNull(builder.uuid),Objects.requireNonNull(builder.name));
         this.isAvailable = Objects.requireNonNull(builder.isAvailable);
         this.operationMode = Objects.requireNonNull(builder.operationMode);
         this.nodes = Objects.requireNonNull(builder.nodes);
