@@ -591,18 +591,6 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                 )
                 .addMetaData(ImmutableRequisitionMetaData.newBuilder()
                         .setContext(NUTANIX_METADATA_CONTEXT)
-                        .setKey("hostName")
-                        .setValue(vm.hostName)
-                        .build()
-                )
-                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                        .setContext(NUTANIX_METADATA_CONTEXT)
-                        .setKey("hostUuid")
-                        .setValue(vm.hostUuid)
-                        .build()
-                )
-                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                        .setContext(NUTANIX_METADATA_CONTEXT)
                         .setKey("state")
                         .setValue(vm.state)
                         .build()
@@ -657,12 +645,6 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                 )
                 .addMetaData(ImmutableRequisitionMetaData.newBuilder()
                         .setContext(NUTANIX_METADATA_CONTEXT)
-                        .setKey("description")
-                        .setValue(vm.description)
-                        .build()
-                )
-                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                        .setContext(NUTANIX_METADATA_CONTEXT)
                         .setKey("kind")
                         .setValue(vm.kind)
                         .build()
@@ -681,6 +663,30 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                 )
                 .addCategory("NutanixVM");
 
+        if (Objects.nonNull(vm.hostName)) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("hostName")
+                    .setValue(vm.hostName)
+                    .build()
+            );
+        }
+        if (Objects.nonNull(vm.hostUuid)) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("hostUuid")
+                    .setValue(vm.hostUuid)
+                    .build()
+            );
+        }
+        if (Objects.nonNull(vm.description)) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                .setContext(NUTANIX_METADATA_CONTEXT)
+                .setKey("description")
+                .setValue(vm.description)
+                .build()
+            );
+        }
         node.addAsset("category", "NutanixVM");
         node.addAsset("cpu", "NutanixVM CPU: " + "numSockets:"+ vm.numSockets + " numVcpusPerSocket:" + vm.numVcpusPerSocket+" numThreadsPerCore:" + vm.numThreadsPerCore);
         node.addAsset("ram", "NutanixVM RAM: " +vm.memorySizeMib + "MB");

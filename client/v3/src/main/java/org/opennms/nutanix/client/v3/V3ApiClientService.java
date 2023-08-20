@@ -143,13 +143,11 @@ public class V3ApiClientService implements ApiClientService {
 }
 
     private static String getHostName(Reference hostReference) {
-        var hostName = (hostReference == null)  ?  null :  hostReference.getName();
-        return hostName;
+        return (hostReference == null)  ?  null :  hostReference.getName();
     }
 
     private static String getHostUuid(Reference hostReference) {
-        var hostUuid = (hostReference == null)  ?  null :  hostReference.getUuid();
-        return hostUuid;
+        return (hostReference == null)  ?  null :  hostReference.getUuid();
     }
 
     private static VM getFromVmIntentResource(VmIntentResource vmIntentResource) {
@@ -375,6 +373,7 @@ public class V3ApiClientService implements ApiClientService {
                 .withBuildType(build.getBuildType())
                 .withCommitDate(build.getCommitDate())
                 .withCommitId(build.getCommitId())
+                .withShortCommitId(build.getShortCommitId())
                 .withFullVersion(build.getFullVersion())
                 .withVersion(build.getVersion())
                 .withIsLongTermSupport(build.isIsLongTermSupport())
