@@ -788,7 +788,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
 
         if (request.importHosts) {
             for (Host host: apiClientService.getHosts()) {
-                requisition.addNode(getHostNode(host,context,clusterUuidToNameMap.get(host.uuid)));
+                requisition.addNode(getHostNode(host,context,clusterUuidToNameMap.get(host.clusterUuid)));
             }
         }
         if (request.importVms) {
