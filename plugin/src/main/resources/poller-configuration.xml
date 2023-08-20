@@ -52,7 +52,7 @@
     <monitor service="NutanixClusterService"
              class-name="org.opennms.nutanix.pollers.cluster.ClusterServiceStatusPoller"/>
     <monitor service="NutanixHost"
-             class-name="org.opennms.nutanix.pollers.host.HostServiceStatusPoller"/>
+             class-name="org.opennms.nutanix.pollers.host.HostStatusPoller"/>
     <monitor service="NutanixVM"
              class-name="org.opennms.nutanix.pollers.vm.VMStatusPoller"/>
     <monitor service="NutanixControllerVm"
