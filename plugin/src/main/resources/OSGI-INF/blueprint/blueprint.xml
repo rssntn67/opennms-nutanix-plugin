@@ -59,14 +59,14 @@
     </service>
 
     <service interface="org.opennms.integration.api.v1.pollers.ServicePollerFactory">
-        <bean class="org.opennms.nutanix.pollers.host.HostStatusPollerFactory">
+        <bean class="org.opennms.nutanix.pollers.host.status.HostStatusPollerFactory">
             <argument ref="clientManager"/>
             <argument ref="connectionManager"/>
         </bean>
     </service>
 
     <service interface="org.opennms.integration.api.v1.pollers.ServicePollerFactory">
-        <bean class="org.opennms.nutanix.pollers.vm.VMStatusPollerFactory">
+        <bean class="org.opennms.nutanix.pollers.vm.status.VMStatusPollerFactory">
             <argument ref="clientManager"/>
             <argument ref="connectionManager"/>
         </bean>

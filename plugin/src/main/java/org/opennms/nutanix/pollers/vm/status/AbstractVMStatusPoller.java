@@ -1,4 +1,4 @@
-package org.opennms.nutanix.pollers.vm;
+package org.opennms.nutanix.pollers.vm.status;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;

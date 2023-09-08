@@ -1,4 +1,4 @@
-package org.opennms.nutanix.pollers.host;
+package org.opennms.nutanix.pollers.host.status;
 
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;

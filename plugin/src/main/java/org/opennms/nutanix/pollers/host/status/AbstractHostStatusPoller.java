@@ -1,4 +1,4 @@
-package org.opennms.nutanix.pollers.host;
+package org.opennms.nutanix.pollers.host.status;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
