@@ -1,4 +1,4 @@
-package org.opennms.nutanix.pollers;
+package org.opennms.nutanix.pollers.entity;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -10,6 +10,7 @@ import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Entity;
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
+import org.opennms.nutanix.pollers.AbstractStatusPoller;
 
 public abstract class AbstractEntityStatusPoller extends AbstractStatusPoller {
     public static final String ATTR_ENTITY_UUID = "uuid";

@@ -1,4 +1,4 @@
-package org.opennms.nutanix.pollers;
+package org.opennms.nutanix.pollers.entity;
 
 import org.opennms.integration.api.v1.pollers.PollerResult;
 import org.opennms.integration.api.v1.pollers.Status;

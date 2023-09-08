@@ -1,4 +1,4 @@
-package org.opennms.nutanix.pollers;
+package org.opennms.nutanix.pollers.entity;
 
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;

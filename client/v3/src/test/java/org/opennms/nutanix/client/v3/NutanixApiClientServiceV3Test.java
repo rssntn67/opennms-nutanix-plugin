@@ -76,6 +76,7 @@ import org.opennms.nutanix.client.v3.model.ChangedRegions;
 import org.opennms.nutanix.client.v3.model.ChangedRegionsQuery;
 import org.opennms.nutanix.client.v3.model.CitrixAdapterListIntentResponse;
 import org.opennms.nutanix.client.v3.model.CitrixAdapterListMetadata;
+import org.opennms.nutanix.client.v3.model.ClusterIntentResponse;
 import org.opennms.nutanix.client.v3.model.ClusterListIntentResponse;
 import org.opennms.nutanix.client.v3.model.ClusterListMetadata;
 import org.opennms.nutanix.client.v3.model.DirectoryServiceListIntentResponse;
@@ -491,6 +492,18 @@ public class NutanixApiClientServiceV3Test {
                 throw new RuntimeException(e);
             }
         } while (offset < total );
+
+    }
+
+    @Test
+    public void testClustersApiGet() {
+        ClustersApi api = new ClustersApi(getApiClient());
+        try {
+            ClusterIntentResponse response = api.clustersUuidGet("00059dd3-26be-0d72-5228-ac1f6b357222");
+            System.out.println(response);
+        } catch (ApiException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

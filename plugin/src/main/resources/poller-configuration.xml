@@ -46,11 +46,11 @@
     </package>
 
     <monitor service="NutanixEntity"
-             class-name="org.opennms.nutanix.pollers.EntityStatusPoller"/>
+             class-name="org.opennms.nutanix.pollers.entity.EntityStatusPoller"/>
     <monitor service="NutanixCluster"
-             class-name="org.opennms.nutanix.pollers.cluster.ClusterStatusPoller"/>
+             class-name="org.opennms.nutanix.pollers.cluster.status.ClusterStatusPoller"/>
     <monitor service="NutanixClusterService"
-             class-name="org.opennms.nutanix.pollers.cluster.ClusterServiceStatusPoller"/>
+             class-name="org.opennms.nutanix.pollers.cluster.service.ClusterServiceStatusPoller"/>
     <monitor service="NutanixHost"
              class-name="org.opennms.nutanix.pollers.host.HostStatusPoller"/>
     <monitor service="NutanixVM"

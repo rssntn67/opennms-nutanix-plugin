@@ -1,4 +1,4 @@
-package org.opennms.nutanix.pollers.cluster;
+package org.opennms.nutanix.pollers.cluster.service;
 
 import java.util.Objects;
 
@@ -8,6 +8,7 @@ import org.opennms.integration.api.v1.pollers.immutables.ImmutablePollerResult;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.clients.ClientManager;
+import org.opennms.nutanix.pollers.cluster.AbstractClusterStatusPoller;
 
 public class ClusterServiceStatusPoller extends AbstractClusterStatusPoller {
     public ClusterServiceStatusPoller(final ClientManager clientManager) {
