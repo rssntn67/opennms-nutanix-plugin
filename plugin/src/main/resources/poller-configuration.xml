@@ -46,15 +46,15 @@
     </package>
 
     <monitor service="NutanixEntity"
-             class-name="org.opennms.nutanix.pollers.entity.status.EntityStatusPoller"/>
+             class-name="org.opennms.nutanix.pollers.entity.status.NutanixEntityStatusPoller"/>
     <monitor service="NutanixCluster"
-             class-name="org.opennms.nutanix.pollers.cluster.status.ClusterStatusPoller"/>
+             class-name="org.opennms.nutanix.pollers.cluster.status.NutanixClusterStatusPoller"/>
     <monitor service="NutanixClusterService"
-             class-name="org.opennms.nutanix.pollers.cluster.service.ClusterServiceStatusPoller"/>
+             class-name="org.opennms.nutanix.pollers.cluster.service.NutanixClusterServiceStatusPoller"/>
     <monitor service="NutanixHost"
-             class-name="org.opennms.nutanix.pollers.host.status.HostStatusPoller"/>
+             class-name="org.opennms.nutanix.pollers.host.status.NutanixHostStatusPoller"/>
     <monitor service="NutanixVM"
-             class-name="org.opennms.nutanix.pollers.vm.status.VMStatusPoller"/>
+             class-name="org.opennms.nutanix.pollers.vm.status.NutanixVMStatusPoller"/>
     <monitor service="NutanixControllerVm"
              class-name="org.opennms.netmgt.poller.monitors.TcpMonitor"/>
 

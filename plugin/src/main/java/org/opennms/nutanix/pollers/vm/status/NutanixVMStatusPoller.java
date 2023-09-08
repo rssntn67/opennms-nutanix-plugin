@@ -5,10 +5,10 @@ import org.opennms.integration.api.v1.pollers.Status;
 import org.opennms.integration.api.v1.pollers.immutables.ImmutablePollerResult;
 import org.opennms.nutanix.client.api.model.VM;
 import org.opennms.nutanix.clients.ClientManager;
-import org.opennms.nutanix.pollers.vm.AbstractVMPoller;
+import org.opennms.nutanix.pollers.vm.NutanixVMAbstractPoller;
 
-public class VMStatusPoller extends AbstractVMPoller {
-    public VMStatusPoller(ClientManager clientManager) {
+public class NutanixVMStatusPoller extends NutanixVMAbstractPoller {
+    public NutanixVMStatusPoller(ClientManager clientManager) {
         super(clientManager);
     }
 

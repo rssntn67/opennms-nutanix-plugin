@@ -5,10 +5,10 @@ import org.opennms.integration.api.v1.pollers.Status;
 import org.opennms.integration.api.v1.pollers.immutables.ImmutablePollerResult;
 import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.clients.ClientManager;
-import org.opennms.nutanix.pollers.cluster.AbstractClusterPoller;
+import org.opennms.nutanix.pollers.cluster.NutanixClusterAbstractPoller;
 
-public class ClusterStatusPoller extends AbstractClusterPoller {
-    public ClusterStatusPoller(ClientManager clientManager) {
+public class NutanixClusterStatusPoller extends NutanixClusterAbstractPoller {
+    public NutanixClusterStatusPoller(ClientManager clientManager) {
         super(clientManager);
     }
 

@@ -5,10 +5,10 @@ import org.opennms.integration.api.v1.pollers.Status;
 import org.opennms.integration.api.v1.pollers.immutables.ImmutablePollerResult;
 import org.opennms.nutanix.client.api.model.Entity;
 import org.opennms.nutanix.clients.ClientManager;
-import org.opennms.nutanix.pollers.entity.AbstractEntityPoller;
+import org.opennms.nutanix.pollers.entity.NutanixEntityAbstractPoller;
 
-public class EntityStatusPoller extends AbstractEntityPoller {
-    public EntityStatusPoller(ClientManager clientManager) {
+public class NutanixEntityStatusPoller extends NutanixEntityAbstractPoller {
+    public NutanixEntityStatusPoller(ClientManager clientManager) {
         super(clientManager);
     }
 

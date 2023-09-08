@@ -10,12 +10,12 @@ import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.VM;
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
-import org.opennms.nutanix.pollers.AbstractPoller;
+import org.opennms.nutanix.pollers.NutanixAbstractPoller;
 
-public abstract class AbstractVMPoller extends AbstractPoller {
+public abstract class NutanixVMAbstractPoller extends NutanixAbstractPoller {
     public static final String ATTR_CLUSTER_UUID = "uuid";
 
-    protected AbstractVMPoller(final ClientManager clientManager) {
+    protected NutanixVMAbstractPoller(final ClientManager clientManager) {
         super(clientManager);
     }
 
@@ -38,7 +38,7 @@ public abstract class AbstractVMPoller extends AbstractPoller {
         return CompletableFuture.completedFuture(this.poll(vm));
     }
 
-    public static abstract class Factory<T extends AbstractVMPoller> extends AbstractPoller.Factory<T> {
+    public static abstract class Factory<T extends NutanixVMAbstractPoller> extends NutanixAbstractPoller.Factory<T> {
 
         protected Factory(final ClientManager clientManager,
                           final ConnectionManager connectionManager,

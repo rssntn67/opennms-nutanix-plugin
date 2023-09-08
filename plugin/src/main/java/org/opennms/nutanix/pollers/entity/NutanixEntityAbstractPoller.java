@@ -10,13 +10,13 @@ import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Entity;
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
-import org.opennms.nutanix.pollers.AbstractPoller;
+import org.opennms.nutanix.pollers.NutanixAbstractPoller;
 
-public abstract class AbstractEntityPoller extends AbstractPoller {
+public abstract class NutanixEntityAbstractPoller extends NutanixAbstractPoller {
     public static final String ATTR_ENTITY_UUID = "uuid";
     public static final String ATTR_ENTITY_TYPE = "type";
 
-    protected AbstractEntityPoller(final ClientManager clientManager) {
+    protected NutanixEntityAbstractPoller(final ClientManager clientManager) {
         super(clientManager);
     }
     protected abstract PollerResult poll(final Entity  entity) throws NutanixApiException;
@@ -52,7 +52,7 @@ public abstract class AbstractEntityPoller extends AbstractPoller {
         return CompletableFuture.completedFuture(this.poll(entity));
     }
 
-    public static abstract class Factory<K extends AbstractEntityPoller> extends AbstractPoller.Factory<K> {
+    public static abstract class Factory<K extends NutanixEntityAbstractPoller> extends NutanixAbstractPoller.Factory<K> {
 
         protected Factory(final ClientManager clientManager,
                           final ConnectionManager connectionManager,

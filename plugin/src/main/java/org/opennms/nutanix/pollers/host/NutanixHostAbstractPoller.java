@@ -11,12 +11,12 @@ import org.opennms.nutanix.client.api.internal.Utils;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
-import org.opennms.nutanix.pollers.AbstractPoller;
+import org.opennms.nutanix.pollers.NutanixAbstractPoller;
 
-public abstract class AbstractHostPoller extends AbstractPoller {
+public abstract class NutanixHostAbstractPoller extends NutanixAbstractPoller {
     public static final String ATTR_CLUSTER_UUID = "uuid";
 
-    protected AbstractHostPoller(final ClientManager clientManager) {
+    protected NutanixHostAbstractPoller(final ClientManager clientManager) {
         super(clientManager);
     }
 
@@ -51,7 +51,7 @@ public abstract class AbstractHostPoller extends AbstractPoller {
         return CompletableFuture.completedFuture(this.poll(host));
     }
 
-    public static abstract class Factory<T extends AbstractHostPoller> extends AbstractPoller.Factory<T> {
+    public static abstract class Factory<T extends NutanixHostAbstractPoller> extends NutanixAbstractPoller.Factory<T> {
 
         protected Factory(final ClientManager clientManager,
                           final ConnectionManager connectionManager,
