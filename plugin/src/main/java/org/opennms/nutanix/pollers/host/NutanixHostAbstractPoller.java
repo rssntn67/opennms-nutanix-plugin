@@ -24,8 +24,7 @@ public abstract class NutanixHostAbstractPoller extends NutanixAbstractPoller {
 
     @Override
     public CompletableFuture<PollerResult> poll(final Context context) throws NutanixApiException {
-        final var uuid = Objects.requireNonNull(context.getPollerAttributes().get(ATTR_CLUSTER_UUID),
-                                                     "Missing attribute: " + ATTR_CLUSTER_UUID);
+        final var uuid = context.getNutanixUuid();
 
         final var host = context.client().getHost(uuid);
 
@@ -50,13 +49,4 @@ public abstract class NutanixHostAbstractPoller extends NutanixAbstractPoller {
 
         return CompletableFuture.completedFuture(this.poll(host));
     }
-
-    public static abstract class Factory<T extends NutanixHostAbstractPoller> extends NutanixAbstractPoller.Factory<T> {
-
-        protected Factory(final ClientManager clientManager,
-                          final ConnectionManager connectionManager,
-                          final Class<T> clazz) {
-            super(clientManager, connectionManager, clazz);
-        }
-    }
-}
+ }

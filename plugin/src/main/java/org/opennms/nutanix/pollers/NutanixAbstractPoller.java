@@ -2,11 +2,11 @@
 package org.opennms.nutanix.pollers;
 
 import static org.opennms.nutanix.connections.ConnectionManager.ALIAS_KEY;
+import static org.opennms.nutanix.connections.ConnectionManager.IGNORE_SSL_CERTIFICATE_VALIDATION_KEY;
+import static org.opennms.nutanix.connections.ConnectionManager.LENGTH_KEY;
 import static org.opennms.nutanix.connections.ConnectionManager.PASSWORD_KEY;
 import static org.opennms.nutanix.connections.ConnectionManager.PRISM_URL_KEY;
 import static org.opennms.nutanix.connections.ConnectionManager.USERNAME_KEY;
-import static org.opennms.nutanix.connections.ConnectionManager.IGNORE_SSL_CERTIFICATE_VALIDATION_KEY;
-import static org.opennms.nutanix.connections.ConnectionManager.LENGTH_KEY;
 
 import java.util.Map;
 import java.util.Objects;
@@ -18,9 +18,10 @@ import org.opennms.integration.api.v1.pollers.ServicePoller;
 import org.opennms.integration.api.v1.pollers.ServicePollerFactory;
 import org.opennms.integration.api.v1.pollers.Status;
 import org.opennms.integration.api.v1.pollers.immutables.ImmutablePollerResult;
-import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
+import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.NutanixApiException;
+import org.opennms.nutanix.client.api.model.Entity;
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
 import org.slf4j.Logger;
@@ -31,6 +32,9 @@ import com.google.common.collect.ImmutableMap;
 public abstract class NutanixAbstractPoller implements ServicePoller {
     private static final Logger LOG = LoggerFactory.getLogger(NutanixAbstractPoller.class);
     private final ClientManager clientManager;
+
+    private final static String UUID_KEY = "uuid";
+    private final static String TYPE_KEY = "type";
 
     protected NutanixAbstractPoller(final ClientManager clientManager) {
         this.clientManager = Objects.requireNonNull(clientManager);
@@ -86,6 +90,8 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
         @Override
         public final Map<String, String> getRuntimeAttributes(final PollerRequest pollerRequest) {
             final var alias = Objects.requireNonNull(pollerRequest.getPollerAttributes().get(ALIAS_KEY), "Missing property: " + ALIAS_KEY);
+            final var uuid = Objects.requireNonNull(pollerRequest.getPollerAttributes().get(UUID_KEY), "Missing property: " + UUID_KEY);
+            final var type = Objects.requireNonNull(pollerRequest.getPollerAttributes().get(TYPE_KEY), "Missing property: " + TYPE_KEY);
             final var connection = this.connectionManager.getConnection(alias)
                                                          .orElseThrow(() -> new NullPointerException("Connection not found for alias: " + alias));
 
@@ -95,6 +101,8 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
             attrs.put(PASSWORD_KEY, connection.getPassword());
             attrs.put(IGNORE_SSL_CERTIFICATE_VALIDATION_KEY, String.valueOf(connection.isIgnoreSslCertificateValidation()));
             attrs.put(LENGTH_KEY, String.valueOf(connection.getLength()));
+            attrs.put(UUID_KEY, uuid);
+            attrs.put(TYPE_KEY, type);
 
             return attrs.build();
         }
@@ -131,12 +139,18 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
                                                 .build();
         }
 
-        public ApiClientService client() throws NutanixApiException {
-            return NutanixAbstractPoller.this.clientManager.getClient(this.getClientCredentials());
+        public String getNutanixUuid() {
+            return Objects.requireNonNull(this.request.getPollerAttributes().get(UUID_KEY),
+                    "Missing attribute: " + UUID_KEY);
+        }
+        public Entity.EntityType getNutanixEntityType() {
+            final var type = Objects.requireNonNull(this.request.getPollerAttributes().get(TYPE_KEY),
+                    "Missing attribute: " + TYPE_KEY);
+            return Entity.EntityType.valueOf(type);
         }
 
-        public Map<String, String> getPollerAttributes() {
-            return this.request.getPollerAttributes();
+        public ApiClientService client() throws NutanixApiException {
+            return NutanixAbstractPoller.this.clientManager.getClient(this.getClientCredentials());
         }
     }
 }

@@ -1,6 +1,5 @@
 package org.opennms.nutanix.pollers.cluster;
 
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import org.opennms.integration.api.v1.pollers.PollerResult;
@@ -9,7 +8,6 @@ import org.opennms.integration.api.v1.pollers.immutables.ImmutablePollerResult;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.clients.ClientManager;
-import org.opennms.nutanix.connections.ConnectionManager;
 import org.opennms.nutanix.pollers.NutanixAbstractPoller;
 
 public abstract class NutanixClusterAbstractPoller extends NutanixAbstractPoller {
@@ -23,9 +21,7 @@ public abstract class NutanixClusterAbstractPoller extends NutanixAbstractPoller
 
     @Override
     public CompletableFuture<PollerResult> poll(final Context context) throws NutanixApiException {
-        final var uuid = Objects.requireNonNull(context.getPollerAttributes().get(ATTR_CLUSTER_UUID),
-                                                     "Missing attribute: " + ATTR_CLUSTER_UUID);
-
+        final var uuid = context.getNutanixUuid();
         final var cluster = context.client().getCluster(uuid);
 
         if (cluster == null) {
@@ -36,14 +32,5 @@ public abstract class NutanixClusterAbstractPoller extends NutanixAbstractPoller
         }
 
         return CompletableFuture.completedFuture(this.poll(cluster));
-    }
-
-    public static abstract class Factory<T extends NutanixClusterAbstractPoller> extends NutanixAbstractPoller.Factory<T> {
-
-        protected Factory(final ClientManager clientManager,
-                          final ConnectionManager connectionManager,
-                          final Class<T> clazz) {
-            super(clientManager, connectionManager, clazz);
-        }
     }
 }

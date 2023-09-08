@@ -11,28 +11,33 @@
         </rrd>
 
         <service name="NutanixEntity" interval="300000">
-            <parameter key="uuid" value="${nutanix:uuid}"/>
             <parameter key="alias" value="${nutanix:alias}"/>
+            <parameter key="uuid" value="${nutanix:uuid}"/>
             <parameter key="type" value="${nutanix:type}"/>
         </service>
 
         <service name="NutanixCluster" interval="300000">
-            <parameter key="uuid" value="${nutanix:uuid}"/>
             <parameter key="alias" value="${nutanix:alias}"/>
+            <parameter key="uuid" value="${nutanix:uuid}"/>
+            <parameter key="type" value="${nutanix:type}"/>
         </service>
+
         <service name="NutanixClusterService" interval="300000">
-            <parameter key="uuid" value="${nutanix:uuid}"/>
             <parameter key="alias" value="${nutanix:alias}"/>
+            <parameter key="uuid" value="${nutanix:uuid}"/>
+            <parameter key="type" value="${nutanix:type}"/>
         </service>
 
         <service name="NutanixHost" interval="300000">
-            <parameter key="uuid" value="${nutanix:uuid}"/>
             <parameter key="alias" value="${nutanix:alias}"/>
+            <parameter key="uuid" value="${nutanix:uuid}"/>
+            <parameter key="type" value="${nutanix:type}"/>
         </service>
 
         <service name="NutanixVM" interval="300000">
-            <parameter key="uuid" value="${nutanix:uuid}"/>
             <parameter key="alias" value="${nutanix:alias}"/>
+                <parameter key="uuid" value="${nutanix:uuid}"/>
+            <parameter key="type" value="${nutanix:type}"/>
         </service>
 
         <service name="NutanixControllerVm" interval="300000" user-defined="false" status="on">

@@ -42,7 +42,7 @@ public class Host extends Entity {
     public final String clusterKind;
 
     public Host(Builder builder) {
-        super(Objects.requireNonNull(builder.state),Objects.requireNonNull(builder.uuid),Objects.requireNonNull(builder.name));
+        super(Objects.requireNonNull(builder.state),Objects.requireNonNull(builder.uuid),Objects.requireNonNull(builder.name), EntityType.Host);
         this.specVersion = Objects.requireNonNull(builder.specVersion);
         this.kind = Objects.requireNonNull(builder.kind);
         this.controllerVmIp = Objects.requireNonNull(builder.controllerVmIp);
