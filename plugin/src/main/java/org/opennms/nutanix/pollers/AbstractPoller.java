@@ -28,11 +28,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableMap;
 
-public abstract class AbstractStatusPoller implements ServicePoller {
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractStatusPoller.class);
+public abstract class AbstractPoller implements ServicePoller {
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractPoller.class);
     private final ClientManager clientManager;
 
-    protected AbstractStatusPoller(final ClientManager clientManager) {
+    protected AbstractPoller(final ClientManager clientManager) {
         this.clientManager = Objects.requireNonNull(clientManager);
     }
 
@@ -52,7 +52,7 @@ public abstract class AbstractStatusPoller implements ServicePoller {
         }
     }
 
-    public static abstract class Factory<T extends AbstractStatusPoller> implements ServicePollerFactory<T> {
+    public static abstract class Factory<T extends AbstractPoller> implements ServicePollerFactory<T> {
 
         private final ClientManager clientManager;
 
@@ -132,7 +132,7 @@ public abstract class AbstractStatusPoller implements ServicePoller {
         }
 
         public ApiClientService client() throws NutanixApiException {
-            return AbstractStatusPoller.this.clientManager.getClient(this.getClientCredentials());
+            return AbstractPoller.this.clientManager.getClient(this.getClientCredentials());
         }
 
         public Map<String, String> getPollerAttributes() {

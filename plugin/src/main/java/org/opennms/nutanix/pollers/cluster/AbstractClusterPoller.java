@@ -10,9 +10,9 @@ import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
-import org.opennms.nutanix.pollers.AbstractStatusPoller;
+import org.opennms.nutanix.pollers.AbstractPoller;
 
-public abstract class AbstractClusterPoller extends AbstractStatusPoller {
+public abstract class AbstractClusterPoller extends AbstractPoller {
     public static final String ATTR_CLUSTER_UUID = "uuid";
 
     protected AbstractClusterPoller(final ClientManager clientManager) {
@@ -38,7 +38,7 @@ public abstract class AbstractClusterPoller extends AbstractStatusPoller {
         return CompletableFuture.completedFuture(this.poll(cluster));
     }
 
-    public static abstract class Factory<T extends AbstractClusterPoller> extends AbstractStatusPoller.Factory<T> {
+    public static abstract class Factory<T extends AbstractClusterPoller> extends AbstractPoller.Factory<T> {
 
         protected Factory(final ClientManager clientManager,
                           final ConnectionManager connectionManager,
