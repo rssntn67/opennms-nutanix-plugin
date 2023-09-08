@@ -1,4 +1,4 @@
-package org.opennms.nutanix.pollers.host.status;
+package org.opennms.nutanix.pollers.host;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -13,10 +13,10 @@ import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
 import org.opennms.nutanix.pollers.AbstractStatusPoller;
 
-public abstract class AbstractHostStatusPoller extends AbstractStatusPoller {
+public abstract class AbstractHostPoller extends AbstractStatusPoller {
     public static final String ATTR_CLUSTER_UUID = "uuid";
 
-    protected AbstractHostStatusPoller(final ClientManager clientManager) {
+    protected AbstractHostPoller(final ClientManager clientManager) {
         super(clientManager);
     }
 
@@ -51,7 +51,7 @@ public abstract class AbstractHostStatusPoller extends AbstractStatusPoller {
         return CompletableFuture.completedFuture(this.poll(host));
     }
 
-    public static abstract class Factory<T extends AbstractHostStatusPoller> extends AbstractStatusPoller.Factory<T> {
+    public static abstract class Factory<T extends AbstractHostPoller> extends AbstractStatusPoller.Factory<T> {
 
         protected Factory(final ClientManager clientManager,
                           final ConnectionManager connectionManager,

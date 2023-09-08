@@ -46,7 +46,7 @@
     </package>
 
     <monitor service="NutanixEntity"
-             class-name="org.opennms.nutanix.pollers.entity.EntityStatusPoller"/>
+             class-name="org.opennms.nutanix.pollers.entity.status.EntityStatusPoller"/>
     <monitor service="NutanixCluster"
              class-name="org.opennms.nutanix.pollers.cluster.status.ClusterStatusPoller"/>
     <monitor service="NutanixClusterService"

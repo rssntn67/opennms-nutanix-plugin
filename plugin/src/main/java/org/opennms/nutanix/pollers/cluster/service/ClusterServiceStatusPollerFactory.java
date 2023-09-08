@@ -2,9 +2,9 @@ package org.opennms.nutanix.pollers.cluster.service;
 
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
-import org.opennms.nutanix.pollers.cluster.AbstractClusterStatusPoller;
+import org.opennms.nutanix.pollers.cluster.AbstractClusterPoller;
 
-public class ClusterServiceStatusPollerFactory extends AbstractClusterStatusPoller.Factory<ClusterServiceStatusPoller> {
+public class ClusterServiceStatusPollerFactory extends AbstractClusterPoller.Factory<ClusterServiceStatusPoller> {
 
     public ClusterServiceStatusPollerFactory(final ClientManager clientManager,
                                              final ConnectionManager connectionManager) {

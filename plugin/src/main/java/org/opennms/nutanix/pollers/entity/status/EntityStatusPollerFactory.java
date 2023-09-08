@@ -1,9 +1,10 @@
-package org.opennms.nutanix.pollers.entity;
+package org.opennms.nutanix.pollers.entity.status;
 
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
+import org.opennms.nutanix.pollers.entity.AbstractEntityPoller;
 
-public class EntityStatusPollerFactory extends AbstractEntityStatusPoller.Factory<EntityStatusPoller> {
+public class EntityStatusPollerFactory extends AbstractEntityPoller.Factory<EntityStatusPoller> {
 
     public EntityStatusPollerFactory(final ClientManager clientManager,
                                      final ConnectionManager connectionManager) {

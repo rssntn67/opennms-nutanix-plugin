@@ -2,8 +2,9 @@ package org.opennms.nutanix.pollers.vm.status;
 
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
+import org.opennms.nutanix.pollers.vm.AbstractVMPoller;
 
-public class VMStatusPollerFactory extends AbstractVMStatusPoller.Factory<VMStatusPoller> {
+public class VMStatusPollerFactory extends AbstractVMPoller.Factory<VMStatusPoller> {
 
     public VMStatusPollerFactory(final ClientManager clientManager,
                                  final ConnectionManager connectionManager) {

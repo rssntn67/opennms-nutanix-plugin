@@ -5,8 +5,9 @@ import org.opennms.integration.api.v1.pollers.Status;
 import org.opennms.integration.api.v1.pollers.immutables.ImmutablePollerResult;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.clients.ClientManager;
+import org.opennms.nutanix.pollers.host.AbstractHostPoller;
 
-public class HostStatusPoller extends AbstractHostStatusPoller {
+public class HostStatusPoller extends AbstractHostPoller {
     public HostStatusPoller(ClientManager clientManager) {
         super(clientManager);
     }
