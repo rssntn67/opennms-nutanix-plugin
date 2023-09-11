@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import org.opennms.integration.api.v1.config.requisition.Requisition;
 import org.opennms.integration.api.v1.config.requisition.RequisitionNode;
+import org.opennms.integration.api.v1.config.requisition.SnmpPrimaryType;
 import org.opennms.integration.api.v1.config.requisition.immutables.ImmutableRequisition;
 import org.opennms.integration.api.v1.config.requisition.immutables.ImmutableRequisitionInterface;
 import org.opennms.integration.api.v1.config.requisition.immutables.ImmutableRequisitionMetaData;
@@ -268,6 +269,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         ImmutableRequisitionInterface.newBuilder()
                                 .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(cluster.externalIp)))
                                 .setDescription("Cluster Virtual IP Address")
+                                .setSnmpPrimary(SnmpPrimaryType.PRIMARY)
                                 .addMonitoredService("NutanixEntity")
                                 .addMonitoredService("NutanixCluster")
                                 .addMonitoredService("NutanixClusterService")
@@ -540,6 +542,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
         final var controllerVmIface = ImmutableRequisitionInterface.newBuilder()
                 .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(host.controllerVmIp)))
                 .setDescription("controllerVmIp")
+                .setSnmpPrimary(SnmpPrimaryType.PRIMARY)
                 .addMetaData(ImmutableRequisitionMetaData.newBuilder()
                         .setContext(NUTANIX_METADATA_CONTEXT)
                         .setKey("oplogDiskSize")
