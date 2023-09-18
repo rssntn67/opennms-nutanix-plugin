@@ -67,14 +67,6 @@ public class ClientManager {
 
 
     public ApiClientService getClient(ApiClientCredentials credentials) throws NutanixApiException{
-        if (clientProviderMap.containsKey(ApiVersion.Version.VERSION_3))
             return client(credentials, ApiVersion.Version.VERSION_3);
-        if (clientProviderMap.containsKey(ApiVersion.Version.VERSION_2))
-            return client(credentials, ApiVersion.Version.VERSION_2);
-        if (clientProviderMap.containsKey(ApiVersion.Version.VERSION_1))
-            client(credentials, ApiVersion.Version.VERSION_1);
-        if (clientProviderMap.containsKey(ApiVersion.Version.VERSION_0_8))
-            client(credentials, ApiVersion.Version.VERSION_0_8);
-        throw new NutanixApiException("Cannot instantiate NutanixApiClient for" + credentials.prismUrl);
     }
 }
