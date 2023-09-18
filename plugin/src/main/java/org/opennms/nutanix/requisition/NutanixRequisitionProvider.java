@@ -449,6 +449,11 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         .build())
                 .addMetaData(ImmutableRequisitionMetaData.newBuilder()
                         .setContext(NUTANIX_METADATA_CONTEXT)
+                        .setKey("controllerVmUuid")
+                        .setValue(host.controllerVmUuid)
+                        .build())
+                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                        .setContext(NUTANIX_METADATA_CONTEXT)
                         .setKey("specVersion")
                         .setValue(String.valueOf(host.specVersion))
                         .build())
@@ -817,9 +822,9 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
     public static class Request implements RequisitionRequest {
 
         private boolean importVms = true;
-        private boolean importHosts = false;
+        private boolean importHosts = true;
 
-        private boolean importClusters = false;
+        private boolean importClusters = true;
 
         private boolean importAllVms = false;
 

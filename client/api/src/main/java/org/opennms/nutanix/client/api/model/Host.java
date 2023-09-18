@@ -10,6 +10,7 @@ public class Host extends Entity {
     //Controller VM is a Virtual Machine Fundamentally used for sharing data over cluster
     // this is the ip of such VM
     public final String controllerVmIp;
+    public final String controllerVmUuid;
 
     //This is an interesting value for monitoring, with opLogDiskPct to be monitored
     public final Float oplogDiskPct;
@@ -46,6 +47,7 @@ public class Host extends Entity {
         this.specVersion = Objects.requireNonNull(builder.specVersion);
         this.kind = Objects.requireNonNull(builder.kind);
         this.controllerVmIp = Objects.requireNonNull(builder.controllerVmIp);
+        this.controllerVmUuid = builder.uuid;
         this.oplogDiskPct = Objects.requireNonNull(builder.oplogDiskPct);
         this.oplogDiskSize = Objects.requireNonNull(builder.oplogDiskSize);
         this.ipmi = Objects.requireNonNull(builder.ipmi);
