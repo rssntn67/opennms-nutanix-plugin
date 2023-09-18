@@ -95,6 +95,7 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
             final var connection = this.connectionManager.getConnection(alias)
                                                          .orElseThrow(() -> new NullPointerException("Connection not found for alias: " + alias));
 
+            LOG.info("getRuntimeAttributes: {}", connection);
             final var attrs = ImmutableMap.<String,String>builder();
             attrs.put(PRISM_URL_KEY, connection.getPrismUrl());
             attrs.put(USERNAME_KEY, connection.getUsername());

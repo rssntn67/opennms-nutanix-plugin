@@ -9,9 +9,11 @@ import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.pollers.NutanixAbstractPoller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class NutanixClusterAbstractPoller extends NutanixAbstractPoller {
-    public static final String ATTR_CLUSTER_UUID = "uuid";
+    private static final Logger LOG = LoggerFactory.getLogger(NutanixClusterAbstractPoller.class);
 
     protected NutanixClusterAbstractPoller(final ClientManager clientManager) {
         super(clientManager);
@@ -23,6 +25,7 @@ public abstract class NutanixClusterAbstractPoller extends NutanixAbstractPoller
     public CompletableFuture<PollerResult> poll(final Context context) throws NutanixApiException {
         final var uuid = context.getNutanixUuid();
         final var cluster = context.client().getCluster(uuid);
+        LOG.info("poll: uuid: {}", uuid);
 
         if (cluster == null) {
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
