@@ -31,5 +31,10 @@ You can specify an additional parameter, `importAllVms` (default value false), t
 The following example creates a VM ONLY POWERED ON requisition named `My-Cluster-VMS-Requisition`.
 
 ```
-    opennms:import-requisition nutanix alias=aAlias foreignSource=My-Cluster-VMS-Requisition
+    opennms:import-requisition nutanix alias=aAlias foreignSource=My-Cluster-VMS-Requisition importHosts=false importClusters=false
+```
+
+Produce output:
+```
+requisition://nutanix?alias=clutest&foreignSource=CLU-TEST-Vms&importHosts=false&importClusters=false
 ```
