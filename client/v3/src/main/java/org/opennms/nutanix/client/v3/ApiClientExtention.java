@@ -74,7 +74,7 @@ public class ApiClientExtention extends ApiClient {
      * @return Client
      */
     protected Client buildHttpClient(boolean debugging) {
-        LOG.info("buildHttpClient: debugging: {}", debugging);
+        LOG.debug("buildHttpClient: debugging: {}", debugging);
         final ClientConfig clientConfig = new ClientConfig();
         clientConfig.register(MultiPartFeature.class);
         clientConfig.register(getJSON());
@@ -87,7 +87,7 @@ public class ApiClientExtention extends ApiClient {
             java.util.logging.Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME).setLevel(java.util.logging.Level.ALL);
         }
         ClientBuilder builder =  ClientBuilder.newBuilder();
-        LOG.info("buildHttpClient: ignoreSslCertificateValidation: {}", ignoreSslCertificateValidation);
+        LOG.debug("buildHttpClient: ignoreSslCertificateValidation: {}", ignoreSslCertificateValidation);
         if (ignoreSslCertificateValidation) {
             ignoreCertificateValididation(builder);
         }
@@ -98,12 +98,12 @@ public class ApiClientExtention extends ApiClient {
 
     @Override
     public void performAdditionalClientConfiguration(ClientConfig config) {
-        LOG.info("performAdditionalClientConfiguration: {}", config);
+        LOG.debug("performAdditionalClientConfiguration: {}", config);
         super.performAdditionalClientConfiguration(config);
     }
     @Override
     public String selectHeaderContentType(String[] contentTypes) {
-        LOG.info("selectHeaderContentType: {}", Arrays.toString(contentTypes));
+        LOG.debug("selectHeaderContentType: {}", Arrays.toString(contentTypes));
         if (contentTypes.length == 0 || contentTypes[0].equals("*/*")) {
             return "application/json";
         }
