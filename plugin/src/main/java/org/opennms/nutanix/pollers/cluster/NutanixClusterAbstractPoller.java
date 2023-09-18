@@ -19,18 +19,18 @@ public abstract class NutanixClusterAbstractPoller extends NutanixAbstractPoller
         super(clientManager);
     }
 
-    protected abstract PollerResult poll(final Cluster gateway) throws NutanixApiException;
+    protected abstract PollerResult poll(final Cluster cluster) throws NutanixApiException;
 
     @Override
     public CompletableFuture<PollerResult> poll(final Context context) throws NutanixApiException {
         final var uuid = context.getNutanixUuid();
         final var cluster = context.client().getCluster(uuid);
-        LOG.info("poll: uuid: {}", uuid);
 
         if (cluster == null) {
+            LOG.info("poll: no cluster with uuid: {}", uuid);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
                                                                           .setStatus(Status.Down)
-                                                                          .setReason("No cluster with id " + uuid)
+                                                                          .setReason("No cluster with uuid " + uuid)
                                                                           .build());
         }
 

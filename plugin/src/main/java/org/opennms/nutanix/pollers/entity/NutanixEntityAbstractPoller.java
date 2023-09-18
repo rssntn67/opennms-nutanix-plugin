@@ -9,8 +9,11 @@ import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Entity;
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.pollers.NutanixAbstractPoller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class NutanixEntityAbstractPoller extends NutanixAbstractPoller {
+    private static final Logger LOG = LoggerFactory.getLogger(NutanixEntityAbstractPoller.class);
     protected NutanixEntityAbstractPoller(final ClientManager clientManager) {
         super(clientManager);
     }
@@ -19,7 +22,6 @@ public abstract class NutanixEntityAbstractPoller extends NutanixAbstractPoller 
     @Override
     public CompletableFuture<PollerResult> poll(final Context context) throws NutanixApiException {
         final var uuid = context.getNutanixUuid();
-
         final var type = context.getNutanixEntityType();
 
         Entity entity;
@@ -35,6 +37,7 @@ public abstract class NutanixEntityAbstractPoller extends NutanixAbstractPoller 
                 entity = context.client().getVM(uuid);
                 break;
             default:
+                LOG.info("poll: No Entity with uuid/type {}/{}", uuid, type);
                 return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
                         .setStatus(Status.Down)
                         .setReason("No Entity with uuid/type:" + uuid + "/" + type )

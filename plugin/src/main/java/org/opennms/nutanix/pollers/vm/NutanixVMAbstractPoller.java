@@ -9,11 +9,15 @@ import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.VM;
 import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.pollers.NutanixAbstractPoller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class NutanixVMAbstractPoller extends NutanixAbstractPoller {
     protected NutanixVMAbstractPoller(final ClientManager clientManager) {
         super(clientManager);
     }
+
+    private static final Logger LOG = LoggerFactory.getLogger(NutanixVMAbstractPoller.class);
 
     protected abstract PollerResult poll(final VM vm) throws NutanixApiException;
 
@@ -23,6 +27,7 @@ public abstract class NutanixVMAbstractPoller extends NutanixAbstractPoller {
         final var vm = context.client().getVM(uuid);
 
         if (vm == null) {
+            LOG.info("poll: no VM with uuid: {}", uuid);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
                                                                           .setStatus(Status.Down)
                                                                           .setReason("No Nutanix VM found with uuid: " + uuid)

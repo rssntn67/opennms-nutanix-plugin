@@ -10,11 +10,13 @@ import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.internal.Utils;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.clients.ClientManager;
-import org.opennms.nutanix.connections.ConnectionManager;
 import org.opennms.nutanix.pollers.NutanixAbstractPoller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class NutanixHostAbstractPoller extends NutanixAbstractPoller {
-    public static final String ATTR_CLUSTER_UUID = "uuid";
+
+    private static final Logger LOG = LoggerFactory.getLogger(NutanixHostAbstractPoller.class);
 
     protected NutanixHostAbstractPoller(final ClientManager clientManager) {
         super(clientManager);
@@ -25,25 +27,27 @@ public abstract class NutanixHostAbstractPoller extends NutanixAbstractPoller {
     @Override
     public CompletableFuture<PollerResult> poll(final Context context) throws NutanixApiException {
         final var uuid = context.getNutanixUuid();
-
         final var host = context.client().getHost(uuid);
 
         if (host == null) {
+            LOG.info("poll: no host with uuid: {}", uuid);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
                                                                           .setStatus(Status.Down)
                                                                           .setReason("No Nutanix Host found with uuid: " + uuid)
                                                                           .build());
         }
         if (host.hypervisorIp == null) {
+            LOG.info("poll: no hypervisorIp for host with uuid: {}", uuid);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
                     .setStatus(Status.Down)
                     .setReason("No Hypervisor Ip found for Host with uuid: " + uuid)
                     .build());
         }
         if (!Objects.equals(Utils.getValidInetAddress(host.hypervisorIp), context.request.getAddress())) {
+            LOG.info("poll: no valid hypervisorIp {} for host with uuid: {}",host.hypervisorIp,  uuid);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
                     .setStatus(Status.Down)
-                    .setReason("No Match for Hypervisor Ip Found for Host with uuid: " + uuid)
+                    .setReason("No Valid for Hypervisor Ip {} Found for Host with uuid: " + uuid)
                     .build());
         }
 
