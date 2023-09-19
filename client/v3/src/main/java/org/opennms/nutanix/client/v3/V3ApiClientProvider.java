@@ -16,13 +16,13 @@ public class V3ApiClientProvider implements V3ClientProvider {
     public V3ApiClientProvider() {
     }
 
-    private ApiClientExtention getClient(ApiClientCredentials credentials) {
-        ApiClientExtention apiClient = new ApiClientExtention();
+    private ApiClientExtension getClient(ApiClientCredentials credentials) {
+        ApiClientExtension apiClient = new ApiClientExtension();
         apiClient.setBasePath(credentials.prismUrl+"/api/nutanix/v3");
         apiClient.setUsername(credentials.username);
         apiClient.setPassword(credentials.password);
         apiClient.setIgnoreSslCertificateValidation(credentials.ignoreSslCertificateValidation);
-        apiClient.setLength(credentials.length);
+        apiClient.setPageSize(credentials.length);
         return apiClient;
     }
     @Override

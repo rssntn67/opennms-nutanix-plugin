@@ -3,7 +3,6 @@ package org.opennms.nutanix.client.v3;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
-import java.util.Arrays;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -17,24 +16,21 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.opennms.nutanix.client.v3.handler.ApiClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class ApiClientExtention extends ApiClient {
+public class ApiClientExtension extends ApiClient {
     public void setIgnoreSslCertificateValidation(boolean ignoreSslCertificateValidation) {
         this.ignoreSslCertificateValidation = ignoreSslCertificateValidation;
         setHttpClient(buildHttpClient(debugging));
     }
 
-    private static final Logger LOG = LoggerFactory.getLogger(ApiClientExtention.class);
     private boolean ignoreSslCertificateValidation=false;
-    private int length = 20;
-    public int getLength() {
-        return length;
+    private int pageSize = 20;
+    public int getPageSize() {
+        return pageSize;
     }
 
-    public void setLength(int length) {
-        this.length = length;
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
 
     protected void ignoreCertificateValididation(ClientBuilder clientBuilder) {
@@ -74,7 +70,6 @@ public class ApiClientExtention extends ApiClient {
      * @return Client
      */
     protected Client buildHttpClient(boolean debugging) {
-        LOG.debug("buildHttpClient: debugging: {}", debugging);
         final ClientConfig clientConfig = new ClientConfig();
         clientConfig.register(MultiPartFeature.class);
         clientConfig.register(getJSON());
@@ -87,7 +82,6 @@ public class ApiClientExtention extends ApiClient {
             java.util.logging.Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME).setLevel(java.util.logging.Level.ALL);
         }
         ClientBuilder builder =  ClientBuilder.newBuilder();
-        LOG.debug("buildHttpClient: ignoreSslCertificateValidation: {}", ignoreSslCertificateValidation);
         if (ignoreSslCertificateValidation) {
             ignoreCertificateValididation(builder);
         }
@@ -98,12 +92,10 @@ public class ApiClientExtention extends ApiClient {
 
     @Override
     public void performAdditionalClientConfiguration(ClientConfig config) {
-        LOG.debug("performAdditionalClientConfiguration: {}", config);
         super.performAdditionalClientConfiguration(config);
     }
     @Override
     public String selectHeaderContentType(String[] contentTypes) {
-        LOG.debug("selectHeaderContentType: {}", Arrays.toString(contentTypes));
         if (contentTypes.length == 0 || contentTypes[0].equals("*/*")) {
             return "application/json";
         }

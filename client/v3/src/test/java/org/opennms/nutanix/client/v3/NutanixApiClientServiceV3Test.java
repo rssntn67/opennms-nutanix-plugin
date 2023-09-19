@@ -146,14 +146,14 @@ import org.opennms.nutanix.client.v3.model.WebhookListMetadata;
 
 public class NutanixApiClientServiceV3Test {
 
-    private ApiClientExtention getApiClient() {
-        ApiClientExtention apiClient = new ApiClientExtention();
+    private ApiClientExtension getApiClient() {
+        ApiClientExtension apiClient = new ApiClientExtension();
         apiClient.setBasePath("https://nutanix.arsinfo.it:9440/api/nutanix/v3");
         apiClient.setUsername(System.getenv("NTX_USER"));
         apiClient.setPassword(System.getenv("NTX_PASS"));
         apiClient.setDebugging(true);
         apiClient.setIgnoreSslCertificateValidation(true);
-        apiClient.setLength(20);
+        apiClient.setPageSize(20);
         return apiClient;
 
     }
@@ -166,7 +166,7 @@ public class NutanixApiClientServiceV3Test {
 
     @Test
     public void testApiProvider() throws NutanixApiException, UnknownHostException {
-        ApiClientExtention apiClient = new ApiClientExtention();
+        ApiClientExtension apiClient = new ApiClientExtension();
         V3ApiClientProvider provider = new V3ApiClientProvider();
         ApiClientCredentials credentials = ApiClientCredentials.builder()
                 .withUsername(System.getenv("NTX_USER"))
@@ -290,7 +290,7 @@ public class NutanixApiClientServiceV3Test {
     @Test
     public void testVmsApi() {
 
-        ApiClientExtention apiClient = getApiClient();
+        ApiClientExtension apiClient = getApiClient();
         VmsApi vmsApi = new VmsApi(apiClient);
         int offset = 0;
         Set<String> vmnames = new HashSet<>();
@@ -307,7 +307,7 @@ public class NutanixApiClientServiceV3Test {
         List<VmIntentResource> errorVms = new ArrayList<>();
         int total;
             do {
-                VmListMetadata body = new VmListMetadata().length(apiClient.getLength()).offset(offset);
+                VmListMetadata body = new VmListMetadata().length(apiClient.getPageSize()).offset(offset);
                 try {
                     VmListIntentResponse vmListIntentResponse = vmsApi.vmsListPost(body);
                     total = vmListIntentResponse.getMetadata().getTotalMatches();
@@ -367,7 +367,7 @@ public class NutanixApiClientServiceV3Test {
     }
     @Test
     public void testVmsApiGetVm() throws NutanixApiException {
-        ApiClientExtention apiClient = getApiClient();
+        ApiClientExtension apiClient = getApiClient();
         VmsApi vmsApi = new VmsApi(apiClient);
         String uuid = "d04f11c9-690b-4fa9-8d17-0c0de2e92c77";
 
