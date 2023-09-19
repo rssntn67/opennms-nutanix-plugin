@@ -36,6 +36,16 @@
     </bean>
     <service ref="nutanixRequisitionProvider" interface="org.opennms.integration.api.v1.requisition.RequisitionProvider"/>
 
+    <!--    Rest-->
+    <bean id="nutanixRestService" class="org.opennms.nutanix.rest.impl.NutanixRestServiceImpl">
+        <argument ref="connectionManager"/>
+    </bean>
+    <service interface="org.opennms.nutanix.rest.api.NutanixRestService" ref="nutanixRestService">
+        <service-properties>
+            <entry key="application-path" value="/rest/plugin"/>
+        </service-properties>
+    </service>
+
     <!--    Service Pollers -->
     <service interface="org.opennms.integration.api.v1.pollers.ServicePollerFactory">
         <bean class="org.opennms.nutanix.pollers.cluster.status.NutanixClusterStatusPollerFactory">
