@@ -201,7 +201,8 @@ public class NutanixApiClientServiceV3Test {
             System.out.println("----------");
         }
 
-        List<String> ipaddresses = new ArrayList<>();
+        List<String> addresses = new ArrayList<>();
+        Map<String, List<String>> vlanIpMap = new HashMap<>();
         for (VM vm : service.getVMS()) {
             if (!vm.powerState.equalsIgnoreCase("ON")) {
                 continue;
@@ -211,10 +212,14 @@ public class NutanixApiClientServiceV3Test {
             int outsubnet = 0;
             List<String> nics = new ArrayList<>();
             for (VMNic nic : vm.nics) {
+                if (!vlanIpMap.containsKey(nic.name)) {
+                    vlanIpMap.put(nic.name, new ArrayList<>());
+                }
+                vlanIpMap.get(nic.name).addAll(nic.ipList);
                 nics.add(nic.toString());
                 for (String ipAddress : nic.ipList) {
-                    Assert.assertFalse(ipaddresses.contains(ipAddress));
-                    ipaddresses.add(ipAddress);
+                    Assert.assertFalse(addresses.contains(ipAddress));
+                    addresses.add(ipAddress);
                     if (Utils.isIpInSubnet(ipAddress,extNet)) {
                         insubnet++;
                     } else {
@@ -235,6 +240,7 @@ public class NutanixApiClientServiceV3Test {
                 Assert.assertEquals(1,outsubnet);
             }
         }
+        System.out.println(vlanIpMap);
     }
     @Test
     public void testValidate() {

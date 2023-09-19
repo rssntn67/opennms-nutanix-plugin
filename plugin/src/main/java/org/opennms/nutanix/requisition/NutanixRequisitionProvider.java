@@ -1,6 +1,7 @@
 package org.opennms.nutanix.requisition;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -569,7 +570,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
         return node.build();
     }
 
-    private RequisitionNode getVMNode(final VM vm, RequestContext context) {
+    private RequisitionNode getVMNode(final VM vm, RequestContext context, String clusterInternalSubnet) throws UnknownHostException {
         final var node = ImmutableRequisitionNode.newBuilder()
                 .setNodeLabel(vm.name)
                 .setForeignId(vm.uuid)
@@ -738,6 +739,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                             .build());
         }
         int nicIndex = 0;
+        boolean addVMMonitor=true;
         for (VMNic nic: vm.nics) {
             node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
                     .setContext(NUTANIX_METADATA_CONTEXT)
@@ -781,8 +783,11 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         .setContext(NUTANIX_METADATA_CONTEXT)
                         .setKey("nicIndex")
                         .setValue(String.valueOf(nicIndex)).build());
+                if (nic.isConnected && addVMMonitor && !Utils.isIpInSubnet(ipAddress,clusterInternalSubnet )) {
+                    iface.addMonitoredService("NutanixVM");
+                    addVMMonitor=false;
+                }
                 iface.addMonitoredService("NutanixEntity");
-                iface.addMonitoredService("NutanixVM");
                 node.addInterface(iface.build());
             }
         }
@@ -796,9 +801,11 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
 
         ApiClientService apiClientService = context.getClient();
         Map<String,String> clusterUuidToNameMap = new HashMap<>();
+        Map<String,String> clusterUuidToInternalMap = new HashMap<>();
 
         for (Cluster cluster: apiClientService.getClusters()) {
             clusterUuidToNameMap.put(cluster.uuid, cluster.name);
+            clusterUuidToInternalMap.put(cluster.uuid, cluster.internalSubnet);
             if (request.importClusters) {
                 requisition.addNode(getClusterNode(cluster, context));
             }
@@ -813,7 +820,11 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
             for (VM vm: apiClientService.getVMS()) {
                 if (!request.importAllVms && !vm.powerState.equalsIgnoreCase("ON"))
                     continue;
-                requisition.addNode(getVMNode(vm, context));
+                try {
+                    requisition.addNode(getVMNode(vm, context, clusterUuidToInternalMap.get(vm.clusterUuid)));
+                } catch (UnknownHostException e) {
+                    LOG.warn("handleRequest: not imported vm:{}, cause: {}", vm.name, e.getLocalizedMessage());
+                }
             }
         }
         return requisition.build();
