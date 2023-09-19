@@ -34,7 +34,7 @@ public class AddConnectionCommand implements Action {
     @Argument(index = 2, name = "username", description = "Nutanix Prism API username", required = true)
     public String username = null;
 
-    @Argument(index = 3, name = "password", description = "Nutanix Prism API password", required = true)
+    @Argument(index = 3, name = "password", description = "Nutanix Prism API password", required = true, censor = true)
     public String password = null;
 
     @Argument(index = 4, name = "length", description = "Nutanix Prism API object retrivial length defaults to 20")
