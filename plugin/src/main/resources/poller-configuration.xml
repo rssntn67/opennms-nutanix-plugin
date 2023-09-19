@@ -10,19 +10,7 @@
             <rra>RRA:MIN:0.5:288:366</rra>
         </rrd>
 
-        <service name="NutanixEntity" interval="300000">
-            <parameter key="alias" value="${nutanix:alias}"/>
-            <parameter key="uuid" value="${nutanix:uuid}"/>
-            <parameter key="type" value="${nutanix:type}"/>
-        </service>
-
         <service name="NutanixCluster" interval="300000">
-            <parameter key="alias" value="${nutanix:alias}"/>
-            <parameter key="uuid" value="${nutanix:uuid}"/>
-            <parameter key="type" value="${nutanix:type}"/>
-        </service>
-
-        <service name="NutanixClusterService" interval="300000">
             <parameter key="alias" value="${nutanix:alias}"/>
             <parameter key="uuid" value="${nutanix:uuid}"/>
             <parameter key="type" value="${nutanix:type}"/>
@@ -44,18 +32,14 @@
             <parameter key="retry" value="0" />
             <parameter key="port" value="2020" />
         </service>
-        <downtime begin="0" end="300000" interval="30000"/><!-- 30s, 0, 5m -->
+        <downtime begin="0" end="300000" interval="60000"/><!-- 60s, 0, 5m -->
         <downtime begin="300000" end="43200000" interval="300000"/><!-- 5m, 5m, 12h -->
         <downtime begin="43200000" end="432000000" interval="600000"/><!-- 10m, 12h, 5d -->
         <downtime begin="432000000" interval="3600000"/><!-- 1h, 5d -->
     </package>
 
-    <monitor service="NutanixEntity"
-             class-name="org.opennms.nutanix.pollers.entity.status.NutanixEntityStatusPoller"/>
     <monitor service="NutanixCluster"
              class-name="org.opennms.nutanix.pollers.cluster.status.NutanixClusterStatusPoller"/>
-    <monitor service="NutanixClusterService"
-             class-name="org.opennms.nutanix.pollers.cluster.service.NutanixClusterServiceStatusPoller"/>
     <monitor service="NutanixHost"
              class-name="org.opennms.nutanix.pollers.host.status.NutanixHostStatusPoller"/>
     <monitor service="NutanixVM"

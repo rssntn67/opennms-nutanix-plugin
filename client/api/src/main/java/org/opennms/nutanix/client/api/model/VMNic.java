@@ -22,6 +22,19 @@ public class VMNic {
         this.isConnected = Objects.requireNonNull(builder.isConnected);
     }
 
+    @Override
+    public String toString() {
+        return "VMNic{" +
+                "nicType='" + nicType + '\'' +
+                ", kind='" + kind + '\'' +
+                ", name='" + name + '\'' +
+                ", ipList=" + ipList +
+                ", macAddress='" + macAddress + '\'' +
+                ", vlanMode='" + vlanMode + '\'' +
+                ", isConnected=" + isConnected +
+                '}';
+    }
+
     public static class Builder {
 
         private Builder() {

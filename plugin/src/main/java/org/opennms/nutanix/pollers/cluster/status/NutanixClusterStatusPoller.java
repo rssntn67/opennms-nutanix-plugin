@@ -1,5 +1,7 @@
 package org.opennms.nutanix.pollers.cluster.status;
 
+import java.util.Objects;
+
 import org.opennms.integration.api.v1.pollers.PollerResult;
 import org.opennms.integration.api.v1.pollers.Status;
 import org.opennms.integration.api.v1.pollers.immutables.ImmutablePollerResult;
@@ -19,6 +21,13 @@ public class NutanixClusterStatusPoller extends NutanixClusterAbstractPoller {
 
     protected PollerResult poll(final Cluster cluster) {
         LOG.info("poll: Cluster isAvailable {}", cluster.isAvailable);
+        LOG.info("poll: Cluster Operation Mode: {}", cluster.operationMode);
+        if (!Objects.equals(cluster.operationMode, "NORMAL")) {
+            return ImmutablePollerResult.newBuilder()
+                    .setStatus(Status.Down)
+                    .setReason("Cluster Operation Mode: " + cluster.operationMode)
+                    .build();
+        }
         if (!cluster.isAvailable) {
             return ImmutablePollerResult.newBuilder()
                                         .setStatus(Status.Down)
