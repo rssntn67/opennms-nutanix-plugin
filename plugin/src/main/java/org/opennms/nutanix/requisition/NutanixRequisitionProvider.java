@@ -272,7 +272,6 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                                 .setSnmpPrimary(SnmpPrimaryType.PRIMARY)
                                 .addMonitoredService("NutanixEntity")
                                 .addMonitoredService("NutanixCluster")
-                                .addMonitoredService("NutanixClusterService")
                                 .build())
                 .addInterface(
                         ImmutableRequisitionInterface.newBuilder()
