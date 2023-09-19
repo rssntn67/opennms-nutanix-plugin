@@ -45,7 +45,7 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
     @Override
     public final CompletableFuture<PollerResult> poll(final PollerRequest pollerRequest) {
         try {
-            LOG.debug("poll: {} {}", pollerRequest.getAddress().getHostAddress(), pollerRequest.getServiceName());
+            LOG.info("poll: {} {}", pollerRequest.getAddress().getHostAddress(), pollerRequest.getServiceName());
             return this.poll(new Context(pollerRequest));
         } catch (final NutanixApiException e) {
             LOG.error("Nutanix prism communication failed", e);
