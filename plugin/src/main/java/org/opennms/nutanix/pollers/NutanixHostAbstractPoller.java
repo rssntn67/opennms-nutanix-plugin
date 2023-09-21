@@ -1,16 +1,15 @@
-package org.opennms.nutanix.pollers.host;
+package org.opennms.nutanix.pollers;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-
 import org.opennms.integration.api.v1.pollers.PollerResult;
 import org.opennms.integration.api.v1.pollers.Status;
 import org.opennms.integration.api.v1.pollers.immutables.ImmutablePollerResult;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.internal.Utils;
+import org.opennms.nutanix.client.api.model.Entity;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.clients.ClientManager;
-import org.opennms.nutanix.pollers.NutanixAbstractPoller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +26,18 @@ public abstract class NutanixHostAbstractPoller extends NutanixAbstractPoller {
     @Override
     public CompletableFuture<PollerResult> poll(final Context context) throws NutanixApiException {
         final var uuid = context.getNutanixUuid();
+        final var type = context.getNutanixEntityType();
+        if (type != Entity.EntityType.Host) {
+            LOG.info("poll: EntityType is: {}", type);
+            return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
+                    .setStatus(Status.Down)
+                    .setReason("No Host Entity: " + type)
+                    .build());
+        }
+
+        LOG.info("poll: getting host with uuid: {}", uuid);
         final var host = context.client().getHost(uuid);
+        LOG.info("poll: got host with uuid: {}", uuid);
 
         if (host == null) {
             LOG.info("poll: no host with uuid: {}", uuid);
@@ -53,4 +63,4 @@ public abstract class NutanixHostAbstractPoller extends NutanixAbstractPoller {
 
         return CompletableFuture.completedFuture(this.poll(host));
     }
- }
+}

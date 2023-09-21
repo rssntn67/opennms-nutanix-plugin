@@ -1,18 +1,17 @@
-package org.opennms.nutanix.pollers.vm.status;
+package org.opennms.nutanix.pollers;
 
 import org.opennms.integration.api.v1.pollers.PollerResult;
 import org.opennms.integration.api.v1.pollers.Status;
 import org.opennms.integration.api.v1.pollers.immutables.ImmutablePollerResult;
 import org.opennms.nutanix.client.api.model.VM;
 import org.opennms.nutanix.clients.ClientManager;
-import org.opennms.nutanix.pollers.vm.NutanixVMAbstractPoller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NutanixVMStatusPoller extends NutanixVMAbstractPoller {
+public class NutanixVMPoller extends NutanixVMAbstractPoller {
 
-    private static final Logger LOG = LoggerFactory.getLogger(NutanixVMStatusPoller.class);
-    public NutanixVMStatusPoller(ClientManager clientManager) {
+    private static final Logger LOG = LoggerFactory.getLogger(NutanixVMPoller.class);
+    public NutanixVMPoller(ClientManager clientManager) {
         super(clientManager);
     }
 

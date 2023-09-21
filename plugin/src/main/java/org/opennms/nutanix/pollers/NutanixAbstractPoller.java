@@ -36,8 +36,8 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
     private final static String UUID_KEY = "uuid";
     private final static String TYPE_KEY = "type";
 
-    protected NutanixAbstractPoller(final ClientManager clientManager) {
-        this.clientManager = Objects.requireNonNull(clientManager);
+    protected NutanixAbstractPoller(final ClientManager client) {
+        this.clientManager = Objects.requireNonNull(client);
     }
 
     protected abstract CompletableFuture<PollerResult> poll(final Context context) throws NutanixApiException;
@@ -64,10 +64,10 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
 
         private final Class<T> clazz;
 
-        protected Factory(final ClientManager clientManager,
+        protected Factory(final ClientManager client,
                           final ConnectionManager connectionManager,
                           final Class<T> clazz) {
-            this.clientManager = Objects.requireNonNull(clientManager);
+            this.clientManager = Objects.requireNonNull(client);
             this.connectionManager = Objects.requireNonNull(connectionManager);
 
             this.clazz = Objects.requireNonNull(clazz);
@@ -77,6 +77,7 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
 
         @Override
         public final T createPoller() {
+            LOG.info("Factory::createPoller -> class {}", getPollerClassName());
             return this.createPoller(this.clientManager);
         }
 
@@ -94,6 +95,7 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
             final var type = Objects.requireNonNull(pollerRequest.getPollerAttributes().get(TYPE_KEY), "Missing property: " + TYPE_KEY);
             final var connection = this.connectionManager.getConnection(alias)
                                                          .orElseThrow(() -> new NullPointerException("Connection not found for alias: " + alias));
+            LOG.info("Factory::getRuntimeAttributes -> connection: {}, class {}", connection, getPollerClassName());
 
             final var attrs = ImmutableMap.<String,String>builder();
             attrs.put(PRISM_URL_KEY, connection.getPrismUrl());
@@ -130,6 +132,9 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
             final var length = Objects.requireNonNull(this.request.getPollerAttributes().get(LENGTH_KEY),
                     "Missing attribute: " + LENGTH_KEY);
 
+            LOG.info("Context::getClientCredentials -> {}", prismUrl);
+
+
             return ApiClientCredentials.builder()
                                                 .withPrismUrl(prismUrl)
                                                 .withUsername(username)
@@ -140,16 +145,20 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
         }
 
         public String getNutanixUuid() {
-            return Objects.requireNonNull(this.request.getPollerAttributes().get(UUID_KEY),
+            final var uuid= Objects.requireNonNull(this.request.getPollerAttributes().get(UUID_KEY),
                     "Missing attribute: " + UUID_KEY);
+            LOG.info("Context::getNutanixUuid: {}", uuid);
+            return uuid;
         }
         public Entity.EntityType getNutanixEntityType() {
             final var type = Objects.requireNonNull(this.request.getPollerAttributes().get(TYPE_KEY),
                     "Missing attribute: " + TYPE_KEY);
+            LOG.info("Context::getNutanixEntityType: {}", type);
             return Entity.EntityType.valueOf(type);
         }
 
         public ApiClientService client() throws NutanixApiException {
+            LOG.info("Context::client");
             return NutanixAbstractPoller.this.clientManager.getClient(this.getClientCredentials());
         }
     }

@@ -1,6 +1,6 @@
 <poller-configuration xmlns="http://xmlns.opennms.org/xsd/config/poller/api">
     <package name="nutanix">
-        <filter>IPADDR != '255.255.255.255'</filter>u
+        <filter>IPADDR != '255.255.255.255'</filter>
 
         <rrd step="300">
             <rra>RRA:AVERAGE:0.5:1:2016</rra>
@@ -39,11 +39,11 @@
     </package>
 
     <monitor service="NutanixCluster"
-             class-name="org.opennms.nutanix.pollers.cluster.status.NutanixClusterStatusPoller"/>
+             class-name="org.opennms.nutanix.pollers.NutanixClusterPoller"/>
     <monitor service="NutanixHost"
-             class-name="org.opennms.nutanix.pollers.host.status.NutanixHostStatusPoller"/>
+             class-name="org.opennms.nutanix.pollers.NutanixHostPoller"/>
     <monitor service="NutanixVM"
-             class-name="org.opennms.nutanix.pollers.vm.status.NutanixVMStatusPoller"/>
+             class-name="org.opennms.nutanix.pollers.NutanixVMPoller"/>
     <monitor service="NutanixControllerVm"
              class-name="org.opennms.netmgt.poller.monitors.TcpMonitor"/>
 

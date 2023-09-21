@@ -48,21 +48,21 @@
 
     <!--    Service Pollers -->
     <service interface="org.opennms.integration.api.v1.pollers.ServicePollerFactory">
-        <bean class="org.opennms.nutanix.pollers.cluster.status.NutanixClusterStatusPollerFactory">
+        <bean class="org.opennms.nutanix.pollers.NutanixClusterPollerFactory">
             <argument ref="clientManager"/>
             <argument ref="connectionManager"/>
         </bean>
     </service>
 
     <service interface="org.opennms.integration.api.v1.pollers.ServicePollerFactory">
-        <bean class="org.opennms.nutanix.pollers.host.status.NutanixHostStatusPollerFactory">
+        <bean class="org.opennms.nutanix.pollers.NutanixHostPollerFactory">
             <argument ref="clientManager"/>
             <argument ref="connectionManager"/>
         </bean>
     </service>
 
     <service interface="org.opennms.integration.api.v1.pollers.ServicePollerFactory">
-        <bean class="org.opennms.nutanix.pollers.vm.status.NutanixVMStatusPollerFactory">
+        <bean class="org.opennms.nutanix.pollers.NutanixVMPollerFactory">
             <argument ref="clientManager"/>
             <argument ref="connectionManager"/>
         </bean>
