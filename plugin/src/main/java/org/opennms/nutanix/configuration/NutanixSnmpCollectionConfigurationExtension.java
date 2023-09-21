@@ -11,7 +11,7 @@ public class NutanixSnmpCollectionConfigurationExtension implements SnmpCollecti
     @Override
     public List<SnmpDataCollection> getSnmpDataCollectionGroups() {
         return new ClasspathSnmpDataCollectionLoader(
-                NutanixSnmpCollectionConfigurationExtension.class, "",
+                NutanixSnmpCollectionConfigurationExtension.class,
                 "nutanix.xml"
         ).getSnmpDataCollections();
     }
