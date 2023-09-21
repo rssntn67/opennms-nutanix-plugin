@@ -35,9 +35,7 @@ public abstract class NutanixHostAbstractPoller extends NutanixAbstractPoller {
                     .build());
         }
 
-        LOG.info("poll: getting host with uuid: {}", uuid);
         final var host = context.client().getHost(uuid);
-        LOG.info("poll: got host with uuid: {}", uuid);
 
         if (host == null) {
             LOG.info("poll: no host with uuid: {}", uuid);

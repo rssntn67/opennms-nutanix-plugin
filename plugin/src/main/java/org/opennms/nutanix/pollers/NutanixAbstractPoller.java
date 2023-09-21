@@ -45,10 +45,10 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
     @Override
     public final CompletableFuture<PollerResult> poll(final PollerRequest pollerRequest) {
         try {
-            LOG.info("poll: {} {}", pollerRequest.getAddress().getHostAddress(), pollerRequest.getServiceName());
+            LOG.debug("poll: {} {}", pollerRequest.getAddress().getHostAddress(), pollerRequest.getServiceName());
             return this.poll(new Context(pollerRequest));
         } catch (final NutanixApiException e) {
-            LOG.error("Nutanix prism communication failed", e);
+            LOG.warn("Nutanix prism communication failed", e);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
                                                                           .setStatus(Status.Down)
                                                                           .setReason(e.getMessage())
@@ -77,7 +77,7 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
 
         @Override
         public final T createPoller() {
-            LOG.info("Factory::createPoller -> class {}", getPollerClassName());
+            LOG.debug("Factory::createPoller -> class {}", getPollerClassName());
             return this.createPoller(this.clientManager);
         }
 
@@ -95,7 +95,7 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
             final var type = Objects.requireNonNull(pollerRequest.getPollerAttributes().get(TYPE_KEY), "Missing property: " + TYPE_KEY);
             final var connection = this.connectionManager.getConnection(alias)
                                                          .orElseThrow(() -> new NullPointerException("Connection not found for alias: " + alias));
-            LOG.info("Factory::getRuntimeAttributes -> connection: {}, class {}", connection, getPollerClassName());
+            LOG.debug("Factory::getRuntimeAttributes -> connection: {}, class {}", connection, getPollerClassName());
 
             final var attrs = ImmutableMap.<String,String>builder();
             attrs.put(PRISM_URL_KEY, connection.getPrismUrl());
@@ -141,7 +141,7 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
                     .withLength(Integer.parseInt(length))
                     .build();
 
-            LOG.info("Context::getClientCredentials -> {}", credentials);
+            LOG.debug("Context::getClientCredentials -> {}", credentials);
 
             return credentials;
         }
@@ -149,18 +149,17 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
         public String getNutanixUuid() {
             final var uuid= Objects.requireNonNull(this.request.getPollerAttributes().get(UUID_KEY),
                     "Missing attribute: " + UUID_KEY);
-            LOG.info("Context::getNutanixUuid: {}", uuid);
+            LOG.debug("Context::getNutanixUuid: {}", uuid);
             return uuid;
         }
         public Entity.EntityType getNutanixEntityType() {
             final var type = Objects.requireNonNull(this.request.getPollerAttributes().get(TYPE_KEY),
                     "Missing attribute: " + TYPE_KEY);
-            LOG.info("Context::getNutanixEntityType: {}", type);
+            LOG.debug("Context::getNutanixEntityType: {}", type);
             return Entity.EntityType.valueOf(type);
         }
 
         public ApiClientService client() throws NutanixApiException {
-            LOG.info("Context::client");
             return NutanixAbstractPoller.this.clientManager.getClient(this.getClientCredentials());
         }
     }

@@ -20,15 +20,15 @@ public class NutanixClusterPoller extends NutanixClusterAbstractPoller {
 
     @Override
     protected PollerResult poll(final Cluster cluster) {
-        LOG.info("poll: Cluster isAvailable {}", cluster.isAvailable);
-        LOG.info("poll: Cluster Operation Mode: {}", cluster.operationMode);
         if (!Objects.equals(cluster.operationMode, "NORMAL")) {
+            LOG.info("poll: Cluster Operation Mode: {}", cluster.operationMode);
             return ImmutablePollerResult.newBuilder()
                     .setStatus(Status.Down)
                     .setReason("Cluster Operation Mode: " + cluster.operationMode)
                     .build();
         }
         if (!cluster.isAvailable) {
+            LOG.info("poll: Cluster isAvailable {}", cluster.isAvailable);
             return ImmutablePollerResult.newBuilder()
                                         .setStatus(Status.Down)
                                         .setReason("Cluster not available")

@@ -18,9 +18,8 @@ public class NutanixHostPoller extends NutanixHostAbstractPoller {
 
     @Override
     protected PollerResult poll(final Host host) {
-        LOG.info("poll: host.hostType {}", host.hostType);
         if (!host.hostType.equalsIgnoreCase("HYPER_CONVERGED")) {
-
+            LOG.info("poll: host.hostType {}", host.hostType);
             return ImmutablePollerResult.newBuilder()
                                         .setStatus(Status.Down)
                                         .setReason("Host not available")

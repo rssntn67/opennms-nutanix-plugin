@@ -16,8 +16,8 @@ public class NutanixVMPoller extends NutanixVMAbstractPoller {
     }
 
     protected PollerResult poll(final VM vm) {
-        LOG.info("poll: vm.powerState {}", vm.powerState);
         if (!vm.powerState.equalsIgnoreCase("ON")) {
+            LOG.info("poll: vm.powerState {}", vm.powerState);
             return ImmutablePollerResult.newBuilder()
                                         .setStatus(Status.Down)
                                         .setReason("VM PowerState: " + vm.powerState)

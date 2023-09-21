@@ -26,16 +26,13 @@ public abstract class NutanixClusterAbstractPoller extends NutanixAbstractPoller
         final var uuid = context.getNutanixUuid();
         final var type = context.getNutanixEntityType();
         if (type != Entity.EntityType.Cluster) {
-            LOG.info("poll: EntityType is: {}", type);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
                     .setStatus(Status.Down)
                     .setReason("No Cluster Entity: " + type)
                     .build());
         }
 
-        LOG.info("poll: getting cluster with uuid: {}", uuid);
         final var cluster = context.client().getCluster(uuid);
-        LOG.info("poll: got cluster with uuid: {}", uuid);
 
         if (cluster == null) {
             LOG.info("poll: no cluster with uuid: {}", uuid);
