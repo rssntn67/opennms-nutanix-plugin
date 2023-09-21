@@ -132,16 +132,18 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
             final var length = Objects.requireNonNull(this.request.getPollerAttributes().get(LENGTH_KEY),
                     "Missing attribute: " + LENGTH_KEY);
 
-            LOG.info("Context::getClientCredentials -> {}", prismUrl);
 
+            ApiClientCredentials credentials = ApiClientCredentials.builder()
+                    .withPrismUrl(prismUrl)
+                    .withUsername(username)
+                    .withPassword(password)
+                    .withIgnoreSslCertificateValidation(Boolean.parseBoolean(ignoreSslCertificateValidation))
+                    .withLength(Integer.parseInt(length))
+                    .build();
 
-            return ApiClientCredentials.builder()
-                                                .withPrismUrl(prismUrl)
-                                                .withUsername(username)
-                                                .withPassword(password)
-                                                .withIgnoreSslCertificateValidation(Boolean.parseBoolean(ignoreSslCertificateValidation))
-                                                .withLength(Integer.parseInt(length))
-                                                .build();
+            LOG.info("Context::getClientCredentials -> {}", credentials);
+
+            return credentials;
         }
 
         public String getNutanixUuid() {

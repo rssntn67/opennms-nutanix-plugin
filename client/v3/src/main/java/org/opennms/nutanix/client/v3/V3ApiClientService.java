@@ -12,19 +12,18 @@ import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.client.api.model.ClusterBuildInfo;
 import org.opennms.nutanix.client.api.model.ClusterHttpProxy;
 import org.opennms.nutanix.client.api.model.ClusterHttpWhiteProxy;
+import org.opennms.nutanix.client.api.model.ClusterHypervisor;
 import org.opennms.nutanix.client.api.model.ClusterSmtpServer;
 import org.opennms.nutanix.client.api.model.ClusterSoftware;
-import org.opennms.nutanix.client.api.model.VMDisk;
 import org.opennms.nutanix.client.api.model.Host;
-import org.opennms.nutanix.client.api.model.ClusterHypervisor;
 import org.opennms.nutanix.client.api.model.MetricsCluster;
-import org.opennms.nutanix.client.api.model.VMNic;
 import org.opennms.nutanix.client.api.model.VM;
+import org.opennms.nutanix.client.api.model.VMDisk;
+import org.opennms.nutanix.client.api.model.VMNic;
 import org.opennms.nutanix.client.v3.api.AlertsApi;
 import org.opennms.nutanix.client.v3.api.ClustersApi;
 import org.opennms.nutanix.client.v3.api.HostsApi;
 import org.opennms.nutanix.client.v3.api.VmsApi;
-import org.opennms.nutanix.client.v3.handler.ApiException;
 import org.opennms.nutanix.client.v3.model.AlertIntentResource;
 import org.opennms.nutanix.client.v3.model.AlertListIntentResponse;
 import org.opennms.nutanix.client.v3.model.AlertListMetadata;
@@ -70,7 +69,7 @@ public class V3ApiClientService implements ApiClientService {
                 total = vmListIntentResponse.getMetadata().getTotalMatches();
                 vmListIntentResponse.getEntities().forEach(vm -> vms.add(getFromVmIntentResource(vm)));
                 offset+=vmListIntentResponse.getEntities().size();
-            } catch (ApiException e) {
+            } catch (Exception e) {
                 throw new NutanixApiException(e.getMessage(), e);
             }
         } while (vms.size() < total );
@@ -80,35 +79,37 @@ public class V3ApiClientService implements ApiClientService {
     @Override
     public VM getVM(String uuid) throws NutanixApiException {
         VmsApi vmsApi = new VmsApi(apiClient);
-        VmIntentResponse vmIntentResponse;
         try {
-            vmIntentResponse = vmsApi.vmsUuidGet(uuid);
-        } catch (ApiException e) {
+            return getFromVmIntentResponse(vmsApi.vmsUuidGet(uuid));
+        } catch (Exception e) {
             throw new NutanixApiException(e.getMessage(), e);
         }
-        return getFromVmIntentResponse(vmIntentResponse);
+
     }
 
-    private static VM getFromVmIntentResponse(VmIntentResponse vmIntentResponse) {
+    private static VM getFromVmIntentResponse(VmIntentResponse vm) {
         return VM.builder()
-                .withName(vmIntentResponse.getStatus().getName())
-                .withDescription(vmIntentResponse.getStatus().getDescription())
-                .withUuid(vmIntentResponse.getMetadata().getUuid())
-                .withClusterName(vmIntentResponse.getStatus().getClusterReference().getName())
-                .withClusterUuid(vmIntentResponse.getStatus().getClusterReference().getUuid())
-                .withHostName(getHostName(vmIntentResponse.getStatus().getResources().getHostReference()))
-                .withHostUuid(getHostUuid(vmIntentResponse.getStatus().getResources().getHostReference()))
-                .withState(vmIntentResponse.getStatus().getState())
-                .withNumThreadsPerCore(vmIntentResponse.getStatus().getResources().getNumThreadsPerCore())
-                .withMemorySizeMib(vmIntentResponse.getStatus().getResources().getMemorySizeMib())
-                .withPowerState(vmIntentResponse.getStatus().getResources().getPowerState())
-                .withNumVcpusPerSocket(vmIntentResponse.getStatus().getResources().getNumVcpusPerSocket())
-                .withNumSockets(vmIntentResponse.getStatus().getResources().getNumSockets())
-                .withProtectionType(vmIntentResponse.getStatus().getResources().getProtectionType())
-                .withMachineType(vmIntentResponse.getStatus().getResources().getMachineType())
-                .withHypervisorType(vmIntentResponse.getStatus().getResources().getHypervisorType())
-                .withDisks(getDisksFromVmResources(vmIntentResponse.getStatus().getResources().getDiskList()))
-                .withNics(getNicListFromVmResources(vmIntentResponse.getStatus().getResources().getNicList()))
+                .withName(vm.getStatus().getName())
+                .withDescription(vm.getStatus().getDescription())
+                .withUuid(vm.getMetadata().getUuid())
+                .withClusterName(vm.getStatus().getClusterReference().getName())
+                .withClusterUuid(vm.getStatus().getClusterReference().getUuid())
+                .withHostName(getHostName(vm.getStatus().getResources().getHostReference()))
+                .withHostUuid(getHostUuid(vm.getStatus().getResources().getHostReference()))
+                .withState(vm.getStatus().getState())
+                .withNumThreadsPerCore(vm.getStatus().getResources().getNumThreadsPerCore())
+                .withMemorySizeMib(vm.getStatus().getResources().getMemorySizeMib())
+                .withPowerState(vm.getStatus().getResources().getPowerState())
+                .withNumVcpusPerSocket(vm.getStatus().getResources().getNumVcpusPerSocket())
+                .withNumSockets(vm.getStatus().getResources().getNumSockets())
+                .withProtectionType(vm.getStatus().getResources().getProtectionType())
+                .withMachineType(vm.getStatus().getResources().getMachineType())
+                .withHypervisorType(vm.getStatus().getResources().getHypervisorType())
+                .withDisks(getDisksFromVmResources(vm.getStatus().getResources().getDiskList()))
+                .withNics(getNicListFromVmResources(vm.getStatus().getResources().getNicList()))
+                .withKind(vm.getMetadata().getKind())
+                .withSpecVersion(vm.getMetadata().getSpecVersion())
+                .withEntityVersion(vm.getMetadata().getEntityVersion())
                 .build();
     }
 
@@ -150,29 +151,29 @@ public class V3ApiClientService implements ApiClientService {
         return (hostReference == null)  ?  null :  hostReference.getUuid();
     }
 
-    private static VM getFromVmIntentResource(VmIntentResource vmIntentResource) {
+    private static VM getFromVmIntentResource(VmIntentResource vm) {
         return VM.builder()
-                .withName(vmIntentResource.getStatus().getName())
-                .withDescription(vmIntentResource.getStatus().getDescription())
-                .withUuid(vmIntentResource.getMetadata().getUuid())
-                .withClusterName(vmIntentResource.getStatus().getClusterReference().getName())
-                .withClusterUuid(vmIntentResource.getStatus().getClusterReference().getUuid())
-                .withHostName(getHostName(vmIntentResource.getStatus().getResources().getHostReference()))
-                .withHostUuid(getHostUuid(vmIntentResource.getStatus().getResources().getHostReference()))
-                .withState(vmIntentResource.getStatus().getState())
-                .withNumThreadsPerCore(vmIntentResource.getStatus().getResources().getNumThreadsPerCore())
-                .withMemorySizeMib(vmIntentResource.getStatus().getResources().getMemorySizeMib())
-                .withPowerState(vmIntentResource.getStatus().getResources().getPowerState())
-                .withNumVcpusPerSocket(vmIntentResource.getStatus().getResources().getNumVcpusPerSocket())
-                .withNumSockets(vmIntentResource.getStatus().getResources().getNumSockets())
-                .withProtectionType(vmIntentResource.getStatus().getResources().getProtectionType())
-                .withMachineType(vmIntentResource.getStatus().getResources().getMachineType())
-                .withHypervisorType(vmIntentResource.getStatus().getResources().getHypervisorType())
-                .withDisks(getDisksFromVmResources(vmIntentResource.getStatus().getResources().getDiskList()))
-                .withNics(getNicListFromVmResources(vmIntentResource.getStatus().getResources().getNicList()))
-                .withKind(vmIntentResource.getMetadata().getKind())
-                .withSpecVersion(vmIntentResource.getMetadata().getSpecVersion())
-                .withEntityVersion(vmIntentResource.getMetadata().getEntityVersion())
+                .withName(vm.getStatus().getName())
+                .withDescription(vm.getStatus().getDescription())
+                .withUuid(vm.getMetadata().getUuid())
+                .withClusterName(vm.getStatus().getClusterReference().getName())
+                .withClusterUuid(vm.getStatus().getClusterReference().getUuid())
+                .withHostName(getHostName(vm.getStatus().getResources().getHostReference()))
+                .withHostUuid(getHostUuid(vm.getStatus().getResources().getHostReference()))
+                .withState(vm.getStatus().getState())
+                .withNumThreadsPerCore(vm.getStatus().getResources().getNumThreadsPerCore())
+                .withMemorySizeMib(vm.getStatus().getResources().getMemorySizeMib())
+                .withPowerState(vm.getStatus().getResources().getPowerState())
+                .withNumVcpusPerSocket(vm.getStatus().getResources().getNumVcpusPerSocket())
+                .withNumSockets(vm.getStatus().getResources().getNumSockets())
+                .withProtectionType(vm.getStatus().getResources().getProtectionType())
+                .withMachineType(vm.getStatus().getResources().getMachineType())
+                .withHypervisorType(vm.getStatus().getResources().getHypervisorType())
+                .withDisks(getDisksFromVmResources(vm.getStatus().getResources().getDiskList()))
+                .withNics(getNicListFromVmResources(vm.getStatus().getResources().getNicList()))
+                .withKind(vm.getMetadata().getKind())
+                .withSpecVersion(vm.getMetadata().getSpecVersion())
+                .withEntityVersion(vm.getMetadata().getEntityVersion())
                 .build();
     }
 
@@ -190,7 +191,7 @@ public class V3ApiClientService implements ApiClientService {
                 total = hostListIntentResponse.getMetadata().getTotalMatches();
                 hostListIntentResponse.getEntities().forEach(host -> hosts.add(getFromHostIntentResource(host)));
                 offset+= hostListIntentResponse.getEntities().size();
-            } catch (ApiException e) {
+            } catch (Exception e) {
                 throw new NutanixApiException(e.getMessage(), e);
             }
         } while (hosts.size() < total );
@@ -201,13 +202,11 @@ public class V3ApiClientService implements ApiClientService {
     @Override
     public Host getHost(String uuid) throws NutanixApiException {
         HostsApi hostsApi = new HostsApi(apiClient);
-        HostIntentResponse hostIntentResponse;
         try {
-            hostIntentResponse = hostsApi.hostsUuidGet(uuid);
-        } catch (ApiException e) {
+            return getFromHostIntentResponse(hostsApi.hostsUuidGet(uuid));
+        } catch (Exception e) {
             throw new NutanixApiException(e.getMessage(), e);
         }
-        return getFromHostIntentResponse(hostIntentResponse);
     }
 
     private Host getFromHostIntentResource(HostIntentResource hostIntentResource) {
@@ -280,7 +279,7 @@ public class V3ApiClientService implements ApiClientService {
                 total = clustersListIntentResponse.getMetadata().getTotalMatches();
                 clustersListIntentResponse.getEntities().forEach(cluster -> clusters.add(getFromClusterIntentResource(cluster)));
                 offset+=clustersListIntentResponse.getEntities().size();
-            } catch (ApiException e) {
+            } catch (Exception e) {
                 throw new NutanixApiException(e.getMessage());
             }
         } while (clusters.size() < total );
@@ -290,13 +289,11 @@ public class V3ApiClientService implements ApiClientService {
     @Override
     public Cluster getCluster(String uuid) throws NutanixApiException {
         ClustersApi clustersApi = new ClustersApi(apiClient);
-        ClusterIntentResponse clusterIntentResponse;
         try {
-            clusterIntentResponse = clustersApi.clustersUuidGet(uuid);
-        } catch (ApiException e) {
+            return getFromClusterIntentResponse(clustersApi.clustersUuidGet(uuid));
+        } catch (Exception e) {
             throw new NutanixApiException(e.getMessage(), e);
         }
-        return getFromClusterIntentResponse(clusterIntentResponse);
     }
 
     private Cluster getFromClusterIntentResource(ClusterIntentResource cluster) {
@@ -401,10 +398,30 @@ public class V3ApiClientService implements ApiClientService {
 
     private Cluster getFromClusterIntentResponse(ClusterIntentResponse cluster) {
         return Cluster.builder()
-                .withName(cluster.getStatus().getName())
                 .withUuid(cluster.getMetadata().getUuid())
+                .withState(cluster.getStatus().getState())
+                .withName(cluster.getStatus().getName())
+                .withNodes(getFromClusterNodes(cluster.getStatus().getResources().getNodes()))
+                .withSoftware(getFromSoftwareMap(cluster.getStatus().getResources().getConfig().getSoftwareMap()))
+                .withEncryptionStatus(cluster.getStatus().getResources().getConfig().getEncryptionStatus())
+                .withServiceList(cluster.getStatus().getResources().getConfig().getServiceList())
+                .withRedundancyFactor(cluster.getStatus().getResources().getConfig().getRedundancyFactor())
                 .withOperationMode(cluster.getStatus().getResources().getConfig().getOperationMode())
+                .withDomainAwarenessLevel(cluster.getStatus().getResources().getConfig().getDomainAwarenessLevel())
+                .withEnabledFeatureList(cluster.getStatus().getResources().getConfig().getEnabledFeatureList())
                 .withIsAvailable(cluster.getStatus().getResources().getConfig().isIsAvailable())
+                .withBuild(getFromClusterBuild(cluster.getStatus().getResources().getConfig().getBuild()))
+                .withTimeZone(cluster.getStatus().getResources().getConfig().getTimezone())
+                .withClusterArch(cluster.getStatus().getResources().getConfig().getClusterArch())
+                .withExternalIp(cluster.getStatus().getResources().getNetwork().getExternalIp())
+                .withHttpProxyList(getFromClusterHttpProxyList(cluster.getStatus().getResources().getNetwork().getHttpProxyList()))
+                .withSmtpServer(getFromClusterSmtpServer(cluster.getStatus().getResources().getNetwork().getSmtpServer()))
+                .withNtpServerIpList(cluster.getStatus().getResources().getNetwork().getNtpServerIpList())
+                .withExternalSubnet(cluster.getStatus().getResources().getNetwork().getExternalSubnet())
+                .withExternalDataServicesIp(cluster.getStatus().getResources().getNetwork().getExternalDataServicesIp())
+                .withNameServerIpList(cluster.getStatus().getResources().getNetwork().getNameServerIpList())
+                .withHttpProxyWhitelist(getFromClusterWhiteProxyList(cluster.getStatus().getResources().getNetwork().getHttpProxyWhitelist()))
+                .withInternalSubnet(cluster.getStatus().getResources().getNetwork().getInternalSubnet())
                 .build();
     }
 
@@ -422,7 +439,7 @@ public class V3ApiClientService implements ApiClientService {
                 total = alertsListIntentResponse.getMetadata().getTotalMatches();
                 alertsListIntentResponse.getEntities().forEach(alert -> alerts.add(getFromAlertIntentResource(alert)));
                 offset+=alertsListIntentResponse.getEntities().size();
-            } catch (ApiException e) {
+            } catch (Exception e) {
                 throw new NutanixApiException(e.getMessage());
             }
         } while (alerts.size() < total );

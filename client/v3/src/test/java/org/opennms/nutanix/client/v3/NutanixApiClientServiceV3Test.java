@@ -166,7 +166,6 @@ public class NutanixApiClientServiceV3Test {
 
     @Test
     public void testApiProvider() throws NutanixApiException, UnknownHostException {
-        ApiClientExtension apiClient = new ApiClientExtension();
         V3ApiClientProvider provider = new V3ApiClientProvider();
         ApiClientCredentials credentials = ApiClientCredentials.builder()
                 .withUsername(System.getenv("NTX_USER"))
@@ -257,7 +256,7 @@ public class NutanixApiClientServiceV3Test {
     }
 
     @Test
-    public void testApiClientService() throws NutanixApiException {
+    public void testApiClientServiceProvider() throws NutanixApiException {
         ApiClientService apiClientService = new V3ApiClientService(getApiClient());
         apiClientService.getAlerts();
         List<Cluster> clusters = apiClientService.getClusters();
@@ -384,6 +383,21 @@ public class NutanixApiClientServiceV3Test {
 
     }
 
+    @Test
+    public void testApiServiceVmGet() throws NutanixApiException {
+        String uuid="c6b636e7-c69a-42dd-89f8-5d237e6e8f52";
+        V3ApiClientProvider provider = new V3ApiClientProvider();
+        ApiClientCredentials credentials = ApiClientCredentials.builder()
+                .withUsername(System.getenv("NTX_USER"))
+                .withPassword(System.getenv("NTX_PASS"))
+                .withPrismUrl("https://nutanix.arsinfo.it:9440/")
+                .withIgnoreSslCertificateValidation(true)
+                .withLength(20)
+                .build();
+        ApiClientService service = provider.client(credentials);
+        VM vm = service.getVM(uuid);
+        Assert.assertEquals("ON", vm.powerState);
+    }
     @Test
     public void testHostApi() {
 
@@ -585,8 +599,23 @@ public class NutanixApiClientServiceV3Test {
         } catch (ApiException e) {
             throw new RuntimeException(e);
         }
-
     }
+
+    @Test
+    public void testApiProviderGetCluster() throws NutanixApiException {
+        V3ApiClientProvider provider = new V3ApiClientProvider();
+        ApiClientCredentials credentials = ApiClientCredentials.builder()
+                .withUsername(System.getenv("NTX_USER"))
+                .withPassword(System.getenv("NTX_PASS"))
+                .withPrismUrl("https://nutanix.arsinfo.it:9440/")
+                .withIgnoreSslCertificateValidation(true)
+                .withLength(20)
+                .build();
+        ApiClientService service = provider.client(credentials);
+        Cluster cluster = service.getCluster("00059dd3-26be-0d72-5228-ac1f6b357222");
+        Assert.assertTrue(cluster.isAvailable);
+    }
+
 
     @Test
     public void testDataApi() {

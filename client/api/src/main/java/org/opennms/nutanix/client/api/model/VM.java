@@ -45,7 +45,7 @@ public class VM extends Entity {
         this.numVcpusPerSocket=Objects.requireNonNull(builder.numVcpusPerSocket);
         this.numSockets=Objects.requireNonNull(builder.numSockets);
         this.machineType=Objects.requireNonNull(builder.machineType);
-        this.protectionType=Objects.requireNonNull(builder.protectionType);
+        this.protectionType=builder.protectionType;
         this.hypervisorType=Objects.requireNonNull(builder.hypervisorType);
         this.description=builder.description;
         this.disks=Objects.requireNonNull(builder.disks);
