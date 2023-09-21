@@ -1,0 +1,150 @@
+<datacollection-group xmlns="http://xmlns.opennms.org/xsd/config/datacollection" name="nutanix">
+   <resourceType name="dstEntry" label="Nutanix: Disk Status on Controller VMs" resourceLabel="${dstSerial}:${dstState} CVM:${dstControllerVMId}">
+      <persistenceSelectorStrategy class="org.opennms.netmgt.collection.support.PersistAllSelectorStrategy"/>
+      <storageStrategy class="org.opennms.netmgt.collection.support.IndexStorageStrategy"/>
+   </resourceType>
+   <resourceType name="crtEntry" label="Nutanix: Resources on Controller VM" resourceLabel="${crtName}">
+      <persistenceSelectorStrategy class="org.opennms.netmgt.collection.support.PersistAllSelectorStrategy"/>
+      <storageStrategy class="org.opennms.netmgt.dao.support.SiblingColumnStorageStrategy">
+           <parameter key="sibling-column-name" value="crtControllerVMId" />
+           <parameter key="replace-first" value="s/\.//" />
+      </storageStrategy>
+   </resourceType>
+   <resourceType name="spitEntry" label="Nutanix: Storage Pool" resourceLabel="${spitStoragePoolName}">
+      <persistenceSelectorStrategy class="org.opennms.netmgt.collection.support.PersistAllSelectorStrategy"/>
+      <storageStrategy class="org.opennms.netmgt.dao.support.SiblingColumnStorageStrategy">
+           <parameter key="sibling-column-name" value="spitStoragePoolId" />
+           <parameter key="replace-first" value="s/\.//" />
+      </storageStrategy>
+   </resourceType>
+   <resourceType name="citEntry" label="Nutanix: Storage Container" resourceLabel="${citContainerName}">
+      <persistenceSelectorStrategy class="org.opennms.netmgt.collection.support.PersistAllSelectorStrategy"/>
+      <storageStrategy class="org.opennms.netmgt.dao.support.SiblingColumnStorageStrategy">
+           <parameter key="sibling-column-name" value="citContainerId" />
+           <parameter key="replace-first" value="s/\.//" />
+      </storageStrategy>
+   </resourceType>
+   <resourceType name="hypervisorEntry" label="Nutanix: Hypervisor" resourceLabel="${hypervisorName}">
+      <persistenceSelectorStrategy class="org.opennms.netmgt.collection.support.PersistAllSelectorStrategy"/>
+      <storageStrategy class="org.opennms.netmgt.dao.support.SiblingColumnStorageStrategy">
+           <parameter key="sibling-column-name" value="hypervisorId" />
+           <parameter key="replace-first" value="s/\.//" />
+      </storageStrategy>
+   </resourceType>
+   <resourceType name="vmEntry" label="Nutanix: Virtual Machine" resourceLabel="${vmName} Hypervisor:${vmHypervisorId} PowerState:${vmPowerState}">
+      <persistenceSelectorStrategy class="org.opennms.netmgt.collection.support.PersistAllSelectorStrategy"/>
+      <storageStrategy class="org.opennms.netmgt.dao.support.SiblingColumnStorageStrategy">
+           <parameter key="sibling-column-name" value="vmId" />
+           <parameter key="replace-first" value="s/\.//" />
+      </storageStrategy>
+   </resourceType>
+   <resourceType name="cstEntry" label="Nutanix: Status of essential services" resourceLabel="${cstControllerVMId}">
+      <persistenceSelectorStrategy class="org.opennms.netmgt.collection.support.PersistAllSelectorStrategy"/>
+      <storageStrategy class="org.opennms.netmgt.dao.support.SiblingColumnStorageStrategy">
+           <parameter key="sibling-column-name" value="cstControllerVMId" />
+           <parameter key="replace-first" value="s/\.//" />
+      </storageStrategy>
+   </resourceType>
+   <group name="nutanix" ifType="ignore">
+      <mibObj oid=".1.3.6.1.4.1.41263.501" instance="0" alias="clusterName" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.502" instance="0" alias="clusterVersion" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.503" instance="0" alias="clusterStatus" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.504" instance="0" alias="clusTotalStoraCapac" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.505" instance="0" alias="clustUsedStoraCapac" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.506" instance="0" alias="clusterIops" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.507" instance="0" alias="clusterLatency" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.508" instance="0" alias="clusterIOBandwidth" type="integer64"/>
+   </group>
+   <group name="diskStatusTable" ifType="all">
+      <mibObj oid=".1.3.6.1.4.1.41263.3.1.2" instance="dstEntry" alias="dstDiskId" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.3.1.3" instance="dstEntry" alias="dstControllerVMId" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.3.1.4" instance="dstEntry" alias="dstSerial" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.3.1.5" instance="dstEntry" alias="dstNumRawBytes" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.3.1.6" instance="dstEntry" alias="dstNumTotalBytes" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.3.1.7" instance="dstEntry" alias="dstNumFreeBytes" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.3.1.8" instance="dstEntry" alias="dstNumTotalInodes" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.3.1.9" instance="dstEntry" alias="dstNumFreeInodes" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.3.1.10" instance="dstEntry" alias="dstAverageLatency" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.3.1.11" instance="dstEntry" alias="dstIOBandwidth" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.3.1.12" instance="dstEntry" alias="dstNumberIops" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.3.1.13" instance="dstEntry" alias="dstState" type="string"/>
+   </group>
+   <group name="controllerVMResourceTable" ifType="all">
+      <mibObj oid=".1.3.6.1.4.1.41263.4.1.2" instance="crtEntry" alias="crtControllerVMId" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.4.1.3" instance="crtEntry" alias="crtMemory" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.4.1.4" instance="crtEntry" alias="crtNumCpus" type="integer32"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.4.1.5" instance="crtEntry" alias="crtName" type="string"/>
+   </group>
+   <group name="storagePoolInformationTable" ifType="all">
+      <mibObj oid=".1.3.6.1.4.1.41263.7.1.2" instance="spitEntry" alias="spitStoragePoolId" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.7.1.3" instance="spitEntry" alias="spitStoragePoolName" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.7.1.4" instance="spitEntry" alias="spitTotalCapacity" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.7.1.5" instance="spitEntry" alias="spitUsedCapacity" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.7.1.6" instance="spitEntry" alias="spitIOPerSecond" type="integer32"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.7.1.7" instance="spitEntry" alias="spitAvgLatencyUsecs" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.7.1.8" instance="spitEntry" alias="spitIOBandwidth" type="integer64"/>
+   </group>
+   <group name="containerInformationTable" ifType="all">
+      <mibObj oid=".1.3.6.1.4.1.41263.8.1.2" instance="citEntry" alias="citContainerId" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.8.1.3" instance="citEntry" alias="citContainerName" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.8.1.4" instance="citEntry" alias="citTotalCapacity" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.8.1.5" instance="citEntry" alias="citUsedCapacity" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.8.1.6" instance="citEntry" alias="citIOPerSecond" type="integer32"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.8.1.7" instance="citEntry" alias="citAvgLatencyUsecs" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.8.1.8" instance="citEntry" alias="citIOBandwidth" type="integer64"/>
+   </group>
+   <group name="hypervisorInformationTable" ifType="all">
+      <mibObj oid=".1.3.6.1.4.1.41263.9.1.2" instance="hypervisorEntry" alias="hypervisorId" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.9.1.3" instance="hypervisorEntry" alias="hypervisorName" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.9.1.4" instance="hypervisorEntry" alias="hypervisorVmCount" type="integer"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.9.1.5" instance="hypervisorEntry" alias="hypervisorCpuCount" type="integer"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.9.1.6" instance="hypervisorEntry" alias="hyperCpuUsagePercen" type="integer"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.9.1.7" instance="hypervisorEntry" alias="hypervisorMemory" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.9.1.8" instance="hypervisorEntry" alias="hypeMemorUsagePerce" type="integer"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.9.1.9" instance="hypervisorEntry" alias="hyperReadIOPerSecon" type="integer"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.9.1.10" instance="hypervisorEntry" alias="hypeWriteIOPerSecon" type="integer"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.9.1.11" instance="hypervisorEntry" alias="hypervAveragLatency" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.9.1.12" instance="hypervisorEntry" alias="hypervisIOBandwidth" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.9.1.13" instance="hypervisorEntry" alias="hypervisorRxBytes" type="counter64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.9.1.14" instance="hypervisorEntry" alias="hypervisorTxBytes" type="counter64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.9.1.15" instance="hypervisorEntry" alias="hypervisRxDropCount" type="counter64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.9.1.16" instance="hypervisorEntry" alias="hypervisTxDropCount" type="counter64"/>
+   </group>
+   <group name="vmInformationTable" ifType="all">
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.2" instance="vmEntry" alias="vmId" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.3" instance="vmEntry" alias="vmName" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.4" instance="vmEntry" alias="vmHypervisorId" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.5" instance="vmEntry" alias="vmPowerState" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.6" instance="vmEntry" alias="vmCpuCount" type="integer"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.7" instance="vmEntry" alias="vmCpuUsagePercent" type="integer"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.8" instance="vmEntry" alias="vmMemory" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.9" instance="vmEntry" alias="vmMemoryUsagePercen" type="integer"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.10" instance="vmEntry" alias="vmReadIOPerSecond" type="integer"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.11" instance="vmEntry" alias="vmWriteIOPerSecond" type="integer"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.12" instance="vmEntry" alias="vmAverageLatency" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.13" instance="vmEntry" alias="vmIOBandwidth" type="integer64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.14" instance="vmEntry" alias="vmRxBytes" type="counter64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.15" instance="vmEntry" alias="vmTxBytes" type="counter64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.16" instance="vmEntry" alias="vmRxDropCount" type="counter64"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.10.1.17" instance="vmEntry" alias="vmTxDropCount" type="counter64"/>
+   </group>
+   <group name="controllerStatusTable" ifType="all">
+      <mibObj oid=".1.3.6.1.4.1.41263.11.1.2" instance="cstEntry" alias="cstControllerVMId" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.11.1.3" instance="cstEntry" alias="cstControllVMStatus" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.11.1.4" instance="cstEntry" alias="cstDataServicStatus" type="string"/>
+      <mibObj oid=".1.3.6.1.4.1.41263.11.1.5" instance="cstEntry" alias="cstMetadServiStatus" type="string"/>
+   </group>
+   <systemDef name="Nutanix">
+      <sysoid>.1.3.6.1.4.1.41263</sysoid>
+      <collect>
+         <includeGroup>nutanix</includeGroup>
+         <includeGroup>diskStatusTable</includeGroup>
+         <includeGroup>controllerVMResourceTable</includeGroup>
+         <includeGroup>storagePoolInformationTable</includeGroup>
+         <includeGroup>containerInformationTable</includeGroup>
+         <includeGroup>hypervisorInformationTable</includeGroup>
+         <includeGroup>vmInformationTable</includeGroup>
+         <includeGroup>controllerStatusTable</includeGroup>
+      </collect>
+   </systemDef>
+</datacollection-group>

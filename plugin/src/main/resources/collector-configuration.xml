@@ -1,0 +1,10 @@
+<collector-configuration xmlns="http://xmlns.opennms.org/xsd/config/collector/api">
+   <package name="nutanix" remote="false">
+      <filter>(IPADDR != '0.0.0.0') &amp; (categoryName == 'NutanixCluster')</filter>
+      <service name="NutanixCluster" interval="300000" user-defined="false" status="on">
+         <parameter key="collection" value="nutanix"/>
+         <parameter key="thresholding-enabled" value="true"/>
+      </service>
+   </package>
+   <collector service="NutanixCluster" class-name="org.opennms.netmgt.collectd.SnmpCollector"/>
+</collector-configuration>
