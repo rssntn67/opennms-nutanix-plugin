@@ -49,7 +49,7 @@ NOTE: The `Content-Type` of the request and response is `application/json`.
 .Request
 [source, console]
 ----
-curl -X GET -u admin:admin http://localhost:8980/opennms/rest/plugin/nutanix/prismAlias/vms
+curl -X GET -u admin:admin http://localhost:8980/opennms/rest/plugin/nutanix/vms/prismAlias
 ----
 
 .Response
@@ -108,7 +108,7 @@ curl -X GET -u admin:admin http://localhost:8980/opennms/rest/plugin/nutanix/pri
 .Request
 [source, console]
 ----
-curl -u admin:admin http://localhost:8980/opennms/rest/plugin/nutanix/connections
+curl -u admin:admin http://localhost:8980/opennms/rest/nutanix/connections
 ----
 
 .Response
@@ -116,12 +116,18 @@ curl -u admin:admin http://localhost:8980/opennms/rest/plugin/nutanix/connection
 ----
 [
   {
-    "alias": "aPartnerAlias",
-    "prismUrl": "https://something-somewhere.nutanix.net/"
+    "alias": "arsinfo",
+    "prismUrl": "https://nutanix.arsinfo.it:9440/",
+    "username": "nutanixuser",
+    "length": 20,
+    "ignoreSslCertificateValidation": true
   },
   {
-    "alias": "aCustomerAlias",
-    "prismUrl": "https://something-somewhere.nutanix.net/"
+    "alias": "example",
+    "prismUrl": "https://nutanix.example.it:9440/",
+    "username": "user",
+    "length": 20,
+    "ignoreSslCertificateValidation": true
   }
 ]
 ----
@@ -131,7 +137,7 @@ curl -u admin:admin http://localhost:8980/opennms/rest/plugin/nutanix/connection
 .Request
 [source, console]
 ----
-curl -H "Content-type: application/json" -X POST -u admin:admin http://localhost:8980/opennms/rest/plugin/nutanix/connections --data '{"alias":"anotherAlias","prismUrl":"https://something-somewhere.nutanix.net","apiKey":"juKdsndSJnsjsdH3KnedejS3kNk3mndsfks3.sad8asdkhasd8asdSDSDFhkasd8asdhasd7k32l32kKkjbsdNS01ZGRhNGRlNGU2N2IiLCJleHAiOjE2OTY1NDExODYwMDAsInV1aWQiOiJV1aWQiOiI0MDUwMDJiNS01YjQ4sInR5cCI6IkpXVCQ3OTYtOWRiOS03NmRhODUxMGMyYjEiLCJOjE2OTY1NDExODYwMDAsInV1aWQiOdsJdsSjkSDlJLJ"}'
+curl -H "Content-type: application/json" -X POST -u admin:admin http://localhost:8980/opennms/rest/nutanix/connections --data '{"alias":"anotherAlias","prismUrl":"https://nutanix.arsinfo.it:9440","username":"username","password":"password","lenght":50,"ignoreSslCertificateValidation": true}'
 ----
 
 .Response
@@ -145,7 +151,7 @@ Connection successfully added
 .Request
 [source, console]
 ----
-curl -H "Content-type: application/json" -X PUT -u admin:admin http://localhost:8980/opennms/rest/plugin/nutanix/connections/anotherAlias --data '{"prismUrl":"https://something-somewhere.nutanix.net","apiKey":"juKdsndSJnsjsdH3KnedejS3kNk3mndsfks3.sad8asdkhasd8asdSDSDFhkasd8asdhasd7k32l32kKkjbsdNS01ZGRhNGRlNGU2N2IiLCJleHAiOjE2OTY1NDExODYwMDAsInV1aWQiOiJV1aWQiOiI0MDUwMDJiNS01YjQ4sInR5cCI6IkpXVCQ3OTYtOWRiOS03NmRhODUxMGMyYjEiLCJOjE2OTY1NDExODYwMDAsInV1aWQiOdsJdsSjkSDlJLJ"}'
+curl -H "Content-type: application/json" -X PUT -u admin:admin http://localhost:8980/opennms/rest/nutanix/connections/arsinfo --data '{"prismUrl":"https://nutanix2.arsinfo.it:9440","username":"username2","password":"password","lenght":50,"ignoreSslCertificateValidation": true}'
 ----
 
 .Response
@@ -159,15 +165,15 @@ Connection successfully updated
 .Request
 [source, console]
 ----
-curl -X GET -u admin:admin http://localhost:8980/opennms/rest/plugin/nutanix/connections/anotherAlias
+curl -X GET -u admin:admin http://localhost:8980/opennms/rest/nutanix/connections/arsinfo
 ----
 
 .Response
 [source, json]
 ----
 {
-"alias": "anotherAlias",
-"nutanixUrl": "https://something-somewhere.nutanix.net",
+"alias": "arsinfo",
+"prismUrl": "https://nutanix.arsinfo.it:9440",
 "valid": true
 }
 ----

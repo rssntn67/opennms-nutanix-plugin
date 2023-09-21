@@ -9,7 +9,7 @@ import lombok.Data;
 public class ConnectionDTO {
     private String alias;
     private String prismUrl;
-    private String userName;
+    private String username;
     private String password;
 
     private Integer length;
