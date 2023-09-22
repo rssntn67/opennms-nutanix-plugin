@@ -207,36 +207,36 @@ public class NutanixApiClientServiceV3Test {
                 continue;
             }
             String extNet = clusterExternalSubnetMap.get(vm.clusterUuid);
-            int insubnet = 0;
-            int outsubnet = 0;
-            List<String> nics = new ArrayList<>();
+            int internalSubnet = 0;
+            int externalSubnet = 0;
+            List<String> netCards = new ArrayList<>();
             for (VMNic nic : vm.nics) {
                 if (!vlanIpMap.containsKey(nic.name)) {
                     vlanIpMap.put(nic.name, new ArrayList<>());
                 }
                 vlanIpMap.get(nic.name).addAll(nic.ipList);
-                nics.add(nic.toString());
+                netCards.add(nic.toString());
                 for (String ipAddress : nic.ipList) {
                     Assert.assertFalse(addresses.contains(ipAddress));
                     addresses.add(ipAddress);
                     if (Utils.isIpInSubnet(ipAddress,extNet)) {
-                        insubnet++;
+                        internalSubnet++;
                     } else {
-                        outsubnet++;
+                        externalSubnet++;
                     }
                 }
             }
-            Assert.assertEquals(0,insubnet);
-            if (outsubnet > 1) {
+            Assert.assertEquals(0,internalSubnet);
+            if (externalSubnet > 1) {
                 System.out.println("----VM with multiple ip------");
                 System.out.println(vm.uuid);
                 System.out.println(vm.name);
                 System.out.println(vm.powerState);
-                System.out.println(nics);
-                System.out.println("-out-"+outsubnet+"---");
+                System.out.println(netCards);
+                System.out.println("-out-"+externalSubnet+"---");
                 System.out.println("----------");
             } else {
-                Assert.assertEquals(1,outsubnet);
+                Assert.assertEquals(1,externalSubnet);
             }
         }
         System.out.println(vlanIpMap);
@@ -275,11 +275,11 @@ public class NutanixApiClientServiceV3Test {
         for (VM vm: vms) {
             vm.nics.forEach(nic -> nic.ipList.stream().filter(controllerVmHostMap::containsKey).forEach(ip -> controllerVmMap.put(ip, vm)));
         }
-        Set<String> vmips = new HashSet<>();
-        vms.forEach(vm -> vm.nics.forEach(nic -> vmips.addAll(nic.ipList)));
-        System.out.println(vmips);
-        vmips.retainAll(controllerVmMap.keySet());
-        Assert.assertEquals(0, vmips.size());
+        Set<String> vmToIpMap = new HashSet<>();
+        vms.forEach(vm -> vm.nics.forEach(nic -> vmToIpMap.addAll(nic.ipList)));
+        System.out.println(vmToIpMap);
+        vmToIpMap.retainAll(controllerVmMap.keySet());
+        Assert.assertEquals(0, vmToIpMap.size());
         //No controllerVM is exposed as VM
         Assert.assertEquals(0, controllerVmMap.size());
         System.out.println(controllerVmHostMap);
@@ -292,14 +292,14 @@ public class NutanixApiClientServiceV3Test {
         ApiClientExtension apiClient = getApiClient();
         VmsApi vmsApi = new VmsApi(apiClient);
         int offset = 0;
-        Set<String> vmnames = new HashSet<>();
+        Set<String> vmNames = new HashSet<>();
         Set<String> onVms = new HashSet<>();
         Set<String> offVms = new HashSet<>();
         Set<String> stateVms = new HashSet<>();
         Set<String> powerStateVms = new HashSet<>();
-        Set<String> clusteruuids = new HashSet<>();
-        Set<String> clusternames = new HashSet<>();
-        Set<String> clusterkinds = new HashSet<>();
+        Set<String> clusterUuids = new HashSet<>();
+        Set<String> clusterNames = new HashSet<>();
+        Set<String> clusterKinds = new HashSet<>();
         Set<String> nicType = new HashSet<>();
         Set<String> diskType = new HashSet<>();
         List<VmIntentResource> vmWithoutHostReference = new ArrayList<>();
@@ -327,11 +327,11 @@ public class NutanixApiClientServiceV3Test {
                     vmListIntentResponse.getEntities().forEach(vm -> {
                         vm.getStatus().getResources().getDiskList().forEach(dsk -> diskType.add(dsk.getDeviceProperties().getDeviceType()));
                         vm.getStatus().getResources().getNicList().forEach(nic -> nicType.add(nic.getNicType()));
-                        vmnames.add(vm.getStatus().getName());
+                        vmNames.add(vm.getStatus().getName());
                         stateVms.add((vm.getStatus().getState()));
-                        clusteruuids.add(vm.getStatus().getClusterReference().getUuid());
-                        clusternames.add(vm.getStatus().getClusterReference().getName());
-                        clusterkinds.add(vm.getStatus().getClusterReference().getKind());
+                        clusterUuids.add(vm.getStatus().getClusterReference().getUuid());
+                        clusterNames.add(vm.getStatus().getClusterReference().getName());
+                        clusterKinds.add(vm.getStatus().getClusterReference().getKind());
                         powerStateVms.add(vm.getStatus().getResources().getPowerState());
                     });
 
@@ -340,27 +340,27 @@ public class NutanixApiClientServiceV3Test {
                 } catch (ApiException e) {
                     throw new RuntimeException(e);
                 }
-            } while (vmnames.size() < total );
+            } while (vmNames.size() < total );
             System.out.println("----------------------------------");
 
             vmWithoutHostReference.forEach(vm -> Assert.assertEquals("OFF", vm.getStatus().getResources().getPowerState()));
             System.out.println("----------------------------------");
             System.out.println("no host vms: " + vmWithoutHostReference.size());
-            System.out.println("total vms: " + vmnames.size());
+            System.out.println("total vms: " + vmNames.size());
             System.out.println("error vms: " + errorVms.size());
             System.out.println("off vms: " + offVms.size());
             System.out.println("on vms: " + onVms.size());
             System.out.println("----------------------------------");
             System.out.println(stateVms);
             System.out.println(powerStateVms);
-            System.out.println(clusterkinds);
-            System.out.println(clusternames);
-            System.out.println(clusteruuids);
+            System.out.println(clusterKinds);
+            System.out.println(clusterNames);
+            System.out.println(clusterUuids);
             System.out.println(nicType);
             System.out.println(diskType);
 
 
-        Assert.assertEquals(vmnames.size(),total);
+        Assert.assertEquals(vmNames.size(),total);
 
 
     }
@@ -403,9 +403,9 @@ public class NutanixApiClientServiceV3Test {
 
         HostsApi hostsApi = new HostsApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
-        Set<String> hostnames = new HashSet<>();
-        Set<String> hostuuids= new HashSet<>();
+        int length = 20;
+        Set<String> hostNames = new HashSet<>();
+        Set<String> hostUuids= new HashSet<>();
         Set<String> stateHost = new HashSet<>();
         Set<String> hyperConvergentHostTypes = new HashSet<>();
         Set<String> notHyperConvergentHostTypes = new HashSet<>();
@@ -413,13 +413,13 @@ public class NutanixApiClientServiceV3Test {
 
         do {
         try {
-                HostListMetadata body = new HostListMetadata().length(lenght).offset(offset);
+                HostListMetadata body = new HostListMetadata().length(length).offset(offset);
                 HostListIntentResponse hostListIntentResponse = hostsApi.hostsListPost(body);
                 total = hostListIntentResponse.getMetadata().getTotalMatches();
 
                 hostListIntentResponse.getEntities().forEach(h -> {
-                    hostnames.add(h.getStatus().getName());
-                    hostuuids.add(h.getMetadata().getUuid());
+                    hostNames.add(h.getStatus().getName());
+                    hostUuids.add(h.getMetadata().getUuid());
                 });
                 hostListIntentResponse.getEntities().forEach(System.out::println);
                 System.out.println(hostListIntentResponse.getMetadata());
@@ -430,21 +430,21 @@ public class NutanixApiClientServiceV3Test {
                 hostListIntentResponse.getEntities()
                         .stream().filter(h -> !h.getStatus().getResources().getHostType().equalsIgnoreCase("HYPER_CONVERGED"))
                         .forEach(h -> notHyperConvergentHostTypes.add(h.getStatus().getName()));
-                lenght = hostListIntentResponse.getEntities().size();
+                length = hostListIntentResponse.getEntities().size();
                 hostListIntentResponse.getEntities().forEach(h -> stateHost.add(h.getStatus().getState()));
-                offset+=lenght;
+                offset+=length;
         } catch (ApiException e) {
             throw new RuntimeException(e);
         }
-        } while (hostnames.size() < total );
+        } while (hostNames.size() < total );
 
-        System.out.println(hostnames);
-        System.out.println(hostuuids);
+        System.out.println(hostNames);
+        System.out.println(hostUuids);
         System.out.println(stateHost);
-        System.out.println("total hosts: " + hostnames.size());
+        System.out.println("total hosts: " + hostNames.size());
         System.out.println("hyper_converged hosts: " + hyperConvergentHostTypes.size());
         System.out.println("not hyper_converged hosts: " + notHyperConvergentHostTypes.size());
-        Assert.assertEquals(hostnames.size(),total);
+        Assert.assertEquals(hostNames.size(),total);
 
 
     }
@@ -466,18 +466,18 @@ public class NutanixApiClientServiceV3Test {
     public void testAccessControlPoliciesApi() {
         AccessControlPoliciesApi accessControlPoliciesApi = new AccessControlPoliciesApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> policies = new HashSet<>();
         int total;
         do {
             try {
-                AccessControlPolicyListMetadata body = new AccessControlPolicyListMetadata().length(lenght).offset(offset);
+                AccessControlPolicyListMetadata body = new AccessControlPolicyListMetadata().length(length).offset(offset);
 
                 AccessControlPolicyListIntentResponse accessControlPolicyListIntentResponse = accessControlPoliciesApi.accessControlPoliciesListPost(body);
                 total = accessControlPolicyListIntentResponse.getMetadata().getTotalMatches();
                 accessControlPolicyListIntentResponse.getEntities().forEach(policy -> policies.add(policy.getStatus().getName()));
-                lenght = accessControlPolicyListIntentResponse.getEntities().size();
-                offset+=lenght;
+                length = accessControlPolicyListIntentResponse.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
             throw new RuntimeException(e);
         }
@@ -491,26 +491,79 @@ public class NutanixApiClientServiceV3Test {
     public void testAlertsApi() {
         AlertsApi api = new AlertsApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
-        Set<String> alerts = new HashSet<>();
+        int length = 30;
         int total;
+        Map<String, Set<String>> severityTypeMap = new HashMap<>();
+        Map<String, Set<String>> typeSeverityMap = new HashMap<>();
+        Map<String, Set<String>> typeDefaultMessageMap = new HashMap<>();
+        Set<String> alarmuuids = new HashSet<>();
         do {
             try {
-                AlertListMetadata body = new AlertListMetadata().length(lenght).offset(offset);
+                AlertListMetadata body = new AlertListMetadata().length(length).offset(offset);
 
                 AlertListIntentResponse response = api.alertsListPost(body);
                 total = response.getMetadata().getTotalMatches();
-                response.getEntities().forEach(item -> alerts.add(item.toString()));
-                response.getEntities().forEach(System.out::println);
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                System.out.println(response.getMetadata());
+                response.getEntities().forEach(item -> {
+                    String alarmUuid = item.getMetadata().getUuid();
+                    alarmuuids.add(alarmUuid);
+                    String name = item.getMetadata().getName();
+                    Assert.assertNull(name);
+                    String severity = item.getStatus().getResources().getSeverity();
+                    String type = item.getStatus().getResources().getType();
+                    if (!severityTypeMap.containsKey(severity)) {
+                        severityTypeMap.put(severity, new HashSet<>());
+                    }
+                    severityTypeMap.get(severity).add(type);
+
+                    if (!typeSeverityMap.containsKey(type)) {
+                        typeSeverityMap.put(type, new HashSet<>());
+                    }
+                    typeSeverityMap.get(type).add(severity);
+
+                    String dm = item.getStatus().getResources().getDefaultMessage();
+                    if (!typeDefaultMessageMap.containsKey(type)) {
+                        typeDefaultMessageMap.put(type,new HashSet<>());
+                    }
+                    typeDefaultMessageMap.get(type).add(dm);
+                    System.out.println("----------");
+                    System.out.println(alarmUuid);
+                    System.out.println(severity);
+                    System.out.println(type);
+                    if (item.getStatus().getResources().getResolutionStatus().isIsTrue()) {
+                        System.out.println("--Resolved--");
+                        return;
+                    }
+                    Assert.assertEquals(1,item.getStatus().getResources().getAffectedEntityList().size());
+                    item.getStatus().getResources().getAffectedEntityList().forEach(entityInfo -> {
+                        System.out.println("----entity affected------");
+                        System.out.println(entityInfo.getName());
+                        System.out.println(entityInfo.getUuid());
+                        System.out.println(entityInfo.getType());
+                    });
+                    System.out.println("--message---");
+                    System.out.println(dm);
+                    if (item.getStatus().getResources().getParameters().containsKey("alert_msg")) {
+                        System.out.println(item.getStatus().getResources().getParameters().get("alert_msg").getStringValue());
+                    } else
+                        System.out.println(item.getStatus().getResources().getParameters());
+                    if (item.getStatus().getResources().getAcknowledgedStatus().isIsTrue()) {
+                        System.out.println("--Ack--");
+                    }
+
+                });
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
-        } while (alerts.size() < total );
+        } while (offset < total );
 
-        System.out.println("total : " + alerts.size());
-        alerts.forEach(System.out::println);
+        System.out.println(severityTypeMap);
+        System.out.println(typeSeverityMap);
+        typeSeverityMap.values().forEach(set -> Assert.assertEquals(1,set.size()));
+        System.out.println(typeDefaultMessageMap);
+        typeDefaultMessageMap.values().forEach(set -> Assert.assertEquals(1,set.size()));
+        Assert.assertEquals(total, alarmuuids.size());
     }
 
     @Test
@@ -544,18 +597,18 @@ public class NutanixApiClientServiceV3Test {
     public void testCitrixAdaptersApi() {
         CitrixAdaptersApi api = new CitrixAdaptersApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                CitrixAdapterListMetadata body = new CitrixAdapterListMetadata().length(lenght).offset(offset);
+                CitrixAdapterListMetadata body = new CitrixAdapterListMetadata().length(length).offset(offset);
 
                 CitrixAdapterListIntentResponse response = api.citrixAdaptersListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.getStatus().toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -569,16 +622,16 @@ public class NutanixApiClientServiceV3Test {
     public void testClustersApi() {
         ClustersApi api = new ClustersApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         int total;
         do {
             try {
-                ClusterListMetadata body = new ClusterListMetadata().length(lenght).offset(offset);
+                ClusterListMetadata body = new ClusterListMetadata().length(length).offset(offset);
                 ClusterListIntentResponse response = api.clustersListPost(body);
                 System.out.println(response);
                 total = response.getMetadata().getTotalMatches();
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
                 response.getEntities().forEach( e -> System.out.println(e.getStatus().getResources().getConfig().getEnabledFeatureList()));
                 response.getEntities().forEach( e -> System.out.println(e.getStatus().getState()));
                 response.getEntities().forEach( e -> System.out.println(e.getStatus().getResources().getConfig().isIsAvailable()));
@@ -642,18 +695,18 @@ public class NutanixApiClientServiceV3Test {
     public void testDirectoryServicesApi() {
         DirectoryServicesApi api = new DirectoryServicesApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                DirectoryServiceListMetadata body = new DirectoryServiceListMetadata().length(lenght).offset(offset);
+                DirectoryServiceListMetadata body = new DirectoryServiceListMetadata().length(length).offset(offset);
 
                 DirectoryServiceListIntentResponse response = api.directoryServicesListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.getStatus().toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -667,18 +720,18 @@ public class NutanixApiClientServiceV3Test {
     public void testDisksApi() {
         DisksApi api = new DisksApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                DiskListMetadata body = new DiskListMetadata().length(lenght).offset(offset);
+                DiskListMetadata body = new DiskListMetadata().length(length).offset(offset);
 
                 DiskListIntentResponse response = api.disksListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.getStatus().toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -692,18 +745,18 @@ public class NutanixApiClientServiceV3Test {
     public void testDockerRegistryApi() {
         DockerRegistryApi api = new DockerRegistryApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                DockerRegistryListMetadata body = new DockerRegistryListMetadata().length(lenght).offset(offset);
+                DockerRegistryListMetadata body = new DockerRegistryListMetadata().length(length).offset(offset);
 
                 DockerRegistryListIntentResponse response = api.dockerRegistriesListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.getStatus().toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 System.out.println(e.getMessage());
                 Assert.assertEquals(403,e.getCode());
@@ -719,18 +772,18 @@ public class NutanixApiClientServiceV3Test {
     public void testExternalRepositoriesApi() {
         ExternalRepositoriesApi api = new ExternalRepositoriesApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                ExternalRepositoryListMetadata body = new ExternalRepositoryListMetadata().length(lenght).offset(offset);
+                ExternalRepositoryListMetadata body = new ExternalRepositoryListMetadata().length(length).offset(offset);
 
                 ExternalRepositoryListIntentResponse response = api.externalRepositoriesListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.getStatus().toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -750,18 +803,18 @@ public class NutanixApiClientServiceV3Test {
     public void testFileStoreApi() {
         FileStoreApi api = new FileStoreApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                FileItemListMetadata body = new FileItemListMetadata().length(lenght).offset(offset);
+                FileItemListMetadata body = new FileItemListMetadata().length(length).offset(offset);
 
                 FileItemListIntentResponse response = api.fileStoreListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.getStatus().toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -790,7 +843,7 @@ public class NutanixApiClientServiceV3Test {
     public void testIdempotenceIdentifiersApi() {
         IdempotenceIdentifiersApi api = new IdempotenceIdentifiersApi(getApiClient());
         try {
-            api.idempotenceIdentifiersClientIdentifierGet("prova");
+            api.idempotenceIdentifiersClientIdentifierGet("test");
         } catch (ApiException e) {
             System.err.println(e.getMessage());
             Assert.assertEquals(404,e.getCode());
@@ -802,18 +855,18 @@ public class NutanixApiClientServiceV3Test {
     public void testImagesApi() {
         ImagesApi api = new ImagesApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                ImageListMetadata body = new ImageListMetadata().length(lenght).offset(offset);
+                ImageListMetadata body = new ImageListMetadata().length(length).offset(offset);
 
                 ImageListIntentResponse response = api.imagesListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.getStatus().toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -824,7 +877,7 @@ public class NutanixApiClientServiceV3Test {
     }
 
     @Test
-    public void testIpfixExporterApi() {
+    public void testIpFixExporterApi() {
         IpfixExportersApi api = new IpfixExportersApi(getApiClient());
         System.out.println("This is for create or delete: Not supporting: "+ api);
     }
@@ -853,18 +906,18 @@ public class NutanixApiClientServiceV3Test {
     public void testNetworkFunctionChainsApi() {
         NetworkFunctionChainsApi api = new NetworkFunctionChainsApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                NetworkFunctionChainListMetadata body = new NetworkFunctionChainListMetadata().length(lenght).offset(offset);
+                NetworkFunctionChainListMetadata body = new NetworkFunctionChainListMetadata().length(length).offset(offset);
 
                 NetworkFunctionChainListIntentResponse response = api.networkFunctionChainsListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.getStatus().toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 total=-1;
                 System.out.println("Not Supported");
@@ -881,18 +934,18 @@ public class NutanixApiClientServiceV3Test {
     public void testOauthApi() {
         OauthApi api = new OauthApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                OauthClientListMetadata body = new OauthClientListMetadata().length(lenght).offset(offset);
+                OauthClientListMetadata body = new OauthClientListMetadata().length(length).offset(offset);
 
                 OauthClientList response = api.oauthClientListPost(body);
                 total = response.getMetadata().getLength();
                 response.getEntities().forEach(item -> outputs.add(item.toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -906,12 +959,12 @@ public class NutanixApiClientServiceV3Test {
     public void testNgtApi() {
         NgtApi api = new NgtApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                NgtListMetadata body = new NgtListMetadata().length(lenght).offset(offset);
+                NgtListMetadata body = new NgtListMetadata().length(length).offset(offset);
 
                 NgtListResponse response = api.ngtListPost(body);
                 total = response.getMetadata().getTotalMatches();
@@ -919,8 +972,8 @@ public class NutanixApiClientServiceV3Test {
                     break;
                 }
                 response.getEntitiesList().forEach(item -> outputs.add(item.toString()));
-                lenght = response.getEntitiesList().size();
-                offset+=lenght;
+                length = response.getEntitiesList().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -931,7 +984,7 @@ public class NutanixApiClientServiceV3Test {
     }
 
     @Test
-    public void testOvasApi() {
+    public void testOvaSApi() {
         OvasApi api = new OvasApi(getApiClient());
         System.out.println("This is for create or update OVA file: Not supporting: " + api);
     }
@@ -940,18 +993,18 @@ public class NutanixApiClientServiceV3Test {
     public void testPermissionsApi() {
         PermissionsApi api = new PermissionsApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                PermissionListMetadata body = new PermissionListMetadata().length(lenght).offset(offset);
+                PermissionListMetadata body = new PermissionListMetadata().length(length).offset(offset);
 
                 PermissionListIntentResponse response = api.permissionsListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -965,18 +1018,18 @@ public class NutanixApiClientServiceV3Test {
     public void testPortalServicesApi() {
         PortalServicesApi api = new PortalServicesApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                SoftwareListMetadata body = new SoftwareListMetadata().length(lenght).offset(offset);
+                SoftwareListMetadata body = new SoftwareListMetadata().length(length).offset(offset);
 
                 SoftwareListIntentResponse response = api.portalServicesSoftwareSoftwareTypeListPost("Microsoft",body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 Assert.assertEquals(500,e.getCode());
                 System.err.println(e.getMessage());
@@ -999,18 +1052,18 @@ public class NutanixApiClientServiceV3Test {
     public void testProjectsApi() {
         ProjectsApi api = new ProjectsApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                ProjectListMetadata body = new ProjectListMetadata().length(lenght).offset(offset);
+                ProjectListMetadata body = new ProjectListMetadata().length(length).offset(offset);
 
                 ProjectListIntentResponse response = api.projectsListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -1021,21 +1074,21 @@ public class NutanixApiClientServiceV3Test {
     }
 
     @Test
-    public void testRackableUnitApi() {
+    public void testRackAbleUnitApi() {
         RackableUnitApi api = new RackableUnitApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                RackableUnitListMetadata body = new RackableUnitListMetadata().length(lenght).offset(offset);
+                RackableUnitListMetadata body = new RackableUnitListMetadata().length(length).offset(offset);
 
                 RackableUnitListIntentResponse response = api.rackableUnitsListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -1049,18 +1102,18 @@ public class NutanixApiClientServiceV3Test {
     public void testRackApi() {
         RackApi api = new RackApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                RackListMetadata body = new RackListMetadata().length(lenght).offset(offset);
+                RackListMetadata body = new RackListMetadata().length(length).offset(offset);
 
                 RackListIntentResponse response = api.racksListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -1080,18 +1133,18 @@ public class NutanixApiClientServiceV3Test {
     public void testRemoteSyslogModulesApi() {
         RemoteSyslogModulesApi api = new RemoteSyslogModulesApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                RemoteSyslogModuleListMetadata body = new RemoteSyslogModuleListMetadata().length(lenght).offset(offset);
+                RemoteSyslogModuleListMetadata body = new RemoteSyslogModuleListMetadata().length(length).offset(offset);
 
                 RemoteSyslogModuleListIntentResponse response = api.remoteSyslogModulesListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -1105,18 +1158,18 @@ public class NutanixApiClientServiceV3Test {
     public void testRemoteSyslogServersApi() {
         RemoteSyslogServersApi api = new RemoteSyslogServersApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                RemoteSyslogServerListMetadata body = new RemoteSyslogServerListMetadata().length(lenght).offset(offset);
+                RemoteSyslogServerListMetadata body = new RemoteSyslogServerListMetadata().length(length).offset(offset);
 
                 RemoteSyslogServerListIntentResponse response = api.remoteSyslogServersListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -1130,18 +1183,18 @@ public class NutanixApiClientServiceV3Test {
     public void testRolesApi() {
         RolesApi api = new RolesApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                RoleListMetadata body = new RoleListMetadata().length(lenght).offset(offset);
+                RoleListMetadata body = new RoleListMetadata().length(length).offset(offset);
 
                 RoleListIntentResponse response = api.rolesListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -1155,18 +1208,18 @@ public class NutanixApiClientServiceV3Test {
     public void testSshUserApi() {
         SshUserApi api = new SshUserApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                SshUserListMetadata body = new SshUserListMetadata().length(lenght).offset(offset);
+                SshUserListMetadata body = new SshUserListMetadata().length(length).offset(offset);
 
                 SshUserList response = api.sshUserListPost(body);
                 total = response.getMetadata().getLength();
                 response.getEntities().forEach(item -> outputs.add(item.toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -1180,18 +1233,18 @@ public class NutanixApiClientServiceV3Test {
     public void testSubnetsApi() {
         SubnetsApi api = new SubnetsApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                SubnetListMetadata body = new SubnetListMetadata().length(lenght).offset(offset);
+                SubnetListMetadata body = new SubnetListMetadata().length(length).offset(offset);
 
                 SubnetListIntentResponse response = api.subnetsListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -1229,18 +1282,18 @@ public class NutanixApiClientServiceV3Test {
     public void testUserGroupsApi() {
         UserGroupsApi api = new UserGroupsApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                UserGroupListMetadata body = new UserGroupListMetadata().length(lenght).offset(offset);
+                UserGroupListMetadata body = new UserGroupListMetadata().length(length).offset(offset);
 
                 UserGroupListIntentResponse response = api.userGroupsListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.toString()));
-                lenght = response.getEntities().size();
-                offset += lenght;
+                length = response.getEntities().size();
+                offset += length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -1253,18 +1306,18 @@ public class NutanixApiClientServiceV3Test {
     public void testUsersApi() {
         UsersApi api = new UsersApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
         try {
-            UserListMetadata body = new UserListMetadata().length(lenght).offset(offset);
+            UserListMetadata body = new UserListMetadata().length(length).offset(offset);
 
             UserListIntentResponse response = api.usersListPost(body);
             total = response.getMetadata().getTotalMatches();
             response.getEntities().forEach(item -> outputs.add(item.toString()));
-            lenght = response.getEntities().size();
-            offset+=lenght;
+            length = response.getEntities().size();
+            offset+=length;
         } catch (ApiException e) {
             throw new RuntimeException(e);
         }
@@ -1279,18 +1332,18 @@ public class NutanixApiClientServiceV3Test {
     public void testVmRecoveryPointsApi() {
         VmRecoveryPointsApi api = new VmRecoveryPointsApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
         try {
-            VmRecoveryPointListMetadata body = new VmRecoveryPointListMetadata().length(lenght).offset(offset);
+            VmRecoveryPointListMetadata body = new VmRecoveryPointListMetadata().length(length).offset(offset);
 
             VmRecoveryPointListIntentResponse response = api.vmRecoveryPointsListPost(body);
             total = response.getMetadata().getTotalMatches();
             response.getEntities().forEach(item -> outputs.add(item.toString()));
-            lenght = response.getEntities().size();
-            offset+=lenght;
+            length = response.getEntities().size();
+            offset+=length;
         } catch (ApiException e) {
             throw new RuntimeException(e);
         }
@@ -1310,18 +1363,18 @@ public class NutanixApiClientServiceV3Test {
     public void testVolumeGroupsApi() {
         VolumeGroupsApi api = new VolumeGroupsApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                VolumeGroupListMetadata body = new VolumeGroupListMetadata().length(lenght).offset(offset);
+                VolumeGroupListMetadata body = new VolumeGroupListMetadata().length(length).offset(offset);
 
                 VolumeGroupListIntentResponse response = api.volumeGroupsListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -1341,18 +1394,18 @@ public class NutanixApiClientServiceV3Test {
     public void testWebhooksApi() {
         WebhooksApi api = new WebhooksApi(getApiClient());
         int offset = 0;
-        int lenght = 20;
+        int length = 20;
         Set<String> outputs = new HashSet<>();
         int total;
         do {
             try {
-                WebhookListMetadata body = new WebhookListMetadata().length(lenght).offset(offset);
+                WebhookListMetadata body = new WebhookListMetadata().length(length).offset(offset);
 
                 WebhookListIntentResponse response = api.webhooksListPost(body);
                 total = response.getMetadata().getTotalMatches();
                 response.getEntities().forEach(item -> outputs.add(item.toString()));
-                lenght = response.getEntities().size();
-                offset+=lenght;
+                length = response.getEntities().size();
+                offset+=length;
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
