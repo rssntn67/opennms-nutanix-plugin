@@ -60,7 +60,7 @@ public class NutanixRestServiceImpl implements NutanixRestService {
                     final var connectionDTO = new ConnectionListElementDTO();
                     connectionDTO.setAlias(alias);
                     connectionDTO.setPrismUrl(connection.getPrismUrl());
-                    connectionDTO.setUserName(connection.getUsername());
+                    connectionDTO.setUsername(connection.getUsername());
                     connectionDTO.setLength(connection.getLength());
                     connectionDTO.setIgnoreSslCertificateValidation(connection.isIgnoreSslCertificateValidation());
 
@@ -80,7 +80,7 @@ public class NutanixRestServiceImpl implements NutanixRestService {
         final var connection = this.connectionManager.newConnection(
                 connectionDTO.getAlias(),
                 connectionDTO.getPrismUrl(),
-                connectionDTO.getUserName(),
+                connectionDTO.getUsername(),
                 connectionDTO.getPassword(),
                 connectionDTO.getIgnoreSslCertificateValidation(),
                 connectionDTO.getLength()
@@ -119,7 +119,7 @@ public class NutanixRestServiceImpl implements NutanixRestService {
         }
 
         connection.get().setPrismUrl(connectionDTO.getPrismUrl());
-        connection.get().setUsername(connectionDTO.getUserName());
+        connection.get().setUsername(connectionDTO.getUsername());
         connection.get().setPassword(connectionDTO.getPassword());
         connection.get().setIgnoreSslCertificateValidation(connectionDTO.getIgnoreSslCertificateValidation());
         connection.get().setLength(connectionDTO.getLength());
