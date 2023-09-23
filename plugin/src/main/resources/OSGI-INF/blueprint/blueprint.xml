@@ -102,7 +102,4 @@
         <bean class="org.opennms.nutanix.configuration.NutanixGraphPropertiesExtension"/>
     </service>
 
-    <bean id="nutanixCollectorConfig" class="org.opennms.nutanix.configuration.NutanixCollectorConfigurationExtension"/>
-    <service ref="nutanixCollectorConfig"
-             interface="org.opennms.integration.api.v1.config.collector.CollectorConfigurationExtension"/>
 </blueprint>
