@@ -15,12 +15,4 @@ Some configuration properties let you fine-tune the plugin's behavior:
 | Event polling interval in milliseconds
 | 300000 ms
 
-| nutanix.ignore.certificate.validation
-| Ignore if Prism SSL certificate is to be trusted
-| false
-
-| nutanix.client.length
-| Number of objects retrieved for Prism API bulk request
-| 20
-
 |===

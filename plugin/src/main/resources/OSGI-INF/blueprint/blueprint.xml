@@ -72,7 +72,7 @@
     </bean>
     <service interface="org.opennms.nutanix.rest.api.NutanixRestService" ref="nutanixRestService">
         <service-properties>
-            <entry key="application-path" value="/rest"/>
+            <entry key="application-path" value="/rest/plugin"/>
         </service-properties>
     </service>
 
