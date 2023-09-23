@@ -14,7 +14,7 @@
             <mevalue>991</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrap</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrap</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrap</event-label>
       <descr>
 &lt;p>Nutanix enterprise trap&lt;/p>&lt;table>
@@ -32,8 +32,7 @@
 	ntxAlertCreationTime=%parm[#1]%
 	ntxAlertDisplayMsg=%parm[#2]%&lt;/p>
 	</logmsg>
-      <severity>Warning</severity>
-      <alarm-data reduction-key="%uei%:%dpname%:%nodeid%" alarm-type="3" auto-clean="false"/>
+      <severity>Indeterminate</severity>
    </event>
    <event>
       <mask>
@@ -50,7 +49,7 @@
             <mevalue>1000</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapClusterRunningOutOfStorageCapacitylowRunway</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapClusterRunningOutOfStorageCapacitylowRunway</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapClusterRunningOutOfStorageCapacitylowRunway</event-label>
       <descr>
 &lt;p>Predict high storage space usage on cluster.&lt;/p>&lt;table>
@@ -83,8 +82,7 @@
 	ntxAlertTitle=%parm[#3]%
 	ntxAlertSeverity=%parm[#4]%&lt;/p>
 	</logmsg>
-      <severity>Critical</severity>
-      <alarm-data reduction-key="%uei%:%dpname%:%nodeid%" alarm-type="3" auto-clean="false"/>
+      <severity>Indeterminate</severity>
       <varbindsdecode>
          <parmid>parm[#4]</parmid>
          <decode varbindvalue="1" varbinddecodedstring="informational"/>
@@ -108,7 +106,7 @@
             <mevalue>1001</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapClusterRunningOutOfCPUCapacitylowRunway</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapClusterRunningOutOfCPUCapacitylowRunway</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapClusterRunningOutOfCPUCapacitylowRunway</event-label>
       <descr>
 &lt;p>Predict high CPU resource usage.&lt;/p>&lt;table>
@@ -141,8 +139,7 @@
 	ntxAlertTitle=%parm[#3]%
 	ntxAlertSeverity=%parm[#4]%&lt;/p>
 	</logmsg>
-      <severity>Critical</severity>
-      <alarm-data reduction-key="%uei%:%dpname%:%nodeid%" alarm-type="3" auto-clean="false"/>
+      <severity>Indeterminate</severity>
       <varbindsdecode>
          <parmid>parm[#4]</parmid>
          <decode varbindvalue="1" varbinddecodedstring="informational"/>
@@ -166,7 +163,7 @@
             <mevalue>1002</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNodeRunningOutOfCPUCapacitylowRunway</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNodeRunningOutOfCPUCapacitylowRunway</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNodeRunningOutOfCPUCapacitylowRunway</event-label>
       <descr>
 &lt;p>Predict high CPU resource usage.&lt;/p>&lt;table>
@@ -223,7 +220,7 @@
             <mevalue>1003</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapClusterRunningOutOfMemoryCapacitylowRunway</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapClusterRunningOutOfMemoryCapacitylowRunway</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapClusterRunningOutOfMemoryCapacitylowRunway</event-label>
       <descr>
 &lt;p>Predict high memory resource usage.&lt;/p>&lt;table>
@@ -280,7 +277,7 @@
             <mevalue>1004</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNodeRunningOutOfMemoryCapacitylowRunway</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNodeRunningOutOfMemoryCapacitylowRunway</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNodeRunningOutOfMemoryCapacitylowRunway</event-label>
       <descr>
 &lt;p>Predict high memory resource usage.&lt;/p>&lt;table>
@@ -337,7 +334,7 @@
             <mevalue>1005</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapStorageContainerRunningOutOfStorageCapacitylowRunway</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapStorageContainerRunningOutOfStorageCapacitylowRunway</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapStorageContainerRunningOutOfStorageCapacitylowRunway</event-label>
       <descr>
 &lt;p>Predict high storage space usage on Storage Container.&lt;/p>&lt;table>
@@ -394,7 +391,7 @@
             <mevalue>1006</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapTestAlertTitle</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapTestAlertTitle</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapTestAlertTitle</event-label>
       <descr>
 &lt;p>Test Alert.&lt;/p>&lt;table>
@@ -451,7 +448,7 @@
             <mevalue>1007</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetadataDriveAutoAddDisabled</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetadataDriveAutoAddDisabled</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetadataDriveAutoAddDisabled</event-label>
       <descr>
 &lt;p>Metadata Drive AutoAdd Disabled.&lt;/p>&lt;table>
@@ -508,7 +505,7 @@
             <mevalue>1008</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNodeDetachedFromMetadataRing</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNodeDetachedFromMetadataRing</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNodeDetachedFromMetadataRing</event-label>
       <descr>
 &lt;p>Node detached from metadata ring.&lt;/p>&lt;table>
@@ -565,7 +562,7 @@
             <mevalue>1009</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetadataDynamicRingChangeOperationStuck</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetadataDynamicRingChangeOperationStuck</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetadataDynamicRingChangeOperationStuck</event-label>
       <descr>
 &lt;p>Dynamic Ring Change operation not making progress.&lt;/p>&lt;table>
@@ -622,7 +619,7 @@
             <mevalue>1010</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetadataDynamicRingChangeOperationTooSlow</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetadataDynamicRingChangeOperationTooSlow</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetadataDynamicRingChangeOperationTooSlow</event-label>
       <descr>
 &lt;p>Dynamic Ring Change operation too slow.&lt;/p>&lt;table>
@@ -679,7 +676,7 @@
             <mevalue>1011</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetadataDriveFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetadataDriveFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetadataDriveFailed</event-label>
       <descr>
 &lt;p>Metadata Drive Failed.&lt;/p>&lt;table>
@@ -736,7 +733,7 @@
             <mevalue>1012</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapLargeMetadataSizeDetected</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapLargeMetadataSizeDetected</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapLargeMetadataSizeDetected</event-label>
       <descr>
 &lt;p>Large metadata size detected.&lt;/p>&lt;table>
@@ -793,7 +790,7 @@
             <mevalue>1013</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetadataDriveMarkedToBeAutoAdded</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetadataDriveMarkedToBeAutoAdded</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetadataDriveMarkedToBeAutoAdded</event-label>
       <descr>
 &lt;p>Metadata Drive Marked To Be AutoAdded.&lt;/p>&lt;table>
@@ -850,7 +847,7 @@
             <mevalue>1014</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetadataDriveDetached</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetadataDriveDetached</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetadataDriveDetached</event-label>
       <descr>
 &lt;p>Metadata Drive Detached.&lt;/p>&lt;table>
@@ -907,7 +904,7 @@
             <mevalue>1015</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetadataRingImbalance</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetadataRingImbalance</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetadataRingImbalance</event-label>
       <descr>
 &lt;p>Cassandra Metadata Imbalance.&lt;/p>&lt;table>
@@ -964,7 +961,7 @@
             <mevalue>1016</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCassandraWaitingForDiskReplacement</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCassandraWaitingForDiskReplacement</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCassandraWaitingForDiskReplacement</event-label>
       <descr>
 &lt;p>Metadata disk not replaced for Disk Replace Op.&lt;/p>&lt;table>
@@ -1021,7 +1018,7 @@
             <mevalue>1017</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCloudApplianceDeploymentFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCloudApplianceDeploymentFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCloudApplianceDeploymentFailed</event-label>
       <descr>
 &lt;p>Cloud Appliance Deployment Failed.&lt;/p>&lt;table>
@@ -1078,7 +1075,7 @@
             <mevalue>1018</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapUnableToRemountDatastore</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapUnableToRemountDatastore</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapUnableToRemountDatastore</event-label>
       <descr>
 &lt;p>Unable to remount datastore.&lt;/p>&lt;table>
@@ -1135,7 +1132,7 @@
             <mevalue>1019</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRemountedDatastore</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRemountedDatastore</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRemountedDatastore</event-label>
       <descr>
 &lt;p>Remounted datastore.&lt;/p>&lt;table>
@@ -1192,7 +1189,7 @@
             <mevalue>1020</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFailedToAllocateSnapshotReserveOnTheRemoteSite</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFailedToAllocateSnapshotReserveOnTheRemoteSite</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFailedToAllocateSnapshotReserveOnTheRemoteSite</event-label>
       <descr>
 &lt;p>Failed to allocate snapshot reserve on the remote site.&lt;/p>&lt;table>
@@ -1249,7 +1246,7 @@
             <mevalue>1021</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFailedToAllocateSnapshotReserve</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFailedToAllocateSnapshotReserve</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFailedToAllocateSnapshotReserve</event-label>
       <descr>
 &lt;p>Failed to allocate snapshot reserve.&lt;/p>&lt;table>
@@ -1306,7 +1303,7 @@
             <mevalue>1022</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetroTakeoverOldPrimarySiteIsHostingVMs</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetroTakeoverOldPrimarySiteIsHostingVMs</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetroTakeoverOldPrimarySiteIsHostingVMs</event-label>
       <descr>
 &lt;p>Metro takeover - old primary site is hosting VMs.&lt;/p>&lt;table>
@@ -1363,7 +1360,7 @@
             <mevalue>1023</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectionDomainIsInDecoupledState</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectionDomainIsInDecoupledState</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectionDomainIsInDecoupledState</event-label>
       <descr>
 &lt;p>Protection domain is in decoupled state.&lt;/p>&lt;table>
@@ -1420,7 +1417,7 @@
             <mevalue>1024</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRemoteSiteLatencyIsHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRemoteSiteLatencyIsHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRemoteSiteLatencyIsHigh</event-label>
       <descr>
 &lt;p>Latency to a stretch remote site is high.&lt;/p>&lt;table>
@@ -1477,7 +1474,7 @@
             <mevalue>1025</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFailedToUpdateMetroAvailabilityFailureHandling</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFailedToUpdateMetroAvailabilityFailureHandling</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFailedToUpdateMetroAvailabilityFailureHandling</event-label>
       <descr>
 &lt;p>Error in updating failure-handling on Metro Availability protection domain.&lt;/p>&lt;table>
@@ -1534,7 +1531,7 @@
             <mevalue>1026</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapStretchConnectivityIsLost</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapStretchConnectivityIsLost</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapStretchConnectivityIsLost</event-label>
       <descr>
 &lt;p>Stretch connectivity is lost.&lt;/p>&lt;table>
@@ -1591,7 +1588,7 @@
             <mevalue>1027</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVMRegistrationWarning</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVMRegistrationWarning</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVMRegistrationWarning</event-label>
       <descr>
 &lt;p>VM Registration caused warning.&lt;/p>&lt;table>
@@ -1648,7 +1645,7 @@
             <mevalue>1028</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVMRenamedOnConversion</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVMRenamedOnConversion</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVMRenamedOnConversion</event-label>
       <descr>
 &lt;p>VM Renamed On Conversion.&lt;/p>&lt;table>
@@ -1705,7 +1702,7 @@
             <mevalue>1029</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapAuthenticationFailedInWitness</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapAuthenticationFailedInWitness</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapAuthenticationFailedInWitness</event-label>
       <descr>
 &lt;p>Authentication failed in Witness.&lt;/p>&lt;table>
@@ -1762,7 +1759,7 @@
             <mevalue>1030</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapWitnessIsNotConfigured</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapWitnessIsNotConfigured</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapWitnessIsNotConfigured</event-label>
       <descr>
 &lt;p>Witness is not configured.&lt;/p>&lt;table>
@@ -1819,7 +1816,7 @@
             <mevalue>1031</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapWitnessIsNotReachable</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapWitnessIsNotReachable</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapWitnessIsNotReachable</event-label>
       <descr>
 &lt;p>Witness is not reachable.&lt;/p>&lt;table>
@@ -1876,7 +1873,7 @@
             <mevalue>1032</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCuratorJobRunningTooLong</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCuratorJobRunningTooLong</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCuratorJobRunningTooLong</event-label>
       <descr>
 &lt;p>Curator Job Running Too Long.&lt;/p>&lt;table>
@@ -1933,7 +1930,7 @@
             <mevalue>1033</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCuratorScanFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCuratorScanFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCuratorScanFailure</event-label>
       <descr>
 &lt;p>Curator Scan Failure.&lt;/p>&lt;table>
@@ -1990,7 +1987,7 @@
             <mevalue>1034</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerSpaceUsageHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerSpaceUsageHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerSpaceUsageHigh</event-label>
       <descr>
 &lt;p>File Server Space Usage High.&lt;/p>&lt;table>
@@ -2047,7 +2044,7 @@
             <mevalue>1035</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerSpaceUsageCritical</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerSpaceUsageCritical</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerSpaceUsageCritical</event-label>
       <descr>
 &lt;p>File Server Space Usage Critical.&lt;/p>&lt;table>
@@ -2104,7 +2101,7 @@
             <mevalue>1036</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerUnreachable</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerUnreachable</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerUnreachable</event-label>
       <descr>
 &lt;p>File server is unreachable.&lt;/p>&lt;table>
@@ -2161,7 +2158,7 @@
             <mevalue>1037</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerStorageIsNotAvailable</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerStorageIsNotAvailable</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerStorageIsNotAvailable</event-label>
       <descr>
 &lt;p>File Server storage is not available.&lt;/p>&lt;table>
@@ -2218,7 +2215,7 @@
             <mevalue>1038</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerScaleoutFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerScaleoutFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerScaleoutFailed</event-label>
       <descr>
 &lt;p>File Server scale-out failed.&lt;/p>&lt;table>
@@ -2275,7 +2272,7 @@
             <mevalue>1039</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerCouldNotJoinTheADDomain</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerCouldNotJoinTheADDomain</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerCouldNotJoinTheADDomain</event-label>
       <descr>
 &lt;p>File Server could not join the AD Domain.&lt;/p>&lt;table>
@@ -2332,7 +2329,7 @@
             <mevalue>1040</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNodeFailedToJoinDomain</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNodeFailedToJoinDomain</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNodeFailedToJoinDomain</event-label>
       <descr>
 &lt;p>The node could not join the domain.&lt;/p>&lt;table>
@@ -2389,7 +2386,7 @@
             <mevalue>1041</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerTimeDifferenceHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerTimeDifferenceHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerTimeDifferenceHigh</event-label>
       <descr>
 &lt;p>The time drift between the FSVMs is beyond the acceptable range.&lt;/p>&lt;table>
@@ -2446,7 +2443,7 @@
             <mevalue>1042</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerStorageCleanupFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerStorageCleanupFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerStorageCleanupFailed</event-label>
       <descr>
 &lt;p>Failed to clean up storage for the File Server.&lt;/p>&lt;table>
@@ -2503,7 +2500,7 @@
             <mevalue>1043</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerCannotConnectWithADServer</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerCannotConnectWithADServer</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerCannotConnectWithADServer</event-label>
       <descr>
 &lt;p>File server cannot connect with AD server with configured information.&lt;/p>&lt;table>
@@ -2560,7 +2557,7 @@
             <mevalue>1044</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerPerformanceOptimizationRecommended</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerPerformanceOptimizationRecommended</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerPerformanceOptimizationRecommended</event-label>
       <descr>
 &lt;p>File server has a recommendation to optimize performance by using scale-up, scale-out or rebalance.&lt;/p>&lt;table>
@@ -2617,7 +2614,7 @@
             <mevalue>1045</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapAppropriateSiteNotFoundInActiveDirectory</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapAppropriateSiteNotFoundInActiveDirectory</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapAppropriateSiteNotFoundInActiveDirectory</event-label>
       <descr>
 &lt;p>Unable to determine an appropriate site in Active Directory.&lt;/p>&lt;table>
@@ -2674,7 +2671,7 @@
             <mevalue>1046</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerDNSUpdatesPending</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerDNSUpdatesPending</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerDNSUpdatesPending</event-label>
       <descr>
 &lt;p>DNS updates are pending after a file server operation.&lt;/p>&lt;table>
@@ -2731,7 +2728,7 @@
             <mevalue>1047</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapUserQuotaAssignmentFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapUserQuotaAssignmentFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapUserQuotaAssignmentFailed</event-label>
       <descr>
 &lt;p>Failed to assign the specified quota to the user.&lt;/p>&lt;table>
@@ -2788,7 +2785,7 @@
             <mevalue>1048</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapShareUtilizationReachedConfiguredLimit</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapShareUtilizationReachedConfiguredLimit</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapShareUtilizationReachedConfiguredLimit</event-label>
       <descr>
 &lt;p>Share is no longer writeable.&lt;/p>&lt;table>
@@ -2845,7 +2842,7 @@
             <mevalue>1049</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerFailedToGetUpdatedCVMIPAddress</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerFailedToGetUpdatedCVMIPAddress</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerFailedToGetUpdatedCVMIPAddress</event-label>
       <descr>
 &lt;p>File server cvm ip update failed.&lt;/p>&lt;table>
@@ -2902,7 +2899,7 @@
             <mevalue>1050</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerActivationFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerActivationFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerActivationFailed</event-label>
       <descr>
 &lt;p>File Server Activation Failed.&lt;/p>&lt;table>
@@ -2959,7 +2956,7 @@
             <mevalue>1051</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFailedToSetVMtoVMAntiaffinityRule</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFailedToSetVMtoVMAntiaffinityRule</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFailedToSetVMtoVMAntiaffinityRule</event-label>
       <descr>
 &lt;p>Failed to set VM-to-VM anti affinity rule.&lt;/p>&lt;table>
@@ -3016,7 +3013,7 @@
             <mevalue>1052</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerHomeShareCreationFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerHomeShareCreationFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerHomeShareCreationFailed</event-label>
       <descr>
 &lt;p>Failed to create home share during file server creation.&lt;/p>&lt;table>
@@ -3073,7 +3070,7 @@
             <mevalue>1053</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapDiscoveryOfISCSITargetsFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapDiscoveryOfISCSITargetsFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapDiscoveryOfISCSITargetsFailed</event-label>
       <descr>
 &lt;p>Failed to discover iSCSI targets on the CVM during the discovery process.&lt;/p>&lt;table>
@@ -3130,7 +3127,7 @@
             <mevalue>1054</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerUpgradeFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerUpgradeFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerUpgradeFailed</event-label>
       <descr>
 &lt;p>File Server Upgrade Failed.&lt;/p>&lt;table>
@@ -3187,7 +3184,7 @@
             <mevalue>1055</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapIncompatibleFileServerActivated</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapIncompatibleFileServerActivated</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapIncompatibleFileServerActivated</event-label>
       <descr>
 &lt;p>Activating an incompatible File Server.&lt;/p>&lt;table>
@@ -3244,7 +3241,7 @@
             <mevalue>1056</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerInHeterogeneousState</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerInHeterogeneousState</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerInHeterogeneousState</event-label>
       <descr>
 &lt;p>File server in heterogeneous state.Nodes do not match in their CPU or memory configuration. .&lt;/p>&lt;table>
@@ -3301,7 +3298,7 @@
             <mevalue>1057</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFailedToCorrectFileServerDataAndMetaDataInconsistencies</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFailedToCorrectFileServerDataAndMetaDataInconsistencies</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFailedToCorrectFileServerDataAndMetaDataInconsistencies</event-label>
       <descr>
 &lt;p>Failed to Run File Server Metadata Fixer tool successfully.&lt;/p>&lt;table>
@@ -3358,7 +3355,7 @@
             <mevalue>1058</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerShareDeletionFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerShareDeletionFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerShareDeletionFailed</event-label>
       <descr>
 &lt;p>Failed to delete share.&lt;/p>&lt;table>
@@ -3415,7 +3412,7 @@
             <mevalue>1059</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerCompatibilityCheckSkipped</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerCompatibilityCheckSkipped</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerCompatibilityCheckSkipped</event-label>
       <descr>
 &lt;p>File server compatibility check skipped.&lt;/p>&lt;table>
@@ -3472,7 +3469,7 @@
             <mevalue>1060</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSnapshotInvalidForClone</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSnapshotInvalidForClone</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSnapshotInvalidForClone</event-label>
       <descr>
 &lt;p>Pre-asterix.2 snapshot is invalid for clone.&lt;/p>&lt;table>
@@ -3529,7 +3526,7 @@
             <mevalue>1061</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerAntiVirusICAPServerDown</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerAntiVirusICAPServerDown</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerAntiVirusICAPServerDown</event-label>
       <descr>
 &lt;p>ICAP server is not responding to scan requests.&lt;/p>&lt;table>
@@ -3586,7 +3583,7 @@
             <mevalue>1062</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerAntiVirusAllICAPServersDown</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerAntiVirusAllICAPServersDown</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerAntiVirusAllICAPServersDown</event-label>
       <descr>
 &lt;p>All configured ICAP servers are not responding to scan requests.&lt;/p>&lt;table>
@@ -3643,7 +3640,7 @@
             <mevalue>1063</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapClusterInReadOnlyMode</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapClusterInReadOnlyMode</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapClusterInReadOnlyMode</event-label>
       <descr>
 &lt;p>Single-node cluster is in read-only mode.&lt;/p>&lt;table>
@@ -3700,7 +3697,7 @@
             <mevalue>1064</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapStorageContainerSpaceUsageExceededAOSCheck</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapStorageContainerSpaceUsageExceededAOSCheck</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapStorageContainerSpaceUsageExceededAOSCheck</event-label>
       <descr>
 &lt;p>Check high space usage on Storage Containers.&lt;/p>&lt;table>
@@ -3757,7 +3754,7 @@
             <mevalue>1065</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapDiskDiagnosticFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapDiskDiagnosticFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapDiskDiagnosticFailure</event-label>
       <descr>
 &lt;p>Drive diagnostic has failed.&lt;/p>&lt;table>
@@ -3814,7 +3811,7 @@
             <mevalue>1066</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNodeFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNodeFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNodeFailure</event-label>
       <descr>
 &lt;p>Node Failure.&lt;/p>&lt;table>
@@ -3871,7 +3868,7 @@
             <mevalue>1067</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNodeInMaintenanceMode</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNodeInMaintenanceMode</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNodeInMaintenanceMode</event-label>
       <descr>
 &lt;p>Node in Maintenance Mode.&lt;/p>&lt;table>
@@ -3928,7 +3925,7 @@
             <mevalue>1068</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNonSelfEncryptionDriveDiskInserted</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNonSelfEncryptionDriveDiskInserted</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNonSelfEncryptionDriveDiskInserted</event-label>
       <descr>
 &lt;p>Non Self Encrypting Drive disk inserted.&lt;/p>&lt;table>
@@ -3985,7 +3982,7 @@
             <mevalue>1069</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapPhysicalDiskAddedToSlot</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapPhysicalDiskAddedToSlot</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapPhysicalDiskAddedToSlot</event-label>
       <descr>
 &lt;p>Physical Disk added to slot.&lt;/p>&lt;table>
@@ -4042,7 +4039,7 @@
             <mevalue>1070</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapPhysicalDiskDriveHasFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapPhysicalDiskDriveHasFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapPhysicalDiskDriveHasFailed</event-label>
       <descr>
 &lt;p>Physical drive has failed.&lt;/p>&lt;table>
@@ -4099,7 +4096,7 @@
             <mevalue>1071</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapPhysicalDiskRemovedFromSlot</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapPhysicalDiskRemovedFromSlot</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapPhysicalDiskRemovedFromSlot</event-label>
       <descr>
 &lt;p>Physical disk removed from slot.&lt;/p>&lt;table>
@@ -4156,7 +4153,7 @@
             <mevalue>1072</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSelfEncryptingDriveOperationFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSelfEncryptingDriveOperationFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSelfEncryptingDriveOperationFailure</event-label>
       <descr>
 &lt;p>Self encrypting drive operation failure.&lt;/p>&lt;table>
@@ -4213,7 +4210,7 @@
             <mevalue>1073</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapUnsupportedConfigurationForRedundancyFactor3</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapUnsupportedConfigurationForRedundancyFactor3</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapUnsupportedConfigurationForRedundancyFactor3</event-label>
       <descr>
 &lt;p>Unsupported Configuration For Redundancy Factor 3.&lt;/p>&lt;table>
@@ -4270,7 +4267,7 @@
             <mevalue>1074</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCannotRemovePasswordProtectedDisks</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCannotRemovePasswordProtectedDisks</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCannotRemovePasswordProtectedDisks</event-label>
       <descr>
 &lt;p>Cannot remove password protected disk(s).&lt;/p>&lt;table>
@@ -4327,7 +4324,7 @@
             <mevalue>1075</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapDiskBad</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapDiskBad</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapDiskBad</event-label>
       <descr>
 &lt;p>Disk Bad.&lt;/p>&lt;table>
@@ -4384,7 +4381,7 @@
             <mevalue>1076</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapDuplicateIPAddressDetected</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapDuplicateIPAddressDetected</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapDuplicateIPAddressDetected</event-label>
       <descr>
 &lt;p>Duplicate IP Address Detected.&lt;/p>&lt;table>
@@ -4441,7 +4438,7 @@
             <mevalue>1077</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapIPAddressNotHosted</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapIPAddressNotHosted</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapIPAddressNotHosted</event-label>
       <descr>
 &lt;p>IP Address Not Hosted.&lt;/p>&lt;table>
@@ -4498,7 +4495,7 @@
             <mevalue>1078</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSMTPError</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSMTPError</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSMTPError</event-label>
       <descr>
 &lt;p>Failed to send email.&lt;/p>&lt;table>
@@ -4555,7 +4552,7 @@
             <mevalue>1079</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectionDomainReplicationFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectionDomainReplicationFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectionDomainReplicationFailure</event-label>
       <descr>
 &lt;p>Protection Domain Replication Failure.&lt;/p>&lt;table>
@@ -4612,7 +4609,7 @@
             <mevalue>1080</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectionDomainSnapshotFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectionDomainSnapshotFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectionDomainSnapshotFailure</event-label>
       <descr>
 &lt;p>Protection Domain Snapshot Failure.&lt;/p>&lt;table>
@@ -4669,7 +4666,7 @@
             <mevalue>1081</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNutanixGuestToolsAgentIsNotReachableOnTheVM</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNutanixGuestToolsAgentIsNotReachableOnTheVM</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNutanixGuestToolsAgentIsNotReachableOnTheVM</event-label>
       <descr>
 &lt;p>VM not reachable.&lt;/p>&lt;table>
@@ -4726,7 +4723,7 @@
             <mevalue>1082</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetroAvailabilityIsPromoted</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetroAvailabilityIsPromoted</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetroAvailabilityIsPromoted</event-label>
       <descr>
 &lt;p>Metro availability is promoted.&lt;/p>&lt;table>
@@ -4783,7 +4780,7 @@
             <mevalue>1083</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapEntityRestoreAborted</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapEntityRestoreAborted</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapEntityRestoreAborted</event-label>
       <descr>
 &lt;p>Entity restore aborted.&lt;/p>&lt;table>
@@ -4840,7 +4837,7 @@
             <mevalue>1084</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectionDomainReceiveSnapshotFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectionDomainReceiveSnapshotFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectionDomainReceiveSnapshotFailure</event-label>
       <descr>
 &lt;p>Protection Domain Receive Snapshot Failure.&lt;/p>&lt;table>
@@ -4897,7 +4894,7 @@
             <mevalue>1085</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSecureTunnelToRemoteSiteDown</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSecureTunnelToRemoteSiteDown</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSecureTunnelToRemoteSiteDown</event-label>
       <descr>
 &lt;p>Secure Tunnel To Remote Site Down.&lt;/p>&lt;table>
@@ -4954,7 +4951,7 @@
             <mevalue>1086</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectedVolumeGroupNotFound</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectedVolumeGroupNotFound</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectedVolumeGroupNotFound</event-label>
       <descr>
 &lt;p>Protected Volume Group not Found.&lt;/p>&lt;table>
@@ -5011,7 +5008,7 @@
             <mevalue>1087</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectionDomainActivation</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectionDomainActivation</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectionDomainActivation</event-label>
       <descr>
 &lt;p>Protection Domain Activation.&lt;/p>&lt;table>
@@ -5068,7 +5065,7 @@
             <mevalue>1088</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapDuplicateRemoteClusterID</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapDuplicateRemoteClusterID</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapDuplicateRemoteClusterID</event-label>
       <descr>
 &lt;p>Duplicate Remote Cluster ID.&lt;/p>&lt;table>
@@ -5125,7 +5122,7 @@
             <mevalue>1089</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCloudRemoteSiteFailedToStart</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCloudRemoteSiteFailedToStart</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCloudRemoteSiteFailedToStart</event-label>
       <descr>
 &lt;p>Cloud remote site failed to start.&lt;/p>&lt;table>
@@ -5182,7 +5179,7 @@
             <mevalue>1090</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRemoteSiteremotenameNetworkMappingMissing</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRemoteSiteremotenameNetworkMappingMissing</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRemoteSiteremotenameNetworkMappingMissing</event-label>
       <descr>
 &lt;p>No Network Mapping Specified.&lt;/p>&lt;table>
@@ -5239,7 +5236,7 @@
             <mevalue>1091</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapOperationForwardedToCloudRemoteFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapOperationForwardedToCloudRemoteFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapOperationForwardedToCloudRemoteFailed</event-label>
       <descr>
 &lt;p>Cloud Remote Operation Failure.&lt;/p>&lt;table>
@@ -5296,7 +5293,7 @@
             <mevalue>1092</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRecoveryPointObjectiveCannotBeMet</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRecoveryPointObjectiveCannotBeMet</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRecoveryPointObjectiveCannotBeMet</event-label>
       <descr>
 &lt;p>Recovery Point Objective Cannot Be Met.&lt;/p>&lt;table>
@@ -5353,7 +5350,7 @@
             <mevalue>1093</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVStoreSnapshotStatus</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVStoreSnapshotStatus</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVStoreSnapshotStatus</event-label>
       <descr>
 &lt;p>VStore Snapshot Status.&lt;/p>&lt;table>
@@ -5410,7 +5407,7 @@
             <mevalue>1094</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectionDomainSnapshotOperationSkipped</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectionDomainSnapshotOperationSkipped</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectionDomainSnapshotOperationSkipped</event-label>
       <descr>
 &lt;p>Skipped snapshot operation.&lt;/p>&lt;table>
@@ -5467,7 +5464,7 @@
             <mevalue>1095</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSkippedReplicationOfTheSnapshot</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSkippedReplicationOfTheSnapshot</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSkippedReplicationOfTheSnapshot</event-label>
       <descr>
 &lt;p>Skipped replication of the snapshot.&lt;/p>&lt;table>
@@ -5524,7 +5521,7 @@
             <mevalue>1096</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFailedToSnapshotEntities</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFailedToSnapshotEntities</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFailedToSnapshotEntities</event-label>
       <descr>
 &lt;p>Failed to snapshot entities.&lt;/p>&lt;table>
@@ -5581,7 +5578,7 @@
             <mevalue>1097</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapIncorrectClusterInformationInRemoteSite</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapIncorrectClusterInformationInRemoteSite</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapIncorrectClusterInformationInRemoteSite</event-label>
       <descr>
 &lt;p>Cluster Information in Remote Site is not correct.&lt;/p>&lt;table>
@@ -5638,7 +5635,7 @@
             <mevalue>1098</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVStoreIsBeingReplicatedToBackupOnlyRemoteSite</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVStoreIsBeingReplicatedToBackupOnlyRemoteSite</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVStoreIsBeingReplicatedToBackupOnlyRemoteSite</event-label>
       <descr>
 &lt;p>vStore is being replicated to backup only remote site.&lt;/p>&lt;table>
@@ -5695,7 +5692,7 @@
             <mevalue>1099</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFailedToChangeStateOfOneOrMoreVMs</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFailedToChangeStateOfOneOrMoreVMs</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFailedToChangeStateOfOneOrMoreVMs</event-label>
       <descr>
 &lt;p>Failed to change state of one or more VMs.&lt;/p>&lt;table>
@@ -5752,7 +5749,7 @@
             <mevalue>1100</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRegistrationOfOneOrMoreVMsFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRegistrationOfOneOrMoreVMsFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRegistrationOfOneOrMoreVMsFailed</event-label>
       <descr>
 &lt;p>Registration of one or more VMs failed.&lt;/p>&lt;table>
@@ -5809,7 +5806,7 @@
             <mevalue>1101</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSelfServiceRestoreOperationFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSelfServiceRestoreOperationFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSelfServiceRestoreOperationFailed</event-label>
       <descr>
 &lt;p>Self service restore operation failed.&lt;/p>&lt;table>
@@ -5866,7 +5863,7 @@
             <mevalue>1102</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetadataVolumeSnapshotPersistentFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetadataVolumeSnapshotPersistentFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetadataVolumeSnapshotPersistentFailure</event-label>
       <descr>
 &lt;p>Metadata Volume Snapshot Persistent Failure.&lt;/p>&lt;table>
@@ -5923,7 +5920,7 @@
             <mevalue>1103</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetroAvailabilityIsDisabled</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetroAvailabilityIsDisabled</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetroAvailabilityIsDisabled</event-label>
       <descr>
 &lt;p>Metro availability is disabled.&lt;/p>&lt;table>
@@ -5980,7 +5977,7 @@
             <mevalue>1104</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapApplicationconsistentSnapshotNotTakenForTheVM</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapApplicationconsistentSnapshotNotTakenForTheVM</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapApplicationconsistentSnapshotNotTakenForTheVM</event-label>
       <descr>
 &lt;p>Application-consistent snapshot not taken for the VM.&lt;/p>&lt;table>
@@ -6037,7 +6034,7 @@
             <mevalue>1105</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapInvalidConsistencyGroup</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapInvalidConsistencyGroup</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapInvalidConsistencyGroup</event-label>
       <descr>
 &lt;p>Invalid Consistency Group.&lt;/p>&lt;table>
@@ -6094,7 +6091,7 @@
             <mevalue>1106</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFailedToReconfigureNutanixGuestToolsForTheRecoveredVM</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFailedToReconfigureNutanixGuestToolsForTheRecoveredVM</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFailedToReconfigureNutanixGuestToolsForTheRecoveredVM</event-label>
       <descr>
 &lt;p>Failed to reconfigure Nutanix Guest Tools for a VM in protection domain.&lt;/p>&lt;table>
@@ -6151,7 +6148,7 @@
             <mevalue>1107</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNutanixGuestToolsNotInstalled</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNutanixGuestToolsNotInstalled</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNutanixGuestToolsNotInstalled</event-label>
       <descr>
 &lt;p>Nutanix Guest Tools not installed.&lt;/p>&lt;table>
@@ -6208,7 +6205,7 @@
             <mevalue>1108</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRemoteSiteremotenameNetworkMappingInvalid</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRemoteSiteremotenameNetworkMappingInvalid</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRemoteSiteremotenameNetworkMappingInvalid</event-label>
       <descr>
 &lt;p>Invalid Network Mapping Specified.&lt;/p>&lt;table>
@@ -6265,7 +6262,7 @@
             <mevalue>1109</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVSSSnapshotFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVSSSnapshotFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVSSSnapshotFailed</event-label>
       <descr>
 &lt;p>VSS snapshot failed.&lt;/p>&lt;table>
@@ -6322,7 +6319,7 @@
             <mevalue>1110</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapAlertRaisedOnCloudRemoteSiteremotenamealertmessage</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapAlertRaisedOnCloudRemoteSiteremotenamealertmessage</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapAlertRaisedOnCloudRemoteSiteremotenamealertmessage</event-label>
       <descr>
 &lt;p>Alert generated on cloud remote site.&lt;/p>&lt;table>
@@ -6379,7 +6376,7 @@
             <mevalue>1111</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectedVmsNotFound</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectedVmsNotFound</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectedVmsNotFound</event-label>
       <descr>
 &lt;p>Protected Vms Not Found.&lt;/p>&lt;table>
@@ -6436,7 +6433,7 @@
             <mevalue>1112</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectionDomainContainsMoreThanSpecifiedVMs</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectionDomainContainsMoreThanSpecifiedVMs</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectionDomainContainsMoreThanSpecifiedVMs</event-label>
       <descr>
 &lt;p>Protection domain contains multiple VMs.&lt;/p>&lt;table>
@@ -6493,7 +6490,7 @@
             <mevalue>1113</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRelatedEntityProtectionStatus</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRelatedEntityProtectionStatus</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRelatedEntityProtectionStatus</event-label>
       <descr>
 &lt;p>Protection status of a related entity.&lt;/p>&lt;table>
@@ -6550,7 +6547,7 @@
             <mevalue>1114</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNutanixGuestToolsIsNotSupportedOnRemoteSite</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNutanixGuestToolsIsNotSupportedOnRemoteSite</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNutanixGuestToolsIsNotSupportedOnRemoteSite</event-label>
       <descr>
 &lt;p>Remote site does not support NGT.&lt;/p>&lt;table>
@@ -6607,7 +6604,7 @@
             <mevalue>1115</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRemoteSiteOperationModeReadOnly</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRemoteSiteOperationModeReadOnly</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRemoteSiteOperationModeReadOnly</event-label>
       <descr>
 &lt;p>Operation Mode of Remote Site changed to kReadOnly.&lt;/p>&lt;table>
@@ -6664,7 +6661,7 @@
             <mevalue>1116</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRemoteSiteIsUnhealthy</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRemoteSiteIsUnhealthy</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRemoteSiteIsUnhealthy</event-label>
       <descr>
 &lt;p>Remote site is unhealthy.&lt;/p>&lt;table>
@@ -6721,7 +6718,7 @@
             <mevalue>1117</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapEntitiesRestoredButUnprotected</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapEntitiesRestoredButUnprotected</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapEntitiesRestoredButUnprotected</event-label>
       <descr>
 &lt;p>Entities Restored But Unprotected.&lt;/p>&lt;table>
@@ -6778,7 +6775,7 @@
             <mevalue>1118</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectionDomainFullReplicationPerformed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectionDomainFullReplicationPerformed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectionDomainFullReplicationPerformed</event-label>
       <descr>
 &lt;p>Full Replication was done.&lt;/p>&lt;table>
@@ -6835,7 +6832,7 @@
             <mevalue>1119</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectedVMIsNotNutanixBackupAndRecoveryCompliant</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectedVMIsNotNutanixBackupAndRecoveryCompliant</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectedVMIsNotNutanixBackupAndRecoveryCompliant</event-label>
       <descr>
 &lt;p>Protected VM is not Nutanix backup and recovery compliant.&lt;/p>&lt;table>
@@ -6892,7 +6889,7 @@
             <mevalue>1120</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectedVMRenamedDuringClone</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectedVMRenamedDuringClone</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectedVMRenamedDuringClone</event-label>
       <descr>
 &lt;p>Protected VM renamed during clone.&lt;/p>&lt;table>
@@ -6949,7 +6946,7 @@
             <mevalue>1121</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectedVolumeGroupsNotFound</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectedVolumeGroupsNotFound</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectedVolumeGroupsNotFound</event-label>
       <descr>
 &lt;p>Protected Volume Groups Not Found.&lt;/p>&lt;table>
@@ -7006,7 +7003,7 @@
             <mevalue>1122</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVMRegistrationFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVMRegistrationFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVMRegistrationFailed</event-label>
       <descr>
 &lt;p>VM Registration Failure.&lt;/p>&lt;table>
@@ -7063,7 +7060,7 @@
             <mevalue>1123</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectionDomainReplicationExpired</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectionDomainReplicationExpired</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectionDomainReplicationExpired</event-label>
       <descr>
 &lt;p>Protection Domain Replication Expired.&lt;/p>&lt;table>
@@ -7120,7 +7117,7 @@
             <mevalue>1124</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVolumeGroupAttachmentsNotRestored</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVolumeGroupAttachmentsNotRestored</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVolumeGroupAttachmentsNotRestored</event-label>
       <descr>
 &lt;p>Volume Group Attachments Not Restored.&lt;/p>&lt;table>
@@ -7177,7 +7174,7 @@
             <mevalue>1125</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapEntitiesSkippedDuringRestore</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapEntitiesSkippedDuringRestore</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapEntitiesSkippedDuringRestore</event-label>
       <descr>
 &lt;p>Entities Skipped During Restore.&lt;/p>&lt;table>
@@ -7234,7 +7231,7 @@
             <mevalue>1126</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectionDomainChangeModeFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectionDomainChangeModeFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectionDomainChangeModeFailure</event-label>
       <descr>
 &lt;p>Protection Domain Change Mode Failure.&lt;/p>&lt;table>
@@ -7291,7 +7288,7 @@
             <mevalue>1127</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVSSSnapshotAborted</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVSSSnapshotAborted</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVSSSnapshotAborted</event-label>
       <descr>
 &lt;p>VSS snapshot is aborted by the Guest VM.&lt;/p>&lt;table>
@@ -7348,7 +7345,7 @@
             <mevalue>1128</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapExternalISCSIAttachmentsNotSnapshotted</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapExternalISCSIAttachmentsNotSnapshotted</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapExternalISCSIAttachmentsNotSnapshotted</event-label>
       <descr>
 &lt;p>External iSCSI Attachments Not Snapshotted.&lt;/p>&lt;table>
@@ -7405,7 +7402,7 @@
             <mevalue>1129</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVMVirtualHardwareVersionNotCompatible</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVMVirtualHardwareVersionNotCompatible</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVMVirtualHardwareVersionNotCompatible</event-label>
       <descr>
 &lt;p>VM Virtual Hardware Version not Compatible.&lt;/p>&lt;table>
@@ -7462,7 +7459,7 @@
             <mevalue>1130</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVolumeGroupActionError</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVolumeGroupActionError</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVolumeGroupActionError</event-label>
       <descr>
 &lt;p>Volume Group Action Error.&lt;/p>&lt;table>
@@ -7519,7 +7516,7 @@
             <mevalue>1131</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetadataVolumeSnapshotTimeout</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetadataVolumeSnapshotTimeout</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetadataVolumeSnapshotTimeout</event-label>
       <descr>
 &lt;p>Metadata Volume Snapshot Timeout Failure.&lt;/p>&lt;table>
@@ -7576,7 +7573,7 @@
             <mevalue>1132</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSnapshotPartiallyCrashConsistent</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSnapshotPartiallyCrashConsistent</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSnapshotPartiallyCrashConsistent</event-label>
       <descr>
 &lt;p>Snapshot partially crash consistent.&lt;/p>&lt;table>
@@ -7633,7 +7630,7 @@
             <mevalue>1133</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetroAvailabilityPrechecksFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetroAvailabilityPrechecksFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetroAvailabilityPrechecksFailed</event-label>
       <descr>
 &lt;p>Metro availability prechecks failed.&lt;/p>&lt;table>
@@ -7690,7 +7687,7 @@
             <mevalue>1134</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectionDomainMightHaveSymlinks</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectionDomainMightHaveSymlinks</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectionDomainMightHaveSymlinks</event-label>
       <descr>
 &lt;p>Protection domain snapshot has symlinks.&lt;/p>&lt;table>
@@ -7747,7 +7744,7 @@
             <mevalue>1135</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVSSSnapshotIsNotSupportedForTheVM</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVSSSnapshotIsNotSupportedForTheVM</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVSSSnapshotIsNotSupportedForTheVM</event-label>
       <descr>
 &lt;p>VSS snapshot is not supported for the VM.&lt;/p>&lt;table>
@@ -7804,7 +7801,7 @@
             <mevalue>1136</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSnapshotReserveOnSSDIsFull</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSnapshotReserveOnSSDIsFull</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSnapshotReserveOnSSDIsFull</event-label>
       <descr>
 &lt;p>LWS store has become full on the cluster.&lt;/p>&lt;table>
@@ -7861,7 +7858,7 @@
             <mevalue>1137</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetroAvailabilityConfigurationFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetroAvailabilityConfigurationFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetroAvailabilityConfigurationFailed</event-label>
       <descr>
 &lt;p>Metro availability start failed.&lt;/p>&lt;table>
@@ -7918,7 +7915,7 @@
             <mevalue>1138</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapStaleNFSMount</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapStaleNFSMount</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapStaleNFSMount</event-label>
       <descr>
 &lt;p>Stale NFS mount.&lt;/p>&lt;table>
@@ -7975,7 +7972,7 @@
             <mevalue>1139</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVSSSoftwareOrprefreezepostthawScriptsNotInstalled</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVSSSoftwareOrprefreezepostthawScriptsNotInstalled</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVSSSoftwareOrprefreezepostthawScriptsNotInstalled</event-label>
       <descr>
 &lt;p>VSS software or pre_freeze/post_thaw Scripts Not Installed.&lt;/p>&lt;table>
@@ -8032,7 +8029,7 @@
             <mevalue>1140</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectedVMNotFound</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectedVMNotFound</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectedVMNotFound</event-label>
       <descr>
 &lt;p>Protected VM not Found.&lt;/p>&lt;table>
@@ -8089,7 +8086,7 @@
             <mevalue>1141</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectionDomainTransitioningToLowerFrequencySnapshotting</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectionDomainTransitioningToLowerFrequencySnapshotting</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectionDomainTransitioningToLowerFrequencySnapshotting</event-label>
       <descr>
 &lt;p>Protection Domain transitioning to lower frequency snapshot schedule.&lt;/p>&lt;table>
@@ -8146,7 +8143,7 @@
             <mevalue>1142</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSnapshotQueuedForReplicationsToRemoteSite</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSnapshotQueuedForReplicationsToRemoteSite</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSnapshotQueuedForReplicationsToRemoteSite</event-label>
       <descr>
 &lt;p>Protection domain protection_domain_name has one or more snapshots queued for replication to remote site remote_name.&lt;/p>&lt;table>
@@ -8203,7 +8200,7 @@
             <mevalue>1143</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapAgentVMRestorationFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapAgentVMRestorationFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapAgentVMRestorationFailure</event-label>
       <descr>
 &lt;p>Failure to Restore Agent VM.&lt;/p>&lt;table>
@@ -8260,7 +8257,7 @@
             <mevalue>1144</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCPSDeploymentEvaluationMode</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCPSDeploymentEvaluationMode</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCPSDeploymentEvaluationMode</event-label>
       <descr>
 &lt;p>Checks if the CPS deployment is running in evaluation mode.&lt;/p>&lt;table>
@@ -8317,7 +8314,7 @@
             <mevalue>1145</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapHAHostEvacuationFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapHAHostEvacuationFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapHAHostEvacuationFailure</event-label>
       <descr>
 &lt;p>Failure to evacuate host while entering maintenance mode or reserving host for HA.&lt;/p>&lt;table>
@@ -8374,7 +8371,7 @@
             <mevalue>1146</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFailureToRestartVMsForHAEvent</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFailureToRestartVMsForHAEvent</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFailureToRestartVMsForHAEvent</event-label>
       <descr>
 &lt;p>Failure to restart VMs for HA event.&lt;/p>&lt;table>
@@ -8431,7 +8428,7 @@
             <mevalue>1147</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapUpgradeBundleAvailable</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapUpgradeBundleAvailable</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapUpgradeBundleAvailable</event-label>
       <descr>
 &lt;p>Bundle available for upgrade.&lt;/p>&lt;table>
@@ -8488,7 +8485,7 @@
             <mevalue>1148</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVMActionError</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVMActionError</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVMActionError</event-label>
       <descr>
 &lt;p>VM Action Error.&lt;/p>&lt;table>
@@ -8545,7 +8542,7 @@
             <mevalue>1149</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapHAHealingFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapHAHealingFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapHAHealingFailure</event-label>
       <descr>
 &lt;p>HA healing failure.&lt;/p>&lt;table>
@@ -8602,7 +8599,7 @@
             <mevalue>1150</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVmHighAvailabilityFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVmHighAvailabilityFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVmHighAvailabilityFailure</event-label>
       <descr>
 &lt;p>High Availability Failure.&lt;/p>&lt;table>
@@ -8659,7 +8656,7 @@
             <mevalue>1151</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapKerberosClockSkewFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapKerberosClockSkewFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapKerberosClockSkewFailure</event-label>
       <descr>
 &lt;p>Kerberos Clock Skew Failure.&lt;/p>&lt;table>
@@ -8716,7 +8713,7 @@
             <mevalue>1152</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapStargateTemporarilyDown</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapStargateTemporarilyDown</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapStargateTemporarilyDown</event-label>
       <descr>
 &lt;p>Stargate Temporarily Down.&lt;/p>&lt;table>
@@ -8773,7 +8770,7 @@
             <mevalue>1153</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVMGroupSnapshotAndCurrentMismatch</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVMGroupSnapshotAndCurrentMismatch</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVMGroupSnapshotAndCurrentMismatch</event-label>
       <descr>
 &lt;p>Check that snapshot to restore matches current VM group.&lt;/p>&lt;table>
@@ -8830,7 +8827,7 @@
             <mevalue>1154</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCertificateCreationError</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCertificateCreationError</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCertificateCreationError</event-label>
       <descr>
 &lt;p>Certificate signing request creation failure.&lt;/p>&lt;table>
@@ -8887,7 +8884,7 @@
             <mevalue>1155</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCompressionDisabled</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCompressionDisabled</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCompressionDisabled</event-label>
       <descr>
 &lt;p>Compression is Disabled.&lt;/p>&lt;table>
@@ -8944,7 +8941,7 @@
             <mevalue>1156</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFingerprintingDisabled</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFingerprintingDisabled</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFingerprintingDisabled</event-label>
       <descr>
 &lt;p>Fingerprinting Disabled.&lt;/p>&lt;table>
@@ -9001,7 +8998,7 @@
             <mevalue>1157</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSystemDefinedFlashModeUsageLimitExceeded</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSystemDefinedFlashModeUsageLimitExceeded</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSystemDefinedFlashModeUsageLimitExceeded</event-label>
       <descr>
 &lt;p>Check that usage for flash-mode-enabled vDisks is within system limits.&lt;/p>&lt;table>
@@ -9058,7 +9055,7 @@
             <mevalue>1158</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetadataUsageHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetadataUsageHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetadataUsageHigh</event-label>
       <descr>
 &lt;p>Metadata Usage High.&lt;/p>&lt;table>
@@ -9115,7 +9112,7 @@
             <mevalue>1159</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNFSMetadataSizeOvershoot</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNFSMetadataSizeOvershoot</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNFSMetadataSizeOvershoot</event-label>
       <descr>
 &lt;p>NFS Metadata Usage High.&lt;/p>&lt;table>
@@ -9172,7 +9169,7 @@
             <mevalue>1160</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapOnDiskDedupDisabled</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapOnDiskDedupDisabled</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapOnDiskDedupDisabled</event-label>
       <descr>
 &lt;p>On-Disk Dedup Disabled.&lt;/p>&lt;table>
@@ -9229,7 +9226,7 @@
             <mevalue>1161</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSpaceReservationViolated</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSpaceReservationViolated</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSpaceReservationViolated</event-label>
       <descr>
 &lt;p>Space Reservation Violated.&lt;/p>&lt;table>
@@ -9286,7 +9283,7 @@
             <mevalue>1162</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVDiskBlockMapUsageHighCritical</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVDiskBlockMapUsageHighCritical</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVDiskBlockMapUsageHighCritical</event-label>
       <descr>
 &lt;p>vDisk Block Map Usage High Critical.&lt;/p>&lt;table>
@@ -9343,7 +9340,7 @@
             <mevalue>1163</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVDiskBlockMapUsageHighWarning</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVDiskBlockMapUsageHighWarning</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVDiskBlockMapUsageHighWarning</event-label>
       <descr>
 &lt;p>vDisk Block Map Usage High.&lt;/p>&lt;table>
@@ -9400,7 +9397,7 @@
             <mevalue>1164</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapPossibleDegradedNode</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapPossibleDegradedNode</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapPossibleDegradedNode</event-label>
       <descr>
 &lt;p>Services on node possibly not making progress.&lt;/p>&lt;table>
@@ -9457,7 +9454,7 @@
             <mevalue>1165</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapDynamicSchedulingFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapDynamicSchedulingFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapDynamicSchedulingFailure</event-label>
       <descr>
 &lt;p>One or more nodes have resource contention. This imbalance can cause performance bottlenecks on the node(s) affected.&lt;/p>&lt;table>
@@ -9514,7 +9511,7 @@
             <mevalue>1166</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRecoveredVMDiskConfigurationUpdateFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRecoveredVMDiskConfigurationUpdateFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRecoveredVMDiskConfigurationUpdateFailed</event-label>
       <descr>
 &lt;p>Disk Configuration Update Failed.&lt;/p>&lt;table>
@@ -9571,7 +9568,7 @@
             <mevalue>1167</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapISCSIConfigurationFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapISCSIConfigurationFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapISCSIConfigurationFailed</event-label>
       <descr>
 &lt;p>iSCSI Configuration Failed.&lt;/p>&lt;table>
@@ -9628,7 +9625,7 @@
             <mevalue>1168</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA130104</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA130104</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA130104</event-label>
       <descr>
 &lt;p>NGT version of the VM is incompatible with the NGT version of the cluster.&lt;/p>&lt;table>
@@ -9685,7 +9682,7 @@
             <mevalue>1169</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapExecutionOfThePostThawScriptFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapExecutionOfThePostThawScriptFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapExecutionOfThePostThawScriptFailed</event-label>
       <descr>
 &lt;p>Execution of the PostThaw Script Failed.&lt;/p>&lt;table>
@@ -9742,7 +9739,7 @@
             <mevalue>1170</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNutanixGuestToolsMountFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNutanixGuestToolsMountFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNutanixGuestToolsMountFailed</event-label>
       <descr>
 &lt;p>Nutanix Guest Tools mount failed.&lt;/p>&lt;table>
@@ -9799,7 +9796,7 @@
             <mevalue>1171</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVMForciblyPoweredOff</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVMForciblyPoweredOff</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVMForciblyPoweredOff</event-label>
       <descr>
 &lt;p>Acropolis has forcibly powered off a VM that should have been powered off.&lt;/p>&lt;table>
@@ -9856,7 +9853,7 @@
             <mevalue>1172</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapReportGenerationFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapReportGenerationFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapReportGenerationFailure</event-label>
       <descr>
 &lt;p>Report Generation failed. Database may be down or cluster may have insufficient storage.&lt;/p>&lt;table>
@@ -9913,7 +9910,7 @@
             <mevalue>1173</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSendReportThroughEmailFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSendReportThroughEmailFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSendReportThroughEmailFailure</event-label>
       <descr>
 &lt;p>Sending of report through E-mail failed. SMTP might be down or report might have been deleted.&lt;/p>&lt;table>
@@ -9970,7 +9967,7 @@
             <mevalue>1174</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapReportQuotaScanFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapReportQuotaScanFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapReportQuotaScanFailure</event-label>
       <descr>
 &lt;p>Report Quota scan failed. Cassandra might be unreachable.&lt;/p>&lt;table>
@@ -10027,7 +10024,7 @@
             <mevalue>1175</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCassandraServiceCrashed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCassandraServiceCrashed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCassandraServiceCrashed</event-label>
       <descr>
 &lt;p>Check if Cassandra service is crashing continuously.&lt;/p>&lt;table>
@@ -10084,7 +10081,7 @@
             <mevalue>1176</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCassandraServiceIsRunningOutOfMemory</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCassandraServiceIsRunningOutOfMemory</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCassandraServiceIsRunningOutOfMemory</event-label>
       <descr>
 &lt;p>Check if the Cassandra service is running out of memory.&lt;/p>&lt;table>
@@ -10141,7 +10138,7 @@
             <mevalue>1177</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMultipleCassandraNodesHaveSimilarTokens</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMultipleCassandraNodesHaveSimilarTokens</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMultipleCassandraNodesHaveSimilarTokens</event-label>
       <descr>
 &lt;p>Check for similar tokens in Cassandra.&lt;/p>&lt;table>
@@ -10198,7 +10195,7 @@
             <mevalue>1178</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCloudClusterDoesNotHaveRecommendedConfigurationLocally</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCloudClusterDoesNotHaveRecommendedConfigurationLocally</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCloudClusterDoesNotHaveRecommendedConfigurationLocally</event-label>
       <descr>
 &lt;p>Check that cloud cluster has recommended configuration locally.&lt;/p>&lt;table>
@@ -10255,7 +10252,7 @@
             <mevalue>1179</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapAWSCloudInstanceNotConfiguredProperly</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapAWSCloudInstanceNotConfiguredProperly</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapAWSCloudInstanceNotConfiguredProperly</event-label>
       <descr>
 &lt;p>Verify that the AWS cloud instances have recommended configuration.&lt;/p>&lt;table>
@@ -10312,7 +10309,7 @@
             <mevalue>1180</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapOldGenerationAWSInstanceConfigured</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapOldGenerationAWSInstanceConfigured</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapOldGenerationAWSInstanceConfigured</event-label>
       <descr>
 &lt;p>Checks whether old generation AWS instance is configured for remote site.&lt;/p>&lt;table>
@@ -10369,7 +10366,7 @@
             <mevalue>1181</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapAOSVersionOfCloudRemoteSiteIsLessThanSourceCluster</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapAOSVersionOfCloudRemoteSiteIsLessThanSourceCluster</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapAOSVersionOfCloudRemoteSiteIsLessThanSourceCluster</event-label>
       <descr>
 &lt;p>Check AOS version for cloud remote site.&lt;/p>&lt;table>
@@ -10426,7 +10423,7 @@
             <mevalue>1182</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCloudClusterDoesNotHaveAllRecommendedGflagsSet</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCloudClusterDoesNotHaveAllRecommendedGflagsSet</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCloudClusterDoesNotHaveAllRecommendedGflagsSet</event-label>
       <descr>
 &lt;p>Check if cloud remote sites have recommended gflags set.&lt;/p>&lt;table>
@@ -10483,7 +10480,7 @@
             <mevalue>1183</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapEgroupCountOnCloudDiskIsHigherThanTheRecommendedThreshold</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapEgroupCountOnCloudDiskIsHigherThanTheRecommendedThreshold</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapEgroupCountOnCloudDiskIsHigherThanTheRecommendedThreshold</event-label>
       <descr>
 &lt;p>Check if egroup count on cloud remote is within threshold.&lt;/p>&lt;table>
@@ -10540,7 +10537,7 @@
             <mevalue>1184</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerMutipleVMsOnSingleNodeCheck</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerMutipleVMsOnSingleNodeCheck</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerMutipleVMsOnSingleNodeCheck</event-label>
       <descr>
 &lt;p>Checks that multiple File server VMs are running on a single node.&lt;/p>&lt;table>
@@ -10597,7 +10594,7 @@
             <mevalue>1185</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerServicesDownCheck</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerServicesDownCheck</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerServicesDownCheck</event-label>
       <descr>
 &lt;p>Checks that all File server services are running.&lt;/p>&lt;table>
@@ -10654,7 +10651,7 @@
             <mevalue>1186</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerUnreachableCheck</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerUnreachableCheck</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerUnreachableCheck</event-label>
       <descr>
 &lt;p>Checks that File server is reachable.&lt;/p>&lt;table>
@@ -10711,7 +10708,7 @@
             <mevalue>1187</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerDownCheck</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerDownCheck</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerDownCheck</event-label>
       <descr>
 &lt;p>Checks that File server is down.&lt;/p>&lt;table>
@@ -10768,7 +10765,7 @@
             <mevalue>1188</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerInvalidSnapshot</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerInvalidSnapshot</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerInvalidSnapshot</event-label>
       <descr>
 &lt;p>Checks that File server is in healthy state to take snapshot.&lt;/p>&lt;table>
@@ -10825,7 +10822,7 @@
             <mevalue>1189</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerEntitiesNotProtected</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerEntitiesNotProtected</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerEntitiesNotProtected</event-label>
       <descr>
 &lt;p>Checks all File server entities are protected.&lt;/p>&lt;table>
@@ -10882,7 +10879,7 @@
             <mevalue>1190</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMultipleFileServerVersionsArePresentInTheCluster</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMultipleFileServerVersionsArePresentInTheCluster</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMultipleFileServerVersionsArePresentInTheCluster</event-label>
       <descr>
 &lt;p>Checks whether multiple File server versions are running in the cluster.&lt;/p>&lt;table>
@@ -10939,7 +10936,7 @@
             <mevalue>1191</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerUpgradeTaskHungForTooLong</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerUpgradeTaskHungForTooLong</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerUpgradeTaskHungForTooLong</event-label>
       <descr>
 &lt;p>Check File server task is hung for a long time.&lt;/p>&lt;table>
@@ -10996,7 +10993,7 @@
             <mevalue>1192</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerPDActivatesOnMultipleSites</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerPDActivatesOnMultipleSites</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerPDActivatesOnMultipleSites</event-label>
       <descr>
 &lt;p>Checks that File Server PD Active On Multiple Sites.&lt;/p>&lt;table>
@@ -11053,7 +11050,7 @@
             <mevalue>1193</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerPDEnabledOnNoncompatibleRemoteSite</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerPDEnabledOnNoncompatibleRemoteSite</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerPDEnabledOnNoncompatibleRemoteSite</event-label>
       <descr>
 &lt;p>Checks File server remote sites are file server capable.&lt;/p>&lt;table>
@@ -11110,7 +11107,7 @@
             <mevalue>1194</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapHardwareClockFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapHardwareClockFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapHardwareClockFailure</event-label>
       <descr>
 &lt;p>Check if Hardware clock has failed.&lt;/p>&lt;table>
@@ -11167,7 +11164,7 @@
             <mevalue>1195</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapWsmanConnectivityLost</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapWsmanConnectivityLost</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapWsmanConnectivityLost</event-label>
       <descr>
 &lt;p>Checks if CVM can connect to the host using WSMan.&lt;/p>&lt;table>
@@ -11224,7 +11221,7 @@
             <mevalue>1196</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVMMigrationCompromised</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVMMigrationCompromised</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVMMigrationCompromised</event-label>
       <descr>
 &lt;p>Checks whether VMWare EVC configuration can cause VM migration problems.&lt;/p>&lt;table>
@@ -11281,7 +11278,7 @@
             <mevalue>1197</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCVMMemoryReservationIsIncorrectlyConfigured</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCVMMemoryReservationIsIncorrectlyConfigured</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCVMMemoryReservationIsIncorrectlyConfigured</event-label>
       <descr>
 &lt;p>Verify CVM memory reservation and pinning.&lt;/p>&lt;table>
@@ -11338,7 +11335,7 @@
             <mevalue>1198</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapHostMissingCriticalWindowsUpdates</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapHostMissingCriticalWindowsUpdates</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapHostMissingCriticalWindowsUpdates</event-label>
       <descr>
 &lt;p>Check if required windows updates are installed.&lt;/p>&lt;table>
@@ -11395,7 +11392,7 @@
             <mevalue>1199</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSomeStorageContainersHaveAHighNumberOfNFSFiles</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSomeStorageContainersHaveAHighNumberOfNFSFiles</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSomeStorageContainersHaveAHighNumberOfNFSFiles</event-label>
       <descr>
 &lt;p>Check that NFS datastore file count below threshold 20000.&lt;/p>&lt;table>
@@ -11452,7 +11449,7 @@
             <mevalue>1200</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapHostdServiceNotRunning</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapHostdServiceNotRunning</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapHostdServiceNotRunning</event-label>
       <descr>
 &lt;p>Check if hostd access is available.&lt;/p>&lt;table>
@@ -11509,7 +11506,7 @@
             <mevalue>1201</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapIncorrectKerberosSetup</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapIncorrectKerberosSetup</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapIncorrectKerberosSetup</event-label>
       <descr>
 &lt;p>Check if Kerberos is set up correctly.&lt;/p>&lt;table>
@@ -11566,7 +11563,7 @@
             <mevalue>1202</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapUnableToConnectToVCenter</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapUnableToConnectToVCenter</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapUnableToConnectToVCenter</event-label>
       <descr>
 &lt;p>Check if vCenter connection is established.&lt;/p>&lt;table>
@@ -11623,7 +11620,7 @@
             <mevalue>1203</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVMHasNonASCIIName</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVMHasNonASCIIName</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVMHasNonASCIIName</event-label>
       <descr>
 &lt;p>Check if any VMs have non-ASCII names.&lt;/p>&lt;table>
@@ -11680,7 +11677,7 @@
             <mevalue>1204</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFanSpeedLow</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFanSpeedLow</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFanSpeedLow</event-label>
       <descr>
 &lt;p>Check that fan speed is not low.&lt;/p>&lt;table>
@@ -11737,7 +11734,7 @@
             <mevalue>1205</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFanSpeedHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFanSpeedHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFanSpeedHigh</event-label>
       <descr>
 &lt;p>Check that fan speed is not too high.&lt;/p>&lt;table>
@@ -11794,7 +11791,7 @@
             <mevalue>1206</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRAMFault</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRAMFault</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRAMFault</event-label>
       <descr>
 &lt;p>Check if current available memory has gone below the installed size.&lt;/p>&lt;table>
@@ -11851,7 +11848,7 @@
             <mevalue>1207</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapPowerSupplyDown</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapPowerSupplyDown</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapPowerSupplyDown</event-label>
       <descr>
 &lt;p>Check that Power supply has no errors.&lt;/p>&lt;table>
@@ -11908,7 +11905,7 @@
             <mevalue>1208</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCPUTemperatureHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCPUTemperatureHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCPUTemperatureHigh</event-label>
       <descr>
 &lt;p>Check that cpu temperature is not too high.&lt;/p>&lt;table>
@@ -11965,7 +11962,7 @@
             <mevalue>1209</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCPUTemperatureReadingError</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCPUTemperatureReadingError</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCPUTemperatureReadingError</event-label>
       <descr>
 &lt;p>Check that CPU temperature can be fetched.&lt;/p>&lt;table>
@@ -12022,7 +12019,7 @@
             <mevalue>1210</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCPUVoltageAbnormal</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCPUVoltageAbnormal</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCPUVoltageAbnormal</event-label>
       <descr>
 &lt;p>Check that CPU voltage is within normal range.&lt;/p>&lt;table>
@@ -12079,7 +12076,7 @@
             <mevalue>1211</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCPUVRMTemperatureHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCPUVRMTemperatureHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCPUVRMTemperatureHigh</event-label>
       <descr>
 &lt;p>Check that CPU-VRM temperature is not too high.&lt;/p>&lt;table>
@@ -12136,7 +12133,7 @@
             <mevalue>1212</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRAMTemperatureHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRAMTemperatureHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRAMTemperatureHigh</event-label>
       <descr>
 &lt;p>Check that DIMM temperature is not high.&lt;/p>&lt;table>
@@ -12193,7 +12190,7 @@
             <mevalue>1213</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRAMVoltageAbnormal</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRAMVoltageAbnormal</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRAMVoltageAbnormal</event-label>
       <descr>
 &lt;p>Check that DIMM voltage is within normal range.&lt;/p>&lt;table>
@@ -12250,7 +12247,7 @@
             <mevalue>1214</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRAMVRMTemperatureHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRAMVRMTemperatureHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRAMVRMTemperatureHigh</event-label>
       <descr>
 &lt;p>Check that DIMM-VRM temperature is not high.&lt;/p>&lt;table>
@@ -12307,7 +12304,7 @@
             <mevalue>1215</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSystemTemperatureHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSystemTemperatureHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSystemTemperatureHigh</event-label>
       <descr>
 &lt;p>Check that system temperature is not high.&lt;/p>&lt;table>
@@ -12364,7 +12361,7 @@
             <mevalue>1216</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapGPUTemperatureHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapGPUTemperatureHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapGPUTemperatureHigh</event-label>
       <descr>
 &lt;p>Check that gpu temperature is not high.&lt;/p>&lt;table>
@@ -12421,7 +12418,7 @@
             <mevalue>1217</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapIPMIError</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapIPMIError</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapIPMIError</event-label>
       <descr>
 &lt;p>Checks whether IPMI SDR has failures.&lt;/p>&lt;table>
@@ -12478,7 +12475,7 @@
             <mevalue>1218</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapGPUFault</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapGPUFault</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapGPUFault</event-label>
       <descr>
 &lt;p>Check that GPU have not faulted.&lt;/p>&lt;table>
@@ -12535,7 +12532,7 @@
             <mevalue>1219</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapHighNumberOfCorrectableECCErrorsInLast1Day</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapHighNumberOfCorrectableECCErrorsInLast1Day</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapHighNumberOfCorrectableECCErrorsInLast1Day</event-label>
       <descr>
 &lt;p>Check for number of correctable ECC errors for last one day in the IPMI system event log.&lt;/p>&lt;table>
@@ -12592,7 +12589,7 @@
             <mevalue>1220</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapHighNumberOfCorrectableECCErrorsInLast10Days</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapHighNumberOfCorrectableECCErrorsInLast10Days</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapHighNumberOfCorrectableECCErrorsInLast10Days</event-label>
       <descr>
 &lt;p>Check for number of correctable ECC errors for last 10 days in the IPMI system event log.&lt;/p>&lt;table>
@@ -12649,7 +12646,7 @@
             <mevalue>1221</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapLicenseExpiry</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapLicenseExpiry</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapLicenseExpiry</event-label>
       <descr>
 &lt;p>Check if license is about to expire.&lt;/p>&lt;table>
@@ -12706,7 +12703,7 @@
             <mevalue>1222</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapLicenseFeatureViolation</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapLicenseFeatureViolation</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapLicenseFeatureViolation</event-label>
       <descr>
 &lt;p>Check license feature complaince.&lt;/p>&lt;table>
@@ -12763,7 +12760,7 @@
             <mevalue>1223</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapLicenseStandbyMode</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapLicenseStandbyMode</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapLicenseStandbyMode</event-label>
       <descr>
 &lt;p>Check license standby mode.&lt;/p>&lt;table>
@@ -12820,7 +12817,7 @@
             <mevalue>1224</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapLicenseNodeInvalid</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapLicenseNodeInvalid</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapLicenseNodeInvalid</event-label>
       <descr>
 &lt;p>Check if all nodes have valid licenses.&lt;/p>&lt;table>
@@ -12877,7 +12874,7 @@
             <mevalue>1225</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSecondaryPDsNotInSync</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSecondaryPDsNotInSync</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSecondaryPDsNotInSync</event-label>
       <descr>
 &lt;p>Check if secondary metro PD is in sync with primary.&lt;/p>&lt;table>
@@ -12934,7 +12931,7 @@
             <mevalue>1226</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNoCheckpointSnapshotsOnMetroPDInLastHour</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNoCheckpointSnapshotsOnMetroPDInLastHour</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNoCheckpointSnapshotsOnMetroPDInLastHour</event-label>
       <descr>
 &lt;p>Check that Metro PDs have associated checkpoint snapshots.&lt;/p>&lt;table>
@@ -12991,7 +12988,7 @@
             <mevalue>1227</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCVMTimeDifferenceHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCVMTimeDifferenceHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCVMTimeDifferenceHigh</event-label>
       <descr>
 &lt;p>Check that the time drift between CVMs is less than time_drift_threshold_sec.&lt;/p>&lt;table>
@@ -13048,7 +13045,7 @@
             <mevalue>1228</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapIPMIIPNotReachable</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapIPMIIPNotReachable</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapIPMIIPNotReachable</event-label>
       <descr>
 &lt;p>Check that all ipmi ips are pingable from local SVM.&lt;/p>&lt;table>
@@ -13105,7 +13102,7 @@
             <mevalue>1229</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapHostIPNotReachable</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapHostIPNotReachable</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapHostIPNotReachable</event-label>
       <descr>
 &lt;p>Check that all host ips are pingable from local SVM.&lt;/p>&lt;table>
@@ -13162,7 +13159,7 @@
             <mevalue>1230</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCVMNICSpeedLow</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCVMNICSpeedLow</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCVMNICSpeedLow</event-label>
       <descr>
 &lt;p>Checks whether CVM is uplinked to 10 GbE NIC.&lt;/p>&lt;table>
@@ -13219,7 +13216,7 @@
             <mevalue>1231</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCVMNotUplinkedToActive10GbpsLink</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCVMNotUplinkedToActive10GbpsLink</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCVMNotUplinkedToActive10GbpsLink</event-label>
       <descr>
 &lt;p>Check that CVM uplinked to active 10Gbps link.&lt;/p>&lt;table>
@@ -13276,7 +13273,7 @@
             <mevalue>1232</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNICErrorRateHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNICErrorRateHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNICErrorRateHigh</event-label>
       <descr>
 &lt;p>Check that each NIC has fewer than nic_error_threshold errors during span of execution (3600 seconds).&lt;/p>&lt;table>
@@ -13333,7 +13330,7 @@
             <mevalue>1233</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCVMHostSubnetMismatch</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCVMHostSubnetMismatch</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCVMHostSubnetMismatch</event-label>
       <descr>
 &lt;p>Checks that host and cvm share the same subnet.&lt;/p>&lt;table>
@@ -13390,7 +13387,7 @@
             <mevalue>1234</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNICLinkDown</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNICLinkDown</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNICLinkDown</event-label>
       <descr>
 &lt;p>Checks whether any nic is down.&lt;/p>&lt;table>
@@ -13447,7 +13444,7 @@
             <mevalue>1235</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCVMIPAddressMismatch</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCVMIPAddressMismatch</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCVMIPAddressMismatch</event-label>
       <descr>
 &lt;p>Checks that cvm IP address is in sync with zeus configuration.&lt;/p>&lt;table>
@@ -13504,7 +13501,7 @@
             <mevalue>1236</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapZeusConfigMismatch</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapZeusConfigMismatch</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapZeusConfigMismatch</event-label>
       <descr>
 &lt;p>Checks that hypervisor IP address is in sync with zeus configuration.&lt;/p>&lt;table>
@@ -13561,7 +13558,7 @@
             <mevalue>1237</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapIPMIIPAddressMismatch</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapIPMIIPAddressMismatch</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapIPMIIPAddressMismatch</event-label>
       <descr>
 &lt;p>Checks that IPMI IP address is in sync with zeus configuration.&lt;/p>&lt;table>
@@ -13618,7 +13615,7 @@
             <mevalue>1238</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapJumboFramesEnabled</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapJumboFramesEnabled</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapJumboFramesEnabled</event-label>
       <descr>
 &lt;p>Check MTU of the CVM network interfaces.&lt;/p>&lt;table>
@@ -13675,7 +13672,7 @@
             <mevalue>1239</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNICFlaps</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNICFlaps</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNICFlaps</event-label>
       <descr>
 &lt;p>Check that all nics have no flapping.&lt;/p>&lt;table>
@@ -13732,7 +13729,7 @@
             <mevalue>1240</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapIncorrectNTPConfiguration</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapIncorrectNTPConfiguration</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapIncorrectNTPConfiguration</event-label>
       <descr>
 &lt;p>Check that NTP is configured properly on CVM/Hypervisor.&lt;/p>&lt;table>
@@ -13789,7 +13786,7 @@
             <mevalue>1241</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCVMIsUnreachable</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCVMIsUnreachable</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCVMIsUnreachable</event-label>
       <descr>
 &lt;p>Check that all CVMs are reachable via ping.&lt;/p>&lt;table>
@@ -13846,7 +13843,7 @@
             <mevalue>1242</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNGTInstallationRequired</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNGTInstallationRequired</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNGTInstallationRequired</event-label>
       <descr>
 &lt;p>Some VMs in protection domain replicating to cross-hypervisor remote site do not have NGT installed.&lt;/p>&lt;table>
@@ -13903,7 +13900,7 @@
             <mevalue>1243</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapTooManyFilesInTheProtectionDomain</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapTooManyFilesInTheProtectionDomain</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapTooManyFilesInTheProtectionDomain</event-label>
       <descr>
 &lt;p>Checks if too many files are being protected by any Metro/Vstore protection domain.&lt;/p>&lt;table>
@@ -13960,7 +13957,7 @@
             <mevalue>1244</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapTooManyFilesInTheConsistencyGroup</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapTooManyFilesInTheConsistencyGroup</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapTooManyFilesInTheConsistencyGroup</event-label>
       <descr>
 &lt;p>Checks if too many files are being protected by a single consistency group of any Metro/Vstore protection domain.&lt;/p>&lt;table>
@@ -14017,7 +14014,7 @@
             <mevalue>1245</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFoundOldClonesOnCluster</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFoundOldClonesOnCluster</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFoundOldClonesOnCluster</event-label>
       <descr>
 &lt;p>Check for any clones restored from protection domain snapshots that are too old.&lt;/p>&lt;table>
@@ -14074,7 +14071,7 @@
             <mevalue>1246</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapTooManyClonesOnCluster</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapTooManyClonesOnCluster</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapTooManyClonesOnCluster</event-label>
       <descr>
 &lt;p>Check if there are too many clones restored from protection domain snapshots.&lt;/p>&lt;table>
@@ -14131,7 +14128,7 @@
             <mevalue>1247</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectingVMsThatAreUsingSharedVHDXDisksIsUnsupported</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectingVMsThatAreUsingSharedVHDXDisksIsUnsupported</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectingVMsThatAreUsingSharedVHDXDisksIsUnsupported</event-label>
       <descr>
 &lt;p>Check if VMs with shared VHDX disks are not part of any protection domain.&lt;/p>&lt;table>
@@ -14188,7 +14185,7 @@
             <mevalue>1248</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSymlinksFoundOnMetrovstoreProtectedContainer</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSymlinksFoundOnMetrovstoreProtectedContainer</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSymlinksFoundOnMetrovstoreProtectedContainer</event-label>
       <descr>
 &lt;p>Check for symlinks in metro/vstore protection domain.&lt;/p>&lt;table>
@@ -14245,7 +14242,7 @@
             <mevalue>1249</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapAgedThirdpartyBackupSnapshotsPresent</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapAgedThirdpartyBackupSnapshotsPresent</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapAgedThirdpartyBackupSnapshotsPresent</event-label>
       <descr>
 &lt;p>Check for aged third-party backup snapshots.&lt;/p>&lt;table>
@@ -14302,7 +14299,7 @@
             <mevalue>1250</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectionDomainContainsMoreThanOneEntity</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectionDomainContainsMoreThanOneEntity</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectionDomainContainsMoreThanOneEntity</event-label>
       <descr>
 &lt;p>Check if protection domains being replicated to backup site contain more than one entity.&lt;/p>&lt;table>
@@ -14359,7 +14356,7 @@
             <mevalue>1251</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRemoteSiteConnectivityNotNormal</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRemoteSiteConnectivityNotNormal</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRemoteSiteConnectivityNotNormal</event-label>
       <descr>
 &lt;p>Check if connectivity to remote sites is normal.&lt;/p>&lt;table>
@@ -14416,7 +14413,7 @@
             <mevalue>1252</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCPUAverageLoadHighOnControllerVM</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCPUAverageLoadHighOnControllerVM</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCPUAverageLoadHighOnControllerVM</event-label>
       <descr>
 &lt;p>Verify system load average for the past 5 minutes is below cvm_load_average_threshold.&lt;/p>&lt;table>
@@ -14473,7 +14470,7 @@
             <mevalue>1253</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCPUAverageLoadCriticallyHighOnControllerVM</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCPUAverageLoadCriticallyHighOnControllerVM</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCPUAverageLoadCriticallyHighOnControllerVM</event-label>
       <descr>
 &lt;p>Verify system load average for the past 5 minutes is below cvm_load_average_threshold_critical.&lt;/p>&lt;table>
@@ -14530,7 +14527,7 @@
             <mevalue>1254</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapControllerVMCertificateExpiring</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapControllerVMCertificateExpiring</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapControllerVMCertificateExpiring</event-label>
       <descr>
 &lt;p>Check if node certificates are about to expire.&lt;/p>&lt;table>
@@ -14587,7 +14584,7 @@
             <mevalue>1255</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapClusterCertificateExpiring</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapClusterCertificateExpiring</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapClusterCertificateExpiring</event-label>
       <descr>
 &lt;p>Check if CA certificates are about to expire.&lt;/p>&lt;table>
@@ -14644,7 +14641,7 @@
             <mevalue>1256</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRemoteSiteInsecure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRemoteSiteInsecure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRemoteSiteInsecure</event-label>
       <descr>
 &lt;p>Check if Remote site contains encrypted drives if the local site does.&lt;/p>&lt;table>
@@ -14701,7 +14698,7 @@
             <mevalue>1257</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMixedSelfEncryptingDriveHardware</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMixedSelfEncryptingDriveHardware</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMixedSelfEncryptingDriveHardware</event-label>
       <descr>
 &lt;p>Cluster with self-encrypting drives has non-self encrypting drives installed.&lt;/p>&lt;table>
@@ -14758,7 +14755,7 @@
             <mevalue>1258</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapKeyManagementServerUnavailable</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapKeyManagementServerUnavailable</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapKeyManagementServerUnavailable</event-label>
       <descr>
 &lt;p>Check Key Management Server is available.&lt;/p>&lt;table>
@@ -14815,7 +14812,7 @@
             <mevalue>1259</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNumberOfOrphanedEgroupsIsOverTheRecommendedThreshold</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNumberOfOrphanedEgroupsIsOverTheRecommendedThreshold</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNumberOfOrphanedEgroupsIsOverTheRecommendedThreshold</event-label>
       <descr>
 &lt;p>Check that the number of orphaned egroups are below the recommended threshold.&lt;/p>&lt;table>
@@ -14872,7 +14869,7 @@
             <mevalue>1260</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCVMRAMUsageHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCVMRAMUsageHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCVMRAMUsageHigh</event-label>
       <descr>
 &lt;p>Check that CVM memory usage is not high.&lt;/p>&lt;table>
@@ -14929,7 +14926,7 @@
             <mevalue>1261</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapClusterServicesAreDown</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapClusterServicesAreDown</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapClusterServicesAreDown</event-label>
       <descr>
 &lt;p>Check that no services are down in the cluster.&lt;/p>&lt;table>
@@ -14986,7 +14983,7 @@
             <mevalue>1262</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapKernelMemoryUsageHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapKernelMemoryUsageHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapKernelMemoryUsageHigh</event-label>
       <descr>
 &lt;p>Checks whether CVM's kernel memory usage is higher than expected.&lt;/p>&lt;table>
@@ -15043,7 +15040,7 @@
             <mevalue>1263</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCVMServicesRestartingFrequently</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCVMServicesRestartingFrequently</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCVMServicesRestartingFrequently</event-label>
       <descr>
 &lt;p>Check if services have restarted recently in the Controller VM.&lt;/p>&lt;table>
@@ -15100,7 +15097,7 @@
             <mevalue>1264</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapClusterServiceRestartingFrequently</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapClusterServiceRestartingFrequently</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapClusterServiceRestartingFrequently</event-label>
       <descr>
 &lt;p>Check if services have restarted recently across the cluster.&lt;/p>&lt;table>
@@ -15157,7 +15154,7 @@
             <mevalue>1265</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCVMConnectivityFailure</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCVMConnectivityFailure</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCVMConnectivityFailure</event-label>
       <descr>
 &lt;p>Check that SVM has passwordless connection to each other.&lt;/p>&lt;table>
@@ -15214,7 +15211,7 @@
             <mevalue>1266</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapStorageContainerReplicationFactorLow</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapStorageContainerReplicationFactorLow</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapStorageContainerReplicationFactorLow</event-label>
       <descr>
 &lt;p>Check that the Storage Container region replication factor is not low.&lt;/p>&lt;table>
@@ -15271,7 +15268,7 @@
             <mevalue>1267</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCVMRebooted</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCVMRebooted</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCVMRebooted</event-label>
       <descr>
 &lt;p>Check that Cvm is not rebooted recently.&lt;/p>&lt;table>
@@ -15328,7 +15325,7 @@
             <mevalue>1268</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapRemoteSupportEnabled</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapRemoteSupportEnabled</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapRemoteSupportEnabled</event-label>
       <descr>
 &lt;p>Checks if remote support tunnel to Nutanix HQ is enabled on this cluster.&lt;/p>&lt;table>
@@ -15385,7 +15382,7 @@
             <mevalue>1269</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapDatastoreVMCountHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapDatastoreVMCountHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapDatastoreVMCountHigh</event-label>
       <descr>
 &lt;p>Checks for high VM count on datastores.&lt;/p>&lt;table>
@@ -15442,7 +15439,7 @@
             <mevalue>1270</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapHighVDiskCountInTheCluster</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapHighVDiskCountInTheCluster</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapHighVDiskCountInTheCluster</event-label>
       <descr>
 &lt;p>Checks for high vDisk count in the cluster.&lt;/p>&lt;table>
@@ -15499,7 +15496,7 @@
             <mevalue>1271</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapAllFlashNodesMixedWithNonallflashNodes</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapAllFlashNodesMixedWithNonallflashNodes</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapAllFlashNodesMixedWithNonallflashNodes</event-label>
       <descr>
 &lt;p>Checks that all-flash nodes do not coexist with non-all-flash nodes in a cluster.&lt;/p>&lt;table>
@@ -15556,7 +15553,7 @@
             <mevalue>1272</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapHaswellAndBroadwellCPUsAreInTheSameChassis</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapHaswellAndBroadwellCPUsAreInTheSameChassis</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapHaswellAndBroadwellCPUsAreInTheSameChassis</event-label>
       <descr>
 &lt;p>Checks whether CPUs within a chassis are of the same type.&lt;/p>&lt;table>
@@ -15613,7 +15610,7 @@
             <mevalue>1273</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapTimeSinceLastCuratorScanIsBeyondThreshold</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapTimeSinceLastCuratorScanIsBeyondThreshold</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapTimeSinceLastCuratorScanIsBeyondThreshold</event-label>
       <descr>
 &lt;p>Check if time since last Curator Scan is beyond threshold.&lt;/p>&lt;table>
@@ -15670,7 +15667,7 @@
             <mevalue>1274</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSnapshotChainHeightExceedsThreshold</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSnapshotChainHeightExceedsThreshold</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSnapshotChainHeightExceedsThreshold</event-label>
       <descr>
 &lt;p>Check that snapshot chain height is less than 25.&lt;/p>&lt;table>
@@ -15727,7 +15724,7 @@
             <mevalue>1275</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapDIMMsOfDifferentTypesInOneMemoryChannel</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapDIMMsOfDifferentTypesInOneMemoryChannel</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapDIMMsOfDifferentTypesInOneMemoryChannel</event-label>
       <descr>
 &lt;p>DIMMs Interoperability Check.&lt;/p>&lt;table>
@@ -15784,7 +15781,7 @@
             <mevalue>1276</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapZookeeperNotActiveOnAllCVMs</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapZookeeperNotActiveOnAllCVMs</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapZookeeperNotActiveOnAllCVMs</event-label>
       <descr>
 &lt;p>Checks if number of active zookeepers is equal to the total number of zookeeper CVMs.&lt;/p>&lt;table>
@@ -15841,7 +15838,7 @@
             <mevalue>1277</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapM60GPUConfigurationWrongOnTheNode</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapM60GPUConfigurationWrongOnTheNode</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapM60GPUConfigurationWrongOnTheNode</event-label>
       <descr>
 &lt;p>Check number of M60 GPUs on a node.&lt;/p>&lt;table>
@@ -15898,7 +15895,7 @@
             <mevalue>1278</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapM10GPUConfigurationWrongOnTheNode</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapM10GPUConfigurationWrongOnTheNode</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapM10GPUConfigurationWrongOnTheNode</event-label>
       <descr>
 &lt;p>Check number of M10 GPUs on a node.&lt;/p>&lt;table>
@@ -15955,7 +15952,7 @@
             <mevalue>1279</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapM10AndM60GPUsInstalledOnTheSameNode</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapM10AndM60GPUsInstalledOnTheSameNode</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapM10AndM60GPUsInstalledOnTheSameNode</event-label>
       <descr>
 &lt;p>Check if M10 and M60 GPUs installed on the same node.&lt;/p>&lt;table>
@@ -16012,7 +16009,7 @@
             <mevalue>1280</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapPCVCPUAvailabilityCheck</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapPCVCPUAvailabilityCheck</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapPCVCPUAvailabilityCheck</event-label>
       <descr>
 &lt;p>Checks if the number of vCPUs is sufficient for the number of VM entities in Prism Central.&lt;/p>&lt;table>
@@ -16069,7 +16066,7 @@
             <mevalue>1281</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapPCSufficientDiskSpaceCheck</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapPCSufficientDiskSpaceCheck</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapPCSufficientDiskSpaceCheck</event-label>
       <descr>
 &lt;p>Checks if the amount of storage is sufficient for the number of VM entities in Prism Central.&lt;/p>&lt;table>
@@ -16126,7 +16123,7 @@
             <mevalue>1282</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapPCMemoryAvailabilityCheck</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapPCMemoryAvailabilityCheck</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapPCMemoryAvailabilityCheck</event-label>
       <descr>
 &lt;p>Checks if the amount of memory is sufficient for the number of VM entities in Prism Central.&lt;/p>&lt;table>
@@ -16183,7 +16180,7 @@
             <mevalue>1283</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapPCVMLimitCheck</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapPCVMLimitCheck</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapPCVMLimitCheck</event-label>
       <descr>
 &lt;p>Checks if the number of VM entities is within the limit.&lt;/p>&lt;table>
@@ -16240,7 +16237,7 @@
             <mevalue>1284</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapStoragePoolSpaceUsageExceeded</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapStoragePoolSpaceUsageExceeded</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapStoragePoolSpaceUsageExceeded</event-label>
       <descr>
 &lt;p>Check high space usage on storagepools.&lt;/p>&lt;table>
@@ -16297,7 +16294,7 @@
             <mevalue>1285</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapDiskInodeUsageHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapDiskInodeUsageHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapDiskInodeUsageHigh</event-label>
       <descr>
 &lt;p>Check that current inode usage is above inode_usage_threshold_pct.&lt;/p>&lt;table>
@@ -16354,7 +16351,7 @@
             <mevalue>1286</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapDiskUnused</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapDiskUnused</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapDiskUnused</event-label>
       <descr>
 &lt;p>Check that if some disk is not part of any storage pool.&lt;/p>&lt;table>
@@ -16411,7 +16408,7 @@
             <mevalue>1287</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFusionIOWearHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFusionIOWearHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFusionIOWearHigh</event-label>
       <descr>
 &lt;p>Checks whether fusion io drive has worn out beyond write limit.&lt;/p>&lt;table>
@@ -16468,7 +16465,7 @@
             <mevalue>1288</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFusionIOTemperatureHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFusionIOTemperatureHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFusionIOTemperatureHigh</event-label>
       <descr>
 &lt;p>Checks whether temperature exceeded on fusion-io drive.&lt;/p>&lt;table>
@@ -16525,7 +16522,7 @@
             <mevalue>1289</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFusionIOReserveLow</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFusionIOReserveLow</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFusionIOReserveLow</event-label>
       <descr>
 &lt;p>Checks whether fusion io reserves are down.&lt;/p>&lt;table>
@@ -16582,7 +16579,7 @@
             <mevalue>1290</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFusionIODiskFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFusionIODiskFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFusionIODiskFailed</event-label>
       <descr>
 &lt;p>Checks whether fusion-io drive has failed.&lt;/p>&lt;table>
@@ -16639,7 +16636,7 @@
             <mevalue>1291</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapStorageContainerSpaceUsageExceededNCCCheck</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapStorageContainerSpaceUsageExceededNCCCheck</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapStorageContainerSpaceUsageExceededNCCCheck</event-label>
       <descr>
 &lt;p>Check high space usage on Storage Containers.&lt;/p>&lt;table>
@@ -16696,7 +16693,7 @@
             <mevalue>1292</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapDataDiskSpaceUsageHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapDataDiskSpaceUsageHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapDataDiskSpaceUsageHigh</event-label>
       <descr>
 &lt;p>Check that current amount of disk usage is above disk_usage_threshold_pct.&lt;/p>&lt;table>
@@ -16753,7 +16750,7 @@
             <mevalue>1293</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSystemPartitionsSpaceUsageHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSystemPartitionsSpaceUsageHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSystemPartitionsSpaceUsageHigh</event-label>
       <descr>
 &lt;p>Check that current amount of disk usage is above home_nutanix_usage_threshold_pct.&lt;/p>&lt;table>
@@ -16810,7 +16807,7 @@
             <mevalue>1294</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapStorageDeviceHealthBad</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapStorageDeviceHealthBad</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapStorageDeviceHealthBad</event-label>
       <descr>
 &lt;p>Smartctl health bad.&lt;/p>&lt;table>
@@ -16867,7 +16864,7 @@
             <mevalue>1295</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapIntelSSDWearHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapIntelSSDWearHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapIntelSSDWearHigh</event-label>
       <descr>
 &lt;p>Check for wear out on Intel PCIe SSDs.&lt;/p>&lt;table>
@@ -16924,7 +16921,7 @@
             <mevalue>1296</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapIntelSSDTemperatureHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapIntelSSDTemperatureHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapIntelSSDTemperatureHigh</event-label>
       <descr>
 &lt;p>Check the temperature on Intel PCIe SSDs.&lt;/p>&lt;table>
@@ -16981,7 +16978,7 @@
             <mevalue>1297</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapCVMBootRaidDegraded</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapCVMBootRaidDegraded</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapCVMBootRaidDegraded</event-label>
       <descr>
 &lt;p>Check the health of boot RAID volumes.&lt;/p>&lt;table>
@@ -17038,7 +17035,7 @@
             <mevalue>1298</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapAbnormalHostBootRAIDState</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapAbnormalHostBootRAIDState</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapAbnormalHostBootRAIDState</event-label>
       <descr>
 &lt;p>Check the health of boot RAID volumes.&lt;/p>&lt;table>
@@ -17095,7 +17092,7 @@
             <mevalue>1299</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapHypervisorDiskSpaceUsageHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapHypervisorDiskSpaceUsageHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapHypervisorDiskSpaceUsageHigh</event-label>
       <descr>
 &lt;p>Checks that host disk usage is not high.&lt;/p>&lt;table>
@@ -17152,7 +17149,7 @@
             <mevalue>1300</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapInvalidDriveConfiguration</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapInvalidDriveConfiguration</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapInvalidDriveConfiguration</event-label>
       <descr>
 &lt;p>Checks whether combination of SSDs and HDDs is valid.&lt;/p>&lt;table>
@@ -17209,7 +17206,7 @@
             <mevalue>1301</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSATADOMHasFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSATADOMHasFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSATADOMHasFailed</event-label>
       <descr>
 &lt;p>Checks that host SATA DOM is functioning.&lt;/p>&lt;table>
@@ -17266,7 +17263,7 @@
             <mevalue>1302</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSATADOMNotReachable</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSATADOMNotReachable</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSATADOMNotReachable</event-label>
       <descr>
 &lt;p>Checks that host SATA DOM is reachable.&lt;/p>&lt;table>
@@ -17323,7 +17320,7 @@
             <mevalue>1303</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSATADOMHasWornOut</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSATADOMHasWornOut</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSATADOMHasWornOut</event-label>
       <descr>
 &lt;p>Checks the wearout of SATA DOM via SMART data.&lt;/p>&lt;table>
@@ -17380,7 +17377,7 @@
             <mevalue>1304</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSATADOMSL3IE3HasHighWear</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSATADOMSL3IE3HasHighWear</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSATADOMSL3IE3HasHighWear</event-label>
       <descr>
 &lt;p>Checks the wearout of SATADOM-SL 3IE3 via SMART data.&lt;/p>&lt;table>
@@ -17437,7 +17434,7 @@
             <mevalue>1305</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSATADOMNeedsFirmwareVersionUpgradeToS170119</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSATADOMNeedsFirmwareVersionUpgradeToS170119</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSATADOMNeedsFirmwareVersionUpgradeToS170119</event-label>
       <descr>
 &lt;p>Checks the firmware version of SATA DOM.&lt;/p>&lt;table>
@@ -17494,7 +17491,7 @@
             <mevalue>1306</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapmodelFirmwareVersionIsNotTheLatestFirmwareVersion</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapmodelFirmwareVersionIsNotTheLatestFirmwareVersion</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapmodelFirmwareVersionIsNotTheLatestFirmwareVersion</event-label>
       <descr>
 &lt;p>Checks the firmware version of SATA DOM.&lt;/p>&lt;table>
@@ -17551,7 +17548,7 @@
             <mevalue>1307</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSATADOMHasGuestVM</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSATADOMHasGuestVM</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSATADOMHasGuestVM</event-label>
       <descr>
 &lt;p>Checks that no guest VM is installed on SATA DOM.&lt;/p>&lt;table>
@@ -17608,7 +17605,7 @@
             <mevalue>1308</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSASConnectivityNotNormal</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSASConnectivityNotNormal</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSASConnectivityNotNormal</event-label>
       <descr>
 &lt;p>Check SAS connectivity.&lt;/p>&lt;table>
@@ -17665,7 +17662,7 @@
             <mevalue>1309</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSamsungPM1633DriveHasWornOut</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSamsungPM1633DriveHasWornOut</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSamsungPM1633DriveHasWornOut</event-label>
       <descr>
 &lt;p>Checks the status of Samsung PM1633 drive via SMART data.&lt;/p>&lt;table>
@@ -17722,7 +17719,7 @@
             <mevalue>1310</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapToshibaPM3DriveHasWornOut</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapToshibaPM3DriveHasWornOut</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapToshibaPM3DriveHasWornOut</event-label>
       <descr>
 &lt;p>Checks the status of Toshiba PM3 drive via SMART data.&lt;/p>&lt;table>
@@ -17779,7 +17776,7 @@
             <mevalue>1311</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapToshibaPM4DriveHasWornOut</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapToshibaPM4DriveHasWornOut</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapToshibaPM4DriveHasWornOut</event-label>
       <descr>
 &lt;p>Check the status of Toshiba PM4 drive.&lt;/p>&lt;table>
@@ -17836,7 +17833,7 @@
             <mevalue>1312</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapSM863DriveHasWornOut</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapSM863DriveHasWornOut</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapSM863DriveHasWornOut</event-label>
       <descr>
 &lt;p>Check the status of SM863 and SM863a SSD drive.&lt;/p>&lt;table>
@@ -17893,7 +17890,7 @@
             <mevalue>1313</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMicron5100DriveHasWornOut</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMicron5100DriveHasWornOut</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMicron5100DriveHasWornOut</event-label>
       <descr>
 &lt;p>Check the status of Micron5100 SSD drive.&lt;/p>&lt;table>
@@ -17950,7 +17947,7 @@
             <mevalue>1314</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapIntelSSDS3610OnipaddressHasConfigurationProblems</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapIntelSSDS3610OnipaddressHasConfigurationProblems</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapIntelSSDS3610OnipaddressHasConfigurationProblems</event-label>
       <descr>
 &lt;p>Check if node has supported configuration for Intel SSD S3610.&lt;/p>&lt;table>
@@ -18007,7 +18004,7 @@
             <mevalue>1315</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapOfflineDiskInACluster</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapOfflineDiskInACluster</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapOfflineDiskInACluster</event-label>
       <descr>
 &lt;p>Check for the offline disks.&lt;/p>&lt;table>
@@ -18064,7 +18061,7 @@
             <mevalue>1316</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapNVMeDriveHasErrors</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapNVMeDriveHasErrors</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapNVMeDriveHasErrors</event-label>
       <descr>
 &lt;p>Check that host NVMe drive is functioning properly.&lt;/p>&lt;table>
@@ -18121,7 +18118,7 @@
             <mevalue>1317</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapHypervisorBootDriveWearHigh</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapHypervisorBootDriveWearHigh</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapHypervisorBootDriveWearHigh</event-label>
       <descr>
 &lt;p>Check Hyve boot disk status.&lt;/p>&lt;table>
@@ -18178,7 +18175,7 @@
             <mevalue>1318</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapVMIsProtectedInMultiplePDs</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapVMIsProtectedInMultiplePDs</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapVMIsProtectedInMultiplePDs</event-label>
       <descr>
 &lt;p>VMs are protected in multiple Protection Domains.&lt;/p>&lt;table>
@@ -18235,7 +18232,7 @@
             <mevalue>1319</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapProtectedVMsNotOnNutanixStorage</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapProtectedVMsNotOnNutanixStorage</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapProtectedVMsNotOnNutanixStorage</event-label>
       <descr>
 &lt;p>Protected VMs have invalid storage configuration.&lt;/p>&lt;table>
@@ -18292,7 +18289,7 @@
             <mevalue>1320</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapClusterConnectivityStatus</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapClusterConnectivityStatus</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapClusterConnectivityStatus</event-label>
       <descr>
 &lt;p>Tests whether the cluster connectivity is fine.&lt;/p>&lt;table>
@@ -18349,7 +18346,7 @@
             <mevalue>1321</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapHighGarbageDueToErasureCoding</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapHighGarbageDueToErasureCoding</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapHighGarbageDueToErasureCoding</event-label>
       <descr>
 &lt;p>Checks if erasure coding garbage is below a safe threshold.&lt;/p>&lt;table>
@@ -18406,7 +18403,7 @@
             <mevalue>1322</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA1175</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA1175</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA1175</event-label>
       <descr>
 &lt;p>Checks erasure coding is enabled on cluster with version &lt; 4.5.2.&lt;/p>&lt;table>
@@ -18463,7 +18460,7 @@
             <mevalue>1323</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapInvalidErasureCodeDelayParameter</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapInvalidErasureCodeDelayParameter</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapInvalidErasureCodeDelayParameter</event-label>
       <descr>
 &lt;p>Validate the EC param value for erasure-code-delay.&lt;/p>&lt;table>
@@ -18520,7 +18517,7 @@
             <mevalue>1324</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFlashModeConfigurationHasExceededTheThresholdLimit</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFlashModeConfigurationHasExceededTheThresholdLimit</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFlashModeConfigurationHasExceededTheThresholdLimit</event-label>
       <descr>
 &lt;p>Check the total configured size of flash-mode-enabled vDisks  with respect to the threshold limit.&lt;/p>&lt;table>
@@ -18577,7 +18574,7 @@
             <mevalue>1325</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFlashModeUsageLimitExceeded</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFlashModeUsageLimitExceeded</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFlashModeUsageLimitExceeded</event-label>
       <descr>
 &lt;p>Check the amount of usage by flash-mode-enabled vDisks with respect to the threshold limit.&lt;/p>&lt;table>
@@ -18634,7 +18631,7 @@
             <mevalue>1326</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFlashmodeenabledVMPowerStatus</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFlashmodeenabledVMPowerStatus</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFlashmodeenabledVMPowerStatus</event-label>
       <descr>
 &lt;p>Check if any flash-mode-enabled VMs are Powered Off.&lt;/p>&lt;table>
@@ -18691,7 +18688,7 @@
             <mevalue>1327</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapStoragePoolFlashModeConfiguration</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapStoragePoolFlashModeConfiguration</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapStoragePoolFlashModeConfiguration</event-label>
       <descr>
 &lt;p>Flash Mode is not supported when multiple storage pools are in use.&lt;/p>&lt;table>
@@ -18748,7 +18745,7 @@
             <mevalue>1328</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapTestNotificationTitle</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapTestNotificationTitle</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapTestNotificationTitle</event-label>
       <descr>
 &lt;p>Test Notification.&lt;/p>&lt;table>
@@ -18805,7 +18802,7 @@
             <mevalue>1329</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapIncompatibleFileServer</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapIncompatibleFileServer</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapIncompatibleFileServer</event-label>
       <descr>
 &lt;p>File Server version incompatible with AOS.&lt;/p>&lt;table>
@@ -18862,7 +18859,7 @@
             <mevalue>1330</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA1202</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA1202</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA1202</event-label>
       <descr>
 &lt;p>Check the compatibility of Samsung PM1633 drives with NOS and Foundation versions.&lt;/p>&lt;table>
@@ -18919,7 +18916,7 @@
             <mevalue>1331</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFirmwareVersionOfSamsungPM1633DrivesIsOld</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFirmwareVersionOfSamsungPM1633DrivesIsOld</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFirmwareVersionOfSamsungPM1633DrivesIsOld</event-label>
       <descr>
 &lt;p>Check the firmware of Samsung PM1633 drives.&lt;/p>&lt;table>
@@ -18976,7 +18973,7 @@
             <mevalue>1332</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMoreThanOneTypeOfToshibaPM4DrivesInstalledOnTheNode</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMoreThanOneTypeOfToshibaPM4DrivesInstalledOnTheNode</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMoreThanOneTypeOfToshibaPM4DrivesInstalledOnTheNode</event-label>
       <descr>
 &lt;p>Check the Configuration of Toshiba PM4 drives.&lt;/p>&lt;table>
@@ -19033,7 +19030,7 @@
             <mevalue>1333</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA1200</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA1200</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA1200</event-label>
       <descr>
 &lt;p>Check the compatibility of Toshiba PM4 drives with NOS and Foundation versions.&lt;/p>&lt;table>
@@ -19090,7 +19087,7 @@
             <mevalue>1334</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFirmwareVersionOfToshibaPM4DrivesIsOld</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFirmwareVersionOfToshibaPM4DrivesIsOld</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFirmwareVersionOfToshibaPM4DrivesIsOld</event-label>
       <descr>
 &lt;p>Check the firmware of Toshiba PM4 drives.&lt;/p>&lt;table>
@@ -19147,7 +19144,7 @@
             <mevalue>1335</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFirmwareVersionOfSM863DrivesIsOld</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFirmwareVersionOfSM863DrivesIsOld</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFirmwareVersionOfSM863DrivesIsOld</event-label>
       <descr>
 &lt;p>Check the firmware of SM863 or SM863a drives.&lt;/p>&lt;table>
@@ -19204,7 +19201,7 @@
             <mevalue>1336</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFewerThanTwoNonSamsungPM863aDrivesInstalledOnTheNode</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFewerThanTwoNonSamsungPM863aDrivesInstalledOnTheNode</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFewerThanTwoNonSamsungPM863aDrivesInstalledOnTheNode</event-label>
       <descr>
 &lt;p>Check the types of disk drives on a node that has PM863a drives installed.&lt;/p>&lt;table>
@@ -19261,7 +19258,7 @@
             <mevalue>1337</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFirmwareVersionOfPM863aDrivesIsOld</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFirmwareVersionOfPM863aDrivesIsOld</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFirmwareVersionOfPM863aDrivesIsOld</event-label>
       <descr>
 &lt;p>Check firmware of PM863a drives.&lt;/p>&lt;table>
@@ -19318,7 +19315,7 @@
             <mevalue>1338</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapPM863aDriveHasWornOut</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapPM863aDriveHasWornOut</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapPM863aDriveHasWornOut</event-label>
       <descr>
 &lt;p>Check the status of PM863a SSD.&lt;/p>&lt;table>
@@ -19375,7 +19372,7 @@
             <mevalue>1339</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapOfflineDiskInCluster</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapOfflineDiskInCluster</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapOfflineDiskInCluster</event-label>
       <descr>
 &lt;p>Check for offline disks.&lt;/p>&lt;table>
@@ -19432,7 +19429,7 @@
             <mevalue>1340</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMetadataDisksNotMountedOnCVM</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMetadataDisksNotMountedOnCVM</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMetadataDisksNotMountedOnCVM</event-label>
       <descr>
 &lt;p>Check that all metadata disks are mounted.&lt;/p>&lt;table>
@@ -19489,7 +19486,7 @@
             <mevalue>1341</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerUpgradeTaskIsNotProgressing</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerUpgradeTaskIsNotProgressing</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerUpgradeTaskIsNotProgressing</event-label>
       <descr>
 &lt;p>Check that file server task is progressing.&lt;/p>&lt;table>
@@ -19546,7 +19543,7 @@
             <mevalue>1342</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA130129</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA130129</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA130129</event-label>
       <descr>
 &lt;p>VMs in the standby site of a Metro Availability protection domain are running at suboptimal performance.&lt;/p>&lt;table>
@@ -19603,7 +19600,7 @@
             <mevalue>1343</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA130118</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA130118</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA130118</event-label>
       <descr>
 &lt;p>Error in updating failure handling on the remote Metro Availability protection domain.&lt;/p>&lt;table>
@@ -19660,7 +19657,7 @@
             <mevalue>1344</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerCloneFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerCloneFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerCloneFailed</event-label>
       <descr>
 &lt;p>File Server Clone Failed.&lt;/p>&lt;table>
@@ -19717,7 +19714,7 @@
             <mevalue>1345</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFileServerRenameFailed</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFileServerRenameFailed</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFileServerRenameFailed</event-label>
       <descr>
 &lt;p>File Server Rename Failed.&lt;/p>&lt;table>
@@ -19774,7 +19771,7 @@
             <mevalue>1346</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA130097</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA130097</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA130097</event-label>
       <descr>
 &lt;p>Failed to mount ISO image as part of Nutanix Guest Tools reconfiguration for a VM in protection domain.&lt;/p>&lt;table>
@@ -19831,7 +19828,7 @@
             <mevalue>1347</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA130095</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA130095</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA130095</event-label>
       <descr>
 &lt;p>Failed to enable Nutanix Guest Tools during VMs recovery for protection domain.&lt;/p>&lt;table>
@@ -19888,7 +19885,7 @@
             <mevalue>1348</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA130131</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA130131</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA130131</event-label>
       <descr>
 &lt;p>Snapshot contains entities from the storage container that have deduplication enabled.&lt;/p>&lt;table>
@@ -19945,7 +19942,7 @@
             <mevalue>1349</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA130137</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA130137</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA130137</event-label>
       <descr>
 &lt;p>Replication of protection domain has not progressed.&lt;/p>&lt;table>
@@ -20002,7 +19999,7 @@
             <mevalue>1350</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA106030</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA106030</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA106030</event-label>
       <descr>
 &lt;p>Check the compatibility of SM863a drives with NOS and Foundation versions.&lt;/p>&lt;table>
@@ -20059,7 +20056,7 @@
             <mevalue>1351</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA106033</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA106033</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA106033</event-label>
       <descr>
 &lt;p>Check the compatibility of PM863a drives with AOS and Foundation versions.&lt;/p>&lt;table>
@@ -20116,7 +20113,7 @@
             <mevalue>1352</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA111047</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA111047</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA111047</event-label>
       <descr>
 &lt;p>Checks if Mellanox NICs are down or if any Mellanox NIC has speed other than 10GbE or 40GbE. Checks if both 10GbE and 40GbE Mellanox NICs are installed on one node.&lt;/p>&lt;table>
@@ -20173,7 +20170,7 @@
             <mevalue>1353</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA110219</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA110219</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA110219</event-label>
       <descr>
 &lt;p>Unsupported number of VMs in Metro/Vstore Protection Domain.&lt;/p>&lt;table>
@@ -20230,7 +20227,7 @@
             <mevalue>1354</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA110251</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA110251</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA110251</event-label>
       <descr>
 &lt;p>Replications are scheduled on entitites from the storage containers that have deduplication enabled.&lt;/p>&lt;table>
@@ -20287,7 +20284,7 @@
             <mevalue>1355</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapA111044</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapA111044</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapA111044</event-label>
       <descr>
 &lt;p>Check that cluster virtual IP address is part of cluster external subnet.&lt;/p>&lt;table>
@@ -20344,7 +20341,7 @@
             <mevalue>1356</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapMaximumConnectionsLimitReachedOnAFileServerVM</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapMaximumConnectionsLimitReachedOnAFileServerVM</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapMaximumConnectionsLimitReachedOnAFileServerVM</event-label>
       <descr>
 &lt;p>Maximum connections limit reached on a file server VM.&lt;/p>&lt;table>
@@ -20401,7 +20398,7 @@
             <mevalue>1357</mevalue>
          </maskelement>
       </mask>
-      <uei>uei.opennms.org/traps/NUTANIX-MIB/ntxTrapFailedToAddOneOrMoreFileServerAdministratorUsersOrGroups</uei>
+      <uei>uei.opennms.org/nutanix/traps/ntxTrapFailedToAddOneOrMoreFileServerAdministratorUsersOrGroups</uei>
       <event-label>NUTANIX-MIB defined trap event: ntxTrapFailedToAddOneOrMoreFileServerAdministratorUsersOrGroups</event-label>
       <descr>
 &lt;p>Failed to add one or more users or groups as file server administrators.&lt;/p>&lt;table>
