@@ -182,11 +182,15 @@ public class NutanixEventIngestor implements Runnable, HealthCheck {
             return;
         }
 
+        Severity severity = SEVERITY_MAP.get(alert.severity);
+        if (alert.isResolved) {
+            severity = Severity.NORMAL;
+        }
         final ImmutableInMemoryEvent.Builder builder = ImmutableInMemoryEvent.newBuilder()
                 .setUei(uei)
                 .setSource(NutanixEventIngestor.class.getCanonicalName())
                 .setNodeId(node.getId())
-                .setSeverity(SEVERITY_MAP.get(alert.severity))
+                .setSeverity(severity)
                 .setInterface(null);
 
         builder.addParameter(ImmutableEventParameter.newInstance("msg", alert.message));
