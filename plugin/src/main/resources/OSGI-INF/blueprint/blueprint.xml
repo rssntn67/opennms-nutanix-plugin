@@ -1,13 +1,24 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
-                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+                               http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+                               http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0
+                               http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
 
-    <!-- Pull in service implementations from the OSGi registry -->
+<!-- Pull in service implementations from the OSGi registry -->
     <reference id="nodeDao" interface="org.opennms.integration.api.v1.dao.NodeDao" availability="optional"/>
+    <reference id="eventForwarder" interface="org.opennms.integration.api.v1.events.EventForwarder" availability="optional"/>
     <reference id="clientProvider" interface="org.opennms.nutanix.client.api.V3ClientProvider" />
     <reference id="v2Provider" interface="org.opennms.nutanix.client.api.V2ClientProvider" />
     <reference id="v1Provider" interface="org.opennms.nutanix.client.api.V1ClientProvider" />
     <reference id="v08Provider" interface="org.opennms.nutanix.client.api.V08ClientProvider"/>
+
+    <cm:property-placeholder id="nutanixProperties" persistent-id="org.opennms.nutanix" update-strategy="reload">
+        <cm:default-properties>
+            <cm:property name="events.delay" value="300000" />
+        </cm:default-properties>
+    </cm:property-placeholder>
+
 
     <bean id="clientManager" class="org.opennms.nutanix.clients.ClientManager">
         <argument ref="clientProvider" />
@@ -27,6 +38,20 @@
         <argument ref="clientManager" />
     </bean>
     <service ref="connectionManager" interface="org.opennms.nutanix.connections.ConnectionManager"/>
+
+    <bean id="nutanixEventService" class="org.opennms.nutanix.events.NutanixEventIngestor" destroy-method="destroy">
+        <argument ref="connectionManager"/>
+        <argument ref="nodeDao"/>
+        <argument ref="eventForwarder"/>
+        <argument value="${events.delay}"/>
+    </bean>
+
+    <service interface="org.opennms.integration.api.v1.health.HealthCheck" ref="nutanixEventService"/>
+
+    <service interface="org.opennms.integration.api.v1.config.events.EventConfExtension">
+        <bean class="org.opennms.nutanix.events.NutanixEventConfExtension"/>
+    </service>
+
 
     <!--    Requisition-->
     <bean id="nutanixRequisitionProvider" class="org.opennms.nutanix.requisition.NutanixRequisitionProvider">
@@ -72,4 +97,12 @@
     <bean id="nutanixPollerConfig" class="org.opennms.nutanix.configuration.NutanixPollerConfigurationExtension"/>
     <service ref="nutanixPollerConfig"
              interface="org.opennms.integration.api.v1.config.poller.PollerConfigurationExtension"/>
+
+    <service interface="org.opennms.integration.api.v1.config.datacollection.graphs.GraphPropertiesExtension">
+        <bean class="org.opennms.nutanix.configuration.NutanixGraphPropertiesExtension"/>
+    </service>
+
+    <bean id="nutanixCollectorConfig" class="org.opennms.nutanix.configuration.NutanixCollectorConfigurationExtension"/>
+    <service ref="nutanixCollectorConfig"
+             interface="org.opennms.integration.api.v1.config.collector.CollectorConfigurationExtension"/>
 </blueprint>

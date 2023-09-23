@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,6 +17,7 @@ import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.internal.Utils;
 import org.opennms.nutanix.client.api.model.Cluster;
+import org.opennms.nutanix.client.api.model.Entity;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.client.api.model.VM;
 import org.opennms.nutanix.client.api.model.VMNic;
@@ -287,6 +290,22 @@ public class NutanixApiClientServiceV3Test {
     }
 
     @Test
+    public void testVmsWithFilterApi() {
+
+        ApiClientExtension apiClient = getApiClient();
+        VmsApi vmsApi = new VmsApi(apiClient);
+        int offset = 0;
+        try {
+            VmListMetadata body = new VmListMetadata().length(apiClient.getPageSize()).offset(offset).filter("vm_name==ELEWEB-ASTEST");
+            VmListIntentResponse vmListIntentResponse = vmsApi.vmsListPost(body);
+            System.out.println(vmListIntentResponse);
+        }  catch (ApiException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+    @Test
     public void testVmsApi() {
 
         ApiClientExtension apiClient = getApiClient();
@@ -496,7 +515,7 @@ public class NutanixApiClientServiceV3Test {
         Map<String, Set<String>> severityTypeMap = new HashMap<>();
         Map<String, Set<String>> typeSeverityMap = new HashMap<>();
         Map<String, Set<String>> typeDefaultMessageMap = new HashMap<>();
-        Set<String> alarmuuids = new HashSet<>();
+        Set<String> alarmUuids = new HashSet<>();
         do {
             try {
                 AlertListMetadata body = new AlertListMetadata().length(length).offset(offset);
@@ -506,33 +525,37 @@ public class NutanixApiClientServiceV3Test {
                 System.out.println(response.getMetadata());
                 response.getEntities().forEach(item -> {
                     String alarmUuid = item.getMetadata().getUuid();
-                    alarmuuids.add(alarmUuid);
+                    alarmUuids.add(alarmUuid);
                     String name = item.getMetadata().getName();
                     Assert.assertNull(name);
                     String severity = item.getStatus().getResources().getSeverity();
-                    String type = item.getStatus().getResources().getType();
+                    String alertType = item.getStatus().getResources().getType();
+                    System.out.println(item.getStatus().getResources().getCreationTime());
+                    System.out.println(item.getStatus().getResources().getLastUpdateTime());
+                    System.out.println(item.getStatus().getResources().getLatestOccurrenceTime());
+
                     if (!severityTypeMap.containsKey(severity)) {
                         severityTypeMap.put(severity, new HashSet<>());
                     }
-                    severityTypeMap.get(severity).add(type);
+                    severityTypeMap.get(severity).add(alertType);
 
-                    if (!typeSeverityMap.containsKey(type)) {
-                        typeSeverityMap.put(type, new HashSet<>());
+                    if (!typeSeverityMap.containsKey(alertType)) {
+                        typeSeverityMap.put(alertType, new HashSet<>());
                     }
-                    typeSeverityMap.get(type).add(severity);
+                    typeSeverityMap.get(alertType).add(severity);
 
                     String dm = item.getStatus().getResources().getDefaultMessage();
-                    if (!typeDefaultMessageMap.containsKey(type)) {
-                        typeDefaultMessageMap.put(type,new HashSet<>());
+                    if (!typeDefaultMessageMap.containsKey(alertType)) {
+                        typeDefaultMessageMap.put(alertType,new HashSet<>());
                     }
-                    typeDefaultMessageMap.get(type).add(dm);
+                    typeDefaultMessageMap.get(alertType).add(dm);
                     System.out.println("----------");
                     System.out.println(alarmUuid);
                     System.out.println(severity);
-                    System.out.println(type);
+                    System.out.println(alertType);
+                    System.out.println(V3ApiClientService.getDescrFromAlert(item));
                     if (item.getStatus().getResources().getResolutionStatus().isIsTrue()) {
                         System.out.println("--Resolved--");
-                        return;
                     }
                     Assert.assertEquals(1,item.getStatus().getResources().getAffectedEntityList().size());
                     item.getStatus().getResources().getAffectedEntityList().forEach(entityInfo -> {
@@ -540,19 +563,20 @@ public class NutanixApiClientServiceV3Test {
                         System.out.println(entityInfo.getName());
                         System.out.println(entityInfo.getUuid());
                         System.out.println(entityInfo.getType());
+                        Assert.assertNotNull(V3ApiClientService.TYPE_MAP.get(entityInfo.getType()));
+                        Entity entity = new Entity(
+                                "COMPLETE",
+                                entityInfo.getName(),
+                                entityInfo.getName(),
+                                V3ApiClientService.TYPE_MAP.get(entityInfo.getType()));
+                        Assert.assertNotNull(entity);
                     });
-                    System.out.println("--message---");
-                    System.out.println(dm);
-                    if (item.getStatus().getResources().getParameters().containsKey("alert_msg")) {
-                        System.out.println(item.getStatus().getResources().getParameters().get("alert_msg").getStringValue());
-                    } else
-                        System.out.println(item.getStatus().getResources().getParameters());
                     if (item.getStatus().getResources().getAcknowledgedStatus().isIsTrue()) {
                         System.out.println("--Ack--");
                     }
 
                 });
-                offset+=length;
+                offset+=response.getEntities().size();
             } catch (ApiException e) {
                 throw new RuntimeException(e);
             }
@@ -563,7 +587,7 @@ public class NutanixApiClientServiceV3Test {
         typeSeverityMap.values().forEach(set -> Assert.assertEquals(1,set.size()));
         System.out.println(typeDefaultMessageMap);
         typeDefaultMessageMap.values().forEach(set -> Assert.assertEquals(1,set.size()));
-        Assert.assertEquals(total, alarmuuids.size());
+        Assert.assertEquals(total, alarmUuids.size());
     }
 
     @Test
@@ -1415,4 +1439,18 @@ public class NutanixApiClientServiceV3Test {
         outputs.forEach(System.out::println);
     }
 
+   @Test
+   public void testMatcherGraphs() {
+       List<String> matchList = new ArrayList<>();
+       Pattern regex = Pattern.compile("\\{(.*?)\\}");
+       Matcher regexMatcher = regex.matcher("Hello This is {Java} Not {.NET}");
+
+       while (regexMatcher.find()) {//Finds Matching Pattern in String
+           matchList.add(regexMatcher.group(1));//Fetching Group from String
+       }
+
+       for(String str:matchList) {
+           System.out.println(str);
+       }
+   }
 }

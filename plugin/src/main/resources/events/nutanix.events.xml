@@ -1,0 +1,19 @@
+<events xmlns="http://xmlns.opennms.org/xsd/eventconf">
+    <event>
+        <uei>uei.opennms.org/plugin/nutanix/alertResolved</uei>
+        <event-label>Nutanix Plugin: Nutanix Alarm Event</event-label>
+        <descr>%parm[descr]%</descr>
+        <logmsg dest="logndisplay">%parm[alertType]% NutanixPluginAlarm: Resolved</logmsg>
+        <severity>Normal</severity>
+        <alarm-data reduction-key="%uei%:%nodeid%:%parm[reductionKey]%" alarm-type="2"
+                    clear-key="uei.opennms.org/plugin/nutanix/alert:%nodeid%:%parm[reductionKey]%"/>
+    </event>
+    <event>
+        <uei>uei.opennms.org/plugin/nutanix/alert</uei>
+        <event-label>Nutanix Plugin: Nutanix Alarm Event</event-label>
+        <descr>%parm[descr]%</descr>
+        <logmsg dest="logndisplay">%parm[alertType]% NutanixPluginAlarm</logmsg>
+        <severity>Major</severity>
+        <alarm-data reduction-key="%uei%:%nodeid%:%parm[reductionKey]%" alarm-type="1" />
+    </event>
+</events>

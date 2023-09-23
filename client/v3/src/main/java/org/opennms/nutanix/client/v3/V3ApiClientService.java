@@ -3,6 +3,8 @@ package org.opennms.nutanix.client.v3;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.opennms.nutanix.client.api.ApiClientService;
@@ -15,6 +17,7 @@ import org.opennms.nutanix.client.api.model.ClusterHttpWhiteProxy;
 import org.opennms.nutanix.client.api.model.ClusterHypervisor;
 import org.opennms.nutanix.client.api.model.ClusterSmtpServer;
 import org.opennms.nutanix.client.api.model.ClusterSoftware;
+import org.opennms.nutanix.client.api.model.Entity;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.client.api.model.MetricsCluster;
 import org.opennms.nutanix.client.api.model.VM;
@@ -40,6 +43,7 @@ import org.opennms.nutanix.client.v3.model.HostListIntentResponse;
 import org.opennms.nutanix.client.v3.model.HostListMetadata;
 import org.opennms.nutanix.client.v3.model.HttpProxyWhitelist;
 import org.opennms.nutanix.client.v3.model.IpAddress;
+import org.opennms.nutanix.client.v3.model.ParamValue;
 import org.opennms.nutanix.client.v3.model.Reference;
 import org.opennms.nutanix.client.v3.model.SmtpServer;
 import org.opennms.nutanix.client.v3.model.VmDiskOutputStatus;
@@ -49,11 +53,20 @@ import org.opennms.nutanix.client.v3.model.VmListIntentResponse;
 import org.opennms.nutanix.client.v3.model.VmListMetadata;
 import org.opennms.nutanix.client.v3.model.VmNicOutputStatus;
 
+import com.google.common.collect.ImmutableMap;
+
 public class V3ApiClientService implements ApiClientService {
     private final ApiClientExtension apiClient;
     public V3ApiClientService(ApiClientExtension apiClient) {
         this.apiClient = apiClient;
     }
+
+    public final static Map<String, Entity.EntityType> TYPE_MAP = ImmutableMap.<String, Entity.EntityType>builder()
+            .put("node", Entity.EntityType.Host)
+            .put("remote_site", Entity.EntityType.Host)
+            .put("cluster", Entity.EntityType.Cluster)
+            .put("vm", Entity.EntityType.VirtualMachine)
+            .build();
 
     @Override
     public List<VM> getVMS() throws NutanixApiException {
@@ -452,8 +465,53 @@ public class V3ApiClientService implements ApiClientService {
     }
 
     private Alert getFromAlertIntentResource(AlertIntentResource alert) {
-        return Alert.builder().withUuid(alert.getMetadata().getUuid()).withSeverity(alert.getStatus().getResources().getSeverity()).withType(alert.getStatus().getResources().getType()).build();
+        final Alert.Builder builder = Alert.builder()
+                .withUuid(alert.getMetadata().getUuid())
+                .withSeverity(alert.getStatus().getResources().getSeverity())
+                .withAlertType(alert.getStatus().getResources().getType())
+                .withMessage(alert.getStatus().getResources().getDefaultMessage())
+                .withDescr(getDescrFromAlert(alert))
+                .withCreationTime(alert.getStatus().getResources().getCreationTime())
+                .withIsResolved(alert.getStatus().getResources().getResolutionStatus().isIsTrue());
+        alert.getStatus().getResources().getAffectedEntityList()
+                .forEach(
+                        entityInfo ->
+
+                                builder.addAffectedEntity(
+                                        new Entity("COMPLETE",
+                                                entityInfo.getUuid(),
+                                                entityInfo.getName(),
+                                                TYPE_MAP.get(entityInfo.getType())
+                                        )
+                                )
+                );
+        return builder.build();
     }
 
+    public static String getDescrFromAlert(AlertIntentResource alert) {
+        List<String> matchList = new ArrayList<>();
+        Pattern regex = Pattern.compile("\\{(.*?)\\}");
+        Matcher regexMatcher = regex.matcher(alert.getStatus().getResources().getDefaultMessage());
+
+        String descr = alert.getStatus().getResources().getDefaultMessage();
+        while (regexMatcher.find()) {//Finds Matching Pattern in String
+            matchList.add(regexMatcher.group(1));//Fetching Group from String
+        }
+
+        for(String str:matchList) {
+            ParamValue paramValue = alert.getStatus().getResources().getParameters().get(str);
+            String replace = "";
+            if (paramValue.getStringValue() != null)
+                replace = paramValue.getStringValue();
+            else if (paramValue.isBoolValue() != null)
+                replace = paramValue.isBoolValue().toString();
+            else if (paramValue.getIntValue() != null)
+                replace = String.valueOf(paramValue.getIntValue());
+            else if (paramValue.getDoubleValue() != null)
+                replace = String.valueOf(paramValue.getDoubleValue());
+            descr=descr.replace("{"+str+"}",replace);
+        }
+        return descr;
+    }
 
 }
