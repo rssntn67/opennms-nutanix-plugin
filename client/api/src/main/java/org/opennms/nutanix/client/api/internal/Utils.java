@@ -1,7 +1,6 @@
 package org.opennms.nutanix.client.api.internal;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 import com.google.common.base.Strings;
 import com.google.common.net.InetAddresses;
@@ -13,14 +12,13 @@ public class Utils {
         }
 
         try {
-            final InetAddress address = InetAddresses.forString(ip);
-            return address;
+            return InetAddresses.forString(ip);
         } catch (IllegalArgumentException ex) {
             return null;
         }
     }
 
-    public static boolean isIpInSubnet(String ip, String subnet) throws UnknownHostException {
+    public static boolean isIpInSubnet(String ip, String subnet) {
         int a = subnet.lastIndexOf("/");
         InetAddress network = getValidInetAddress(subnet.substring(0,a));
         InetAddress netmask = getValidInetAddress(subnet.substring(a+1));
@@ -36,7 +34,7 @@ public class Utils {
 
         int[] i = new int[4];
         for (int j = 0; j < 4; j++) {
-            i[j] = (int) ((adr[j] < 0) ? (256 + adr[j]) : adr[j]);
+            i[j] = (adr[j] < 0) ? (256 + adr[j]) : adr[j];
         }
         return i[3] + (i[2] << 8) + (i[1] << 16) + (i[0] << 24);
     }

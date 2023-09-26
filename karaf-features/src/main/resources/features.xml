@@ -9,12 +9,14 @@
         <bundle dependency="true">mvn:io.dropwizard.metrics/metrics-core/${metrics.version}</bundle>
         <bundle dependency="true">mvn:javax.ws.rs/javax.ws.rs-api/${jaxrs.version}</bundle>
 
-        <feature version="${project.version}">opennms-plugins-nutanix-client-v08</feature>
-        <feature version="${project.version}">opennms-plugins-nutanix-client-v1</feature>
-        <feature version="${project.version}">opennms-plugins-nutanix-client-v2</feature>
         <feature version="${project.version}">opennms-plugins-nutanix-client-v3</feature>
 
         <bundle>mvn:org.opennms.plugins.nutanix/nutanix-plugin/${project.version}</bundle>
+    </feature>
+
+    <feature name="guava" description="guava" version="${guava.version}">
+        <bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>
+        <bundle dependency="true">mvn:com.google.guava/failureaccess/1.0.1</bundle>
     </feature>
 
     <feature name="jackson" description="jackson" version="${jackson.version}">
@@ -28,6 +30,7 @@
 
     <feature name="opennms-plugins-nutanix-client-v3" description="Nutanix API v3 client" version="${project.version}">
         <feature dependency="true">aries-blueprint</feature>
+        <feature version="${guava.version}" dependency="true">guava</feature>
         <feature version="${jackson.version}" dependency="true">jackson</feature>
         <feature version="${opennms.api.version}" dependency="true">opennms-integration-api</feature>
 
@@ -48,7 +51,7 @@
         <bundle>mvn:org.opennms.plugins.nutanix/nutanix-client-api/${project.version}</bundle>
         <bundle>mvn:org.opennms.plugins.nutanix/nutanix-client-v3/${project.version}</bundle>
     </feature>
-
+<!--
     <feature name="opennms-plugins-nutanix-client-v2" description="Nutanix API v2 client" version="${project.version}">
         <feature dependency="true">aries-blueprint</feature>
         <feature version="${jackson.version}" dependency="true">jackson</feature>
@@ -118,5 +121,5 @@
         <bundle>mvn:org.opennms.plugins.nutanix/nutanix-client-api/${project.version}</bundle>
         <bundle>mvn:org.opennms.plugins.nutanix/nutanix-client-v08/${project.version}</bundle>
     </feature>
-
+-->
 </features>
