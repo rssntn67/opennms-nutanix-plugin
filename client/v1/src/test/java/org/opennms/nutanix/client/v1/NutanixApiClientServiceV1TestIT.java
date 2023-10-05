@@ -24,7 +24,7 @@ import org.opennms.nutanix.client.v1.model.GetAuthDtoConfigAuthConfigDTO;
 import org.opennms.nutanix.client.v1.model.VMEntity;
 import org.opennms.nutanix.client.v1.model.VMCollectionEntity;
 
-public class NutanixApiClientServiceV1Test {
+public class NutanixApiClientServiceV1TestIT {
 
 
     private ApiClientExtention getApiClient() {

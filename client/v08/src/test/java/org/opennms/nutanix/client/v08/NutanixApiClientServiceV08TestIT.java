@@ -27,7 +27,7 @@ import org.opennms.nutanix.client.v08.model.GetBaseEntityCollectionltgetDtoNdfsF
 import org.opennms.nutanix.client.v08.model.GetDtoAcropolisHaConfigDTO;
 import org.opennms.nutanix.client.v08.model.GetDtoAcropolisVolumegroupsVolumeGroupConfigDTO;
 
-public class NutanixApiClientServiceV08Test {
+public class NutanixApiClientServiceV08TestIT {
 
     private ApiClient getApiClient() {
 
