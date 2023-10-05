@@ -18,17 +18,41 @@ import org.opennms.nutanix.client.api.model.VMNic;
 
 public class NutanixApiClientServiceV3TestIT {
 
-    @Test
-    public void testApiProvider() throws NutanixApiException {
-        V3ApiClientProvider provider = new V3ApiClientProvider();
-        ApiClientCredentials credentials = ApiClientCredentials.builder()
+    private ApiClientCredentials getCredentials(String prismUrl) {
+        return ApiClientCredentials.builder()
                 .withUsername(System.getenv("NTX_USER"))
                 .withPassword(System.getenv("NTX_PASS"))
-                .withPrismUrl("https://nutanix.arsinfo.it:9440/")
+                .withPrismUrl(prismUrl)
                 .withIgnoreSslCertificateValidation(true)
                 .withLength(20)
                 .build();
-        ApiClientService service = provider.client(credentials);
+    }
+
+    private ApiClientService getService(String prismUrl) {
+        V3ApiClientProvider provider = new V3ApiClientProvider();
+       return provider.client(getCredentials(prismUrl));
+    }
+
+    @Test
+    public void testValidate() {
+        V3ApiClientProvider provider = new V3ApiClientProvider();
+        Assert.assertTrue(provider.validate(getCredentials("https://nutanix.arsinfo.it:9440/")));
+        Assert.assertTrue(provider.validate(getCredentials("https://nutanix-prod.arsinfo.it:9440/")));
+        Assert.assertTrue(provider.validate(getCredentials("https://nutanix-ntx.arsinfo.it:9440/")));
+        Assert.assertTrue(provider.validate(getCredentials("https://nutanix-ctx.arsinfo.it:9440/")));
+        Assert.assertTrue(provider.validate(getCredentials("https://nutanix-esxi.arsinfo.it:9440/")));
+    }
+
+    @Test
+    public void testApiProvider() throws NutanixApiException {
+        testService(getService("https://nutanix.arsinfo.it:9440/"));
+        testService(getService("https://nutanix-prod.arsinfo.it:9440/"));
+        testService(getService("https://nutanix-ntx.arsinfo.it:9440/"));
+        testService(getService("https://nutanix-ctx.arsinfo.it:9440/"));
+        testService(getService("https://nutanix-esxi.arsinfo.it:9440/"));
+    }
+
+    public void testService(ApiClientService service) throws NutanixApiException {
         Map<String, String> clusterExternalSubnetMap = new HashMap<>();
         for (Cluster cluster : service.getClusters()) {
             System.out.println(cluster.name);
@@ -96,45 +120,14 @@ public class NutanixApiClientServiceV3TestIT {
         System.out.println(vlanIpMap);
     }
     @Test
-    public void testValidate() {
-        V3ApiClientProvider provider = new V3ApiClientProvider();
-        ApiClientCredentials credentials = ApiClientCredentials.builder()
-                .withUsername(System.getenv("NTX_USER"))
-                .withPassword(System.getenv("NTX_PASS"))
-                .withPrismUrl("https://nutanix.arsinfo.it:9440/")
-                .withIgnoreSslCertificateValidation(true)
-                .withLength(20)
-                .build();
-        Assert.assertTrue(provider.validate(credentials));
-
-    }
-
-    @Test
     public void testApiServiceVmGet() throws NutanixApiException {
-        String uuid="c6b636e7-c69a-42dd-89f8-5d237e6e8f52";
-        V3ApiClientProvider provider = new V3ApiClientProvider();
-        ApiClientCredentials credentials = ApiClientCredentials.builder()
-                .withUsername(System.getenv("NTX_USER"))
-                .withPassword(System.getenv("NTX_PASS"))
-                .withPrismUrl("https://nutanix.arsinfo.it:9440/")
-                .withIgnoreSslCertificateValidation(true)
-                .withLength(20)
-                .build();
-        ApiClientService service = provider.client(credentials);
-        VM vm = service.getVM(uuid);
+        ApiClientService service = getService("https://nutanix.arsinfo.it:9440/");
+        VM vm = service.getVM("c6b636e7-c69a-42dd-89f8-5d237e6e8f52");
         Assert.assertEquals("ON", vm.powerState);
     }
     @Test
     public void testApiProviderGetCluster() throws NutanixApiException {
-        V3ApiClientProvider provider = new V3ApiClientProvider();
-        ApiClientCredentials credentials = ApiClientCredentials.builder()
-                .withUsername(System.getenv("NTX_USER"))
-                .withPassword(System.getenv("NTX_PASS"))
-                .withPrismUrl("https://nutanix.arsinfo.it:9440/")
-                .withIgnoreSslCertificateValidation(true)
-                .withLength(20)
-                .build();
-        ApiClientService service = provider.client(credentials);
+        ApiClientService service = getService("https://nutanix.arsinfo.it:9440/");
         Cluster cluster = service.getCluster("00059dd3-26be-0d72-5228-ac1f6b357222");
         Assert.assertTrue(cluster.isAvailable);
     }
