@@ -64,7 +64,7 @@ public class Cluster extends Entity {
         this.smtpServer = Objects.requireNonNull(builder.smtpServer);
         this.ntpServerIpList = Objects.requireNonNull(builder.ntpServerIpList);
         this.externalSubnet = Objects.requireNonNull(builder.externalSubnet);
-        this.externalDataServicesIp = Objects.requireNonNull(builder.externalDataServicesIp);
+        this.externalDataServicesIp = builder.externalDataServicesIp;
         this.nameServerIpList = Objects.requireNonNull(builder.nameServerIpList);
         this.httpProxyWhitelist = Objects.requireNonNull(builder.httpProxyWhitelist);
         this.internalSubnet = Objects.requireNonNull(builder.internalSubnet);

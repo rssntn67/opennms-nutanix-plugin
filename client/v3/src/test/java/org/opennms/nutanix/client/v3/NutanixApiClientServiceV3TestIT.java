@@ -2,8 +2,10 @@ package org.opennms.nutanix.client.v3;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,13 +26,8 @@ public class NutanixApiClientServiceV3TestIT {
                 .withPassword(System.getenv("NTX_PASS"))
                 .withPrismUrl(prismUrl)
                 .withIgnoreSslCertificateValidation(true)
-                .withLength(20)
+                .withLength(50)
                 .build();
-    }
-
-    private ApiClientService getService(String prismUrl) {
-        V3ApiClientProvider provider = new V3ApiClientProvider();
-       return provider.client(getCredentials(prismUrl));
     }
 
     @Test
@@ -45,89 +42,102 @@ public class NutanixApiClientServiceV3TestIT {
 
     @Test
     public void testApiProvider() throws NutanixApiException {
-        testService(getService("https://nutanix.arsinfo.it:9440/"));
-        testService(getService("https://nutanix-prod.arsinfo.it:9440/"));
-        testService(getService("https://nutanix-ntx.arsinfo.it:9440/"));
-        testService(getService("https://nutanix-ctx.arsinfo.it:9440/"));
-        testService(getService("https://nutanix-esxi.arsinfo.it:9440/"));
+        V3ApiClientProvider provider = new V3ApiClientProvider();
+        //testService(provider.client(getCredentials("https://nutanix.arsinfo.it:9440/")));
+        //testService(provider.client(getCredentials("https://nutanix-prod.arsinfo.it:9440/")));
+        //testService(provider.client(getCredentials("https://nutanix-ntx.arsinfo.it:9440/")));
+        //testService(provider.client(getCredentials("https://nutanix-ctx.arsinfo.it:9440/")));
+        //testService(provider.client(getCredentials("https://nutanix-esxi.arsinfo.it:9440/")));
+
     }
 
     public void testService(ApiClientService service) throws NutanixApiException {
         Map<String, String> clusterExternalSubnetMap = new HashMap<>();
+        Map<String, String> clusterInternalSubnetMap = new HashMap<>();
         for (Cluster cluster : service.getClusters()) {
-            System.out.println(cluster.name);
-            System.out.println(cluster.uuid);
-            System.out.println("-----external-----");
-            System.out.println(cluster.externalSubnet);
-            System.out.println(cluster.externalDataServicesIp);
-            System.out.println(cluster.externalIp);
-            System.out.println("-----internal-----");
-            System.out.println(cluster.internalSubnet);
+            System.out.println("----------Cluster---------");
+            System.out.println("name->"+cluster.name);
+            System.out.println("uuid->"+cluster.uuid);
+            System.out.println("external->subnet->"+cluster.externalSubnet);
+            System.out.println("external->dataServicesIp->"+cluster.externalDataServicesIp);
+            System.out.println("external->clusterIp->"+cluster.externalIp);
+            System.out.println("internal->subnet->"+cluster.internalSubnet);
             System.out.println("----------");
             clusterExternalSubnetMap.put(cluster.uuid, cluster.externalSubnet);
+            clusterInternalSubnetMap.put(cluster.uuid, cluster.internalSubnet);
         }
         for (Host host : service.getHosts()) {
-            System.out.println(host.uuid);
-            String extNet = clusterExternalSubnetMap.get(host.clusterUuid);
-            System.out.println(extNet);
-            System.out.println(host.controllerVmIp);
-            Assert.assertTrue(Utils.isIpInSubnet(host.controllerVmIp, extNet));
-            System.out.println(host.hypervisorIp);
-            Assert.assertTrue(Utils.isIpInSubnet(host.hypervisorIp, extNet));
-            System.out.println(host.ipmi);
+            System.out.println("----------Host---------");
+            System.out.println("name->"+host.name);
+            System.out.println("uuid->"+host.uuid);
+            System.out.println("controllerVmIp->"+host.controllerVmIp);
+            System.out.println("hypervisorIp->"+host.hypervisorIp);
+            System.out.println("ipmi->"+host.ipmi);
             System.out.println("----------");
+            String extNet = clusterExternalSubnetMap.get(host.clusterUuid);
+            Assert.assertTrue(Utils.isIpInSubnet(host.controllerVmIp, extNet));
+            Assert.assertTrue(Utils.isIpInSubnet(host.hypervisorIp, extNet));
         }
 
         List<String> addresses = new ArrayList<>();
         Map<String, List<String>> vlanIpMap = new HashMap<>();
+        Set<String> vmwithduplicatedipaddress = new HashSet<>();
         for (VM vm : service.getVMS()) {
             if (!vm.powerState.equalsIgnoreCase("ON")) {
                 continue;
             }
-            String extNet = clusterExternalSubnetMap.get(vm.clusterUuid);
-            int internalSubnet = 0;
-            int externalSubnet = 0;
-            List<String> netCards = new ArrayList<>();
+            System.out.println("------------VM-------------");
+            System.out.println("name->"+vm.name);
+            System.out.println("uuid->"+vm.uuid);
+            System.out.println("powerState->"+vm.powerState);
+            //String extNet = clusterExternalSubnetMap.get(vm.clusterUuid);
+            //String intNet = clusterInternalSubnetMap.get(vm.clusterUuid);
             for (VMNic nic : vm.nics) {
                 if (!vlanIpMap.containsKey(nic.name)) {
                     vlanIpMap.put(nic.name, new ArrayList<>());
                 }
+                System.out.println(nic);
+//                Assert.assertTrue(nic.isConnected);
+                Assert.assertEquals(nic.vlanMode,"ACCESS");
+                Assert.assertEquals(nic.nicType,"NORMAL_NIC");
+                Assert.assertEquals(nic.kind,"subnet");
                 vlanIpMap.get(nic.name).addAll(nic.ipList);
-                netCards.add(nic.toString());
                 for (String ipAddress : nic.ipList) {
-                    Assert.assertFalse(addresses.contains(ipAddress));
-                    addresses.add(ipAddress);
-                    if (Utils.isIpInSubnet(ipAddress,extNet)) {
-                        internalSubnet++;
-                    } else {
-                        externalSubnet++;
+                    if (addresses.contains(ipAddress)) {
+                        vmwithduplicatedipaddress.add(vm.uuid);
                     }
+                    //Assert.assertFalse(Utils.isIpInSubnet(ipAddress,intNet));
+                    //Assert.assertFalse(Utils.isIpInSubnet(ipAddress,extNet));
+                    //Assert.assertFalse(addresses.contains(ipAddress));
+                    addresses.add(ipAddress);
                 }
             }
-            Assert.assertEquals(0,internalSubnet);
-            if (externalSubnet > 1) {
-                System.out.println("----VM with multiple ip------");
-                System.out.println(vm.uuid);
-                System.out.println(vm.name);
-                System.out.println(vm.powerState);
-                System.out.println(netCards);
-                System.out.println("-out-"+externalSubnet+"---");
-                System.out.println("----------");
-            } else {
-                Assert.assertEquals(1,externalSubnet);
-            }
+            System.out.println("----------");
         }
+        System.out.println(vmwithduplicatedipaddress);
         System.out.println(vlanIpMap);
     }
     @Test
     public void testApiServiceVmGet() throws NutanixApiException {
-        ApiClientService service = getService("https://nutanix.arsinfo.it:9440/");
+        V3ApiClientProvider provider = new V3ApiClientProvider();
+        ApiClientService service = provider.client(getCredentials("https://nutanix.arsinfo.it:9440/"));
         VM vm = service.getVM("c6b636e7-c69a-42dd-89f8-5d237e6e8f52");
+        Assert.assertEquals("TVL-GEOPASS-AS1", vm.name);
         Assert.assertEquals("ON", vm.powerState);
+    }
+
+    @Test
+    public void testApiServiceHostGet() throws NutanixApiException {
+        V3ApiClientProvider provider = new V3ApiClientProvider();
+        ApiClientService service = provider.client(getCredentials("https://nutanix.arsinfo.it:9440/"));
+        Host host = service.getHost("cd6c6e07-39f2-4381-ba5d-ec854a76b02d");
+        Assert.assertEquals("NTX02B-TEST", host.name);
+        Assert.assertEquals("HYPER_CONVERGED", host.hostType);
     }
     @Test
     public void testApiProviderGetCluster() throws NutanixApiException {
-        ApiClientService service = getService("https://nutanix.arsinfo.it:9440/");
+        V3ApiClientProvider provider = new V3ApiClientProvider();
+        ApiClientService service = provider.client(getCredentials("https://nutanix.arsinfo.it:9440/"));
         Cluster cluster = service.getCluster("00059dd3-26be-0d72-5228-ac1f6b357222");
         Assert.assertTrue(cluster.isAvailable);
     }

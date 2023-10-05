@@ -293,7 +293,7 @@ public class V3ApiClientService implements ApiClientService {
                 clustersListIntentResponse.getEntities().forEach(cluster -> clusters.add(getFromClusterIntentResource(cluster)));
                 offset+=clustersListIntentResponse.getEntities().size();
             } catch (Exception e) {
-                throw new NutanixApiException(e.getMessage());
+                throw new NutanixApiException(e.getMessage(), e);
             }
         } while (clusters.size() < total );
         return clusters;
@@ -339,6 +339,8 @@ public class V3ApiClientService implements ApiClientService {
     }
 
     private List<ClusterHttpWhiteProxy> getFromClusterWhiteProxyList(List<HttpProxyWhitelist> httpProxyWhitelist) {
+        if (httpProxyWhitelist == null)
+            return new ArrayList<>();
         return
                 httpProxyWhitelist.stream()
                         .map(h -> ClusterHttpWhiteProxy
@@ -453,7 +455,7 @@ public class V3ApiClientService implements ApiClientService {
                 alertsListIntentResponse.getEntities().forEach(alert -> alerts.add(getFromAlertIntentResource(alert)));
                 offset+=alertsListIntentResponse.getEntities().size();
             } catch (Exception e) {
-                throw new NutanixApiException(e.getMessage());
+                throw new NutanixApiException(e.getMessage(), e);
             }
         } while (alerts.size() < total );
         return alerts;    }

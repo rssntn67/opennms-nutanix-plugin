@@ -38,6 +38,8 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 
+import lombok.Getter;
+
 public class NutanixRequisitionProvider implements RequisitionProvider {
 
     public final static String TYPE = "nutanix";
@@ -260,11 +262,6 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         .setKey("externalIp")
                         .setValue(cluster.externalIp)
                         .build())
-                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                        .setContext(NUTANIX_METADATA_CONTEXT)
-                        .setKey("externalDataServicesIp")
-                        .setValue(cluster.externalDataServicesIp)
-                        .build())
 
                 .addInterface(
                         ImmutableRequisitionInterface.newBuilder()
@@ -286,6 +283,13 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         .build())
                 .addCategory("NutanixCluster");
 
+        if (cluster.externalDataServicesIp != null) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("externalDataServicesIp")
+                    .setValue(cluster.externalDataServicesIp)
+                    .build());
+        }
         if (cluster.smtpServer.isBackup != null) {
             node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
                     .setContext(NUTANIX_METADATA_CONTEXT)
@@ -840,15 +844,20 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
 
         private String foreignSource;
 
+        @Getter
         private String alias;
 
+        @Getter
         private String prismUrl;
 
+        @Getter
         private String username;
 
+        @Getter
         private String password;
 
         private boolean ignoreSslCertificateValidation;
+        @Getter
         private String location;
 
         private int length;
@@ -872,26 +881,6 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
 
         public void setForeignSource(final String foreignSource) {
             this.foreignSource = foreignSource;
-        }
-
-        public String getAlias() {
-            return this.alias;
-        }
-
-        public String getPrismUrl() {
-            return this.prismUrl;
-        }
-
-        public String getUsername() {
-            return this.username;
-        }
-
-        public String getPassword() {
-            return this.password;
-        }
-
-        public String getLocation() {
-            return this.location;
         }
 
         public void setLocation(String location) {
@@ -919,6 +908,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
         }
     }
 
+    @Getter
     public class RequestContext {
         private final Request request;
 
@@ -934,10 +924,6 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                     .withIgnoreSslCertificateValidation(this.request.ignoreSslCertificateValidation)
                     .withLength(this.request.length)
                     .build());
-        }
-
-        public Request getRequest() {
-            return this.request;
         }
 
         public String getForeignSource() {
