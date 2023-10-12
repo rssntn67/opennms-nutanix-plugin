@@ -3,8 +3,10 @@ package org.opennms.nutanix.requisition;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import org.opennms.integration.api.v1.config.requisition.Requisition;
 import org.opennms.integration.api.v1.config.requisition.RequisitionNode;
@@ -743,7 +745,8 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                             .build());
         }
         int nicIndex = 0;
-        boolean addVMMonitor=true;
+        Set<String> ipaddresses = new HashSet<>();
+        Map<String, VMNic> ipAddressToNicMap = new HashMap<>();
         for (VMNic nic: vm.nics) {
             node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
                     .setContext(NUTANIX_METADATA_CONTEXT)
@@ -777,23 +780,32 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                     .build());
             node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
                     .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("nic."+nicIndex+".ipList")
+                    .setValue(nic.ipList.toString())
+                    .build());
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
                     .setKey("nic."+nicIndex+".isConnected")
                     .setValue(String.valueOf(nic.isConnected))
                     .build());
-            for (String ipAddress: nic.ipList) {
-                final var iface = ImmutableRequisitionInterface.newBuilder()
-                        .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(ipAddress)));
-                iface.addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                        .setContext(NUTANIX_METADATA_CONTEXT)
-                        .setKey("nicIndex")
-                        .setValue(String.valueOf(nicIndex)).build());
-                if (nic.isConnected && addVMMonitor && !Utils.isIpInSubnet(ipAddress,clusterInternalSubnet )) {
-                    iface.addMonitoredService("NutanixVM");
-                    addVMMonitor=false;
-                }
-                iface.addMonitoredService("NutanixEntity");
-                node.addInterface(iface.build());
+            ipaddresses.addAll(nic.ipList);
+            nic.ipList.forEach(ip -> ipAddressToNicMap.put(ip, nic));
+        }
+        boolean addVMMonitor=true;
+        for (String ipAddress: ipaddresses) {
+            VMNic nic = ipAddressToNicMap.get(ipAddress);
+            final var iface = ImmutableRequisitionInterface.newBuilder()
+                    .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(ipAddress)));
+            iface.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("nicName")
+                    .setValue(nic.name).build());
+            if (nic.isConnected && addVMMonitor && !Utils.isIpInSubnet(ipAddress,clusterInternalSubnet )) {
+                iface.addMonitoredService("NutanixVM");
+                addVMMonitor=false;
             }
+            iface.addMonitoredService("NutanixEntity");
+            node.addInterface(iface.build());
         }
         return node.build();
     }
