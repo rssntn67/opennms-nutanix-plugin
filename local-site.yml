@@ -8,7 +8,7 @@ content:
       branches: HEAD
       tags:
         - v*
-        - '!v0.1.0.alpha0'
+        - '!v2.0.0.alpha0'
       start_path: docs
 ui:
   bundle:
