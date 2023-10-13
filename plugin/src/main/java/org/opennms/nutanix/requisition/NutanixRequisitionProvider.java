@@ -242,16 +242,6 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         .build())
                 .addMetaData(ImmutableRequisitionMetaData.newBuilder()
                         .setContext(NUTANIX_METADATA_CONTEXT)
-                        .setKey("smtpServer.emailAddress")
-                        .setValue(cluster.smtpServer.emailAddress)
-                        .build())
-                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                        .setContext(NUTANIX_METADATA_CONTEXT)
-                        .setKey("smtpServer.type")
-                        .setValue(cluster.smtpServer.type)
-                        .build())
-                .addMetaData(ImmutableRequisitionMetaData.newBuilder()
-                        .setContext(NUTANIX_METADATA_CONTEXT)
                         .setKey("ntpServerIpList")
                         .setValue(cluster.ntpServerIpList.toString())
                         .build())
@@ -290,6 +280,28 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         .setValue(cluster.internalSubnet)
                         .build())
                 .addCategory("NutanixCluster");
+
+        if (cluster.smtpServer.emailAddress != null) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("smtpServer.emailAddress")
+                    .setValue(cluster.smtpServer.emailAddress)
+                    .build());
+        }
+        if (cluster.smtpServer.emailAddress != null) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("smtpServer.type")
+                    .setValue(cluster.smtpServer.type)
+                    .build());
+        }
+        if (cluster.smtpServer.name != null) {
+            node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
+                    .setContext(NUTANIX_METADATA_CONTEXT)
+                    .setKey("smtpServer.name")
+                    .setValue(cluster.smtpServer.name)
+                    .build());
+        }
 
         if (cluster.externalDataServicesIp != null) {
             node.addMetaData(ImmutableRequisitionMetaData.newBuilder()

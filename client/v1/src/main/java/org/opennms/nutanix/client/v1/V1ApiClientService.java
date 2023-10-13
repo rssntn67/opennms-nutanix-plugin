@@ -65,33 +65,33 @@ public class V1ApiClientService implements ApiClientService {
 
     @Override
     public List<Host> getHosts() throws NutanixApiException {
-        throw new NutanixApiException("not supported");
+        throw new NutanixApiException("not supported", new UnsupportedOperationException());
     }
 
     @Override
     public Host getHost(String uuid) throws NutanixApiException {
-        throw new NutanixApiException("not supported");
+        throw new NutanixApiException("not supported", new UnsupportedOperationException());
     }
 
     @Override
     public List<Cluster> getClusters() throws NutanixApiException {
-        throw new NutanixApiException("not supported");
+        throw new NutanixApiException("not supported", new UnsupportedOperationException());
     }
 
     @Override
     public Cluster getCluster(String uuid) throws NutanixApiException {
-        throw new NutanixApiException("not supported");
+        throw new NutanixApiException("not supported", new UnsupportedOperationException());
     }
 
     @Override
     public List<Alert> getAlerts() throws NutanixApiException {
-        throw new NutanixApiException("not supported");
+        throw new NutanixApiException("not supported", new UnsupportedOperationException());
 
     }
 
     @Override
     public MetricsCluster getClusterMetric(String uuid) throws NutanixApiException {
-        throw new NutanixApiException("not supported");
+        throw new NutanixApiException("not supported", new UnsupportedOperationException());
     }
 
 
