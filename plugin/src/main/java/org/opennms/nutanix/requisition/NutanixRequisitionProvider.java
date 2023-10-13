@@ -260,7 +260,6 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         .setKey("externalIp")
                         .setValue(cluster.externalIp)
                         .build())
-
                 .addInterface(
                         ImmutableRequisitionInterface.newBuilder()
                                 .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(cluster.externalIp)))
@@ -269,11 +268,6 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                                 .addMonitoredService("NutanixEntity")
                                 .addMonitoredService("NutanixCluster")
                                 .build())
-                .addInterface(
-                        ImmutableRequisitionInterface.newBuilder()
-                                .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(cluster.externalDataServicesIp)))
-                                .setDescription("ISCSI Data Services IP")
-                                .build())
                 .addMetaData(ImmutableRequisitionMetaData.newBuilder()
                         .setContext(NUTANIX_METADATA_CONTEXT)
                         .setKey("internalSubnet")
@@ -281,6 +275,13 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                         .build())
                 .addCategory("NutanixCluster");
 
+        if (cluster.externalDataServicesIp != null) {
+            node.addInterface(
+                    ImmutableRequisitionInterface.newBuilder()
+                            .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(cluster.externalDataServicesIp)))
+                            .setDescription("ISCSI Data Services IP")
+                            .build());
+        }
         if (cluster.smtpServer.emailAddress != null) {
             node.addMetaData(ImmutableRequisitionMetaData.newBuilder()
                     .setContext(NUTANIX_METADATA_CONTEXT)
@@ -566,7 +567,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
         node.addAsset("category", "NutanixHost");
         node.addAsset("cpu", host.cpuModel);
         node.addAsset("ram",  host.memoryCapacityMib + "MB");
-        node.addAsset("serialnumber", host.serialNumber);
+        node.addAsset("serialNumber", host.serialNumber);
 
         final var controllerVmIface = ImmutableRequisitionInterface.newBuilder()
                 .setIpAddress(Objects.requireNonNull(Utils.getValidInetAddress(host.controllerVmIp)))
