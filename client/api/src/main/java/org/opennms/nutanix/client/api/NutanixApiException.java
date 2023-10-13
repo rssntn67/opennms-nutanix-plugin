@@ -1,39 +1,49 @@
-/*******************************************************************************
- * This file is part of OpenNMS(R).
- *
- * Copyright (C) 2023 The OpenNMS Group, Inc.
- * OpenNMS(R) is Copyright (C) 1999-2023 The OpenNMS Group, Inc.
- *
- * OpenNMS(R) is a registered trademark of The OpenNMS Group, Inc.
- *
- * OpenNMS(R) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published
- * by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version.
- *
- * OpenNMS(R) is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with OpenNMS(R).  If not, see:
- *      http://www.gnu.org/licenses/
- *
- * For more information contact:
- *     OpenNMS(R) Licensing <license@opennms.org>
- *     http://www.opennms.org/
- *     http://www.opennms.com/
- *******************************************************************************/
-
 package org.opennms.nutanix.client.api;
 
-public class NutanixApiException extends Exception{
-    public NutanixApiException(final String message) {
-        super(message);
+import java.util.List;
+import java.util.Map;
+
+public class NutanixApiException extends Exception {
+
+    private int code = 0;
+    private Map<String, List<String>> responseHeaders = null;
+    private String responseBody = null;
+
+    public NutanixApiException(String message, Throwable throwable, int code, Map<String, List<String>> responseHeaders, String responseBody) {
+        super(message, throwable);
+        this.code = code;
+        this.responseHeaders = responseHeaders;
+        this.responseBody = responseBody;
     }
 
-    public NutanixApiException(final String message, final Throwable cause) {
-        super(message, cause);
+    public NutanixApiException(String message, Throwable throwable) {
+        super(message,throwable);
+    }
+
+    /**
+     * Get the HTTP status code.
+     *
+     * @return HTTP status code
+     */
+    public int getCode() {
+        return code;
+    }
+
+    /**
+     * Get the HTTP response headers.
+     *
+     * @return A map of list of string
+     */
+    public Map<String, List<String>> getResponseHeaders() {
+        return responseHeaders;
+    }
+
+    /**
+     * Get the HTTP response body.
+     *
+     * @return Response body in the form of string
+     */
+    public String getResponseBody() {
+        return responseBody;
     }
 }

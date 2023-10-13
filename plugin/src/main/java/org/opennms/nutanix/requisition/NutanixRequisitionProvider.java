@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.opennms.integration.api.v1.config.requisition.Requisition;
 import org.opennms.integration.api.v1.config.requisition.RequisitionNode;
@@ -38,7 +39,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Strings;
 
 import lombok.Getter;
 
@@ -59,6 +59,8 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
     public final static String PARAMETER_IMPORT_HOSTS ="importHosts";
 
     public final static String PARAMETER_IMPORT_CLUSTERS="importClusters";
+
+    public final static String PARAMETER_MATCH_VM="matchVM";
 
     private final NodeDao nodeDao;
 
@@ -86,26 +88,30 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                 .orElseThrow(() -> new NullPointerException("Connection not found for alias: " + alias));
 
         final var request = new Request(connection);
-        request.setLocation(location);
+        request.location=location;
 
         if (parameters.containsKey(PARAMETER_FOREIGN_SOURCE)) {
-            request.setForeignSource(parameters.get(PARAMETER_FOREIGN_SOURCE));
+            request.foreignSource=parameters.get(PARAMETER_FOREIGN_SOURCE);
         }
 
         if (parameters.containsKey(PARAMETER_IMPORT_VMS)) {
-            request.setImportVms(Boolean.parseBoolean(parameters.get(PARAMETER_IMPORT_VMS)));
+            request.importVms=Boolean.parseBoolean(parameters.get(PARAMETER_IMPORT_VMS));
         }
 
         if (parameters.containsKey(PARAMETER_IMPORT_ALL_VMS)) {
-            request.setImportAllVms(Boolean.parseBoolean(parameters.get(PARAMETER_IMPORT_ALL_VMS)));
+            request.importAllVms=Boolean.parseBoolean(parameters.get(PARAMETER_IMPORT_ALL_VMS));
         }
 
         if (parameters.containsKey(PARAMETER_IMPORT_HOSTS)) {
-            request.setImportHosts(Boolean.parseBoolean(parameters.get(PARAMETER_IMPORT_HOSTS)));
+            request.importHosts=Boolean.parseBoolean(parameters.get(PARAMETER_IMPORT_HOSTS));
         }
 
         if (parameters.containsKey(PARAMETER_IMPORT_CLUSTERS)) {
-            request.setImportClusters(Boolean.parseBoolean(parameters.get(PARAMETER_IMPORT_CLUSTERS)));
+            request.importClusters=Boolean.parseBoolean(parameters.get(PARAMETER_IMPORT_CLUSTERS));
+        }
+
+        if (parameters.containsKey(PARAMETER_MATCH_VM)) {
+            request.matchVM=parameters.get(PARAMETER_MATCH_VM);
         }
 
         return request;
@@ -813,7 +819,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
         var request = (Request) context.getRequest();
 
         final var requisition = ImmutableRequisition.newBuilder()
-                .setForeignSource(context.getForeignSource());
+                .setForeignSource(context.request.foreignSource);
 
         ApiClientService apiClientService = context.getClient();
         Map<String,String> clusterUuidToNameMap = new HashMap<>();
@@ -836,6 +842,8 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
             for (VM vm: apiClientService.getVMS()) {
                 if (!request.importAllVms && !vm.powerState.equalsIgnoreCase("ON"))
                     continue;
+                if (request.matchVM != null && !Pattern.compile(request.matchVM).matcher(vm.name).matches())
+                    continue;
                 try {
                     requisition.addNode(getVMNode(vm, context, clusterUuidToInternalMap.get(vm.clusterUuid)));
                 } catch (UnknownHostException e) {
@@ -856,21 +864,18 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
 
         private String foreignSource;
 
-        @Getter
         private String alias;
 
-        @Getter
         private String prismUrl;
 
-        @Getter
         private String username;
 
-        @Getter
         private String password;
 
         private boolean ignoreSslCertificateValidation;
-        @Getter
         private String location;
+
+        private String matchVM;
 
         private int length;
 
@@ -884,40 +889,10 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
             this.password = Objects.requireNonNull(connection.getPassword());
             this.ignoreSslCertificateValidation = connection.isIgnoreSslCertificateValidation();
             this.length = connection.getLength();
+            this.foreignSource = String.format("%s-%s", TYPE, this.alias);
         }
 
 
-        public String getForeignSource() {
-            return Strings.isNullOrEmpty(this.foreignSource) ? this.getDefaultForeignSource() : this.foreignSource;
-        }
-
-        public void setForeignSource(final String foreignSource) {
-            this.foreignSource = foreignSource;
-        }
-
-        public void setLocation(String location) {
-            this.location = Objects.requireNonNull(location);
-        }
-
-        public void setImportVms(boolean importVms) {
-            this.importVms = importVms;
-        }
-
-        public void setImportHosts(boolean importHosts) {
-            this.importHosts = importHosts;
-        }
-
-        public void setImportClusters(boolean importClusters) {
-            this.importClusters = importClusters;
-        }
-
-        public void setImportAllVms(boolean importAllVms) {
-            this.importAllVms = importAllVms;
-        }
-
-        protected String getDefaultForeignSource() {
-            return String.format("%s-%s", TYPE, this.getAlias());
-        }
     }
 
     @Getter
@@ -930,24 +905,20 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
 
         public ApiClientService getClient() throws NutanixApiException {
             return clientManager.getClient(ApiClientCredentials.builder()
-                    .withPrismUrl(this.request.getPrismUrl())
-                    .withUsername(this.request.getUsername())
-                    .withPassword(this.request.getPassword())
+                    .withPrismUrl(this.request.prismUrl)
+                    .withUsername(this.request.username)
+                    .withPassword(this.request.password)
                     .withIgnoreSslCertificateValidation(this.request.ignoreSslCertificateValidation)
                     .withLength(this.request.length)
                     .build());
         }
 
-        public String getForeignSource() {
-            return this.request.getForeignSource();
-        }
-
         public String getAlias() {
-            return this.request.getAlias();
+            return this.request.alias;
         }
 
         public String getLocation() {
-            return this.request.getLocation();
+            return this.request.location;
         }
     }
 

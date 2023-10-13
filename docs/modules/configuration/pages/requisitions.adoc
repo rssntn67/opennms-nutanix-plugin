@@ -22,6 +22,8 @@ The following example creates a VM requisition named `My-Cluster-VMS-Requisition
 opennms:import-requisition nutanix alias=aAlias foreignSource=My-Cluster-VMS-Requisition
 ```
 
+You can specify an additional parameter, `matchVM` (default value null), only vm-name matching reg exp will be imported.
+
 You can specify an additional parameter, `importVms` (default value true), to import or not the powered on vms.
 You can specify an additional parameter, `importHosts` (default value true), to import or not the hosts.
 You can specify an additional parameter, `importClusters` (default value true), to import or not the clusters.

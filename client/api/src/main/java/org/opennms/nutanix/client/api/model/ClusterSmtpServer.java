@@ -4,6 +4,7 @@ public class ClusterSmtpServer {
     public final String emailAddress;
     public final String type;
 
+    public final String name;
     public final String ip;
     public final String fqdn;
     public final Boolean isBackup;
@@ -18,12 +19,28 @@ public class ClusterSmtpServer {
         this.isBackup = builder.isBackup;
         this.port = builder.port;
         this.ipv6 = builder.ipv6;
+        this.name = builder.name;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterSmtpServer{" +
+                "emailAddress='" + emailAddress + '\'' +
+                ", type='" + type + '\'' +
+                ", name='" + name + '\'' +
+                ", ip='" + ip + '\'' +
+                ", fqdn='" + fqdn + '\'' +
+                ", isBackup=" + isBackup +
+                ", port=" + port +
+                ", ipv6='" + ipv6 + '\'' +
+                '}';
     }
 
     public static class Builder {
 
         private String emailAddress;
         private String type;
+        private String name;
 
         private String ip;
         private String fqdn;
@@ -43,6 +60,11 @@ public class ClusterSmtpServer {
 
         public Builder withType(String type) {
             this.type = type;
+            return this;
+        }
+
+        public Builder withName(String name) {
+            this.name = name;
             return this;
         }
 

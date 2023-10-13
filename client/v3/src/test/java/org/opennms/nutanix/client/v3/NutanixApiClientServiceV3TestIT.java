@@ -43,11 +43,11 @@ public class NutanixApiClientServiceV3TestIT {
     @Test
     public void testApiProvider() throws NutanixApiException {
         V3ApiClientProvider provider = new V3ApiClientProvider();
-        //testService(provider.client(getCredentials("https://nutanix.arsinfo.it:9440/")));
-        //testService(provider.client(getCredentials("https://nutanix-prod.arsinfo.it:9440/")));
-        //testService(provider.client(getCredentials("https://nutanix-ntx.arsinfo.it:9440/")));
-        //testService(provider.client(getCredentials("https://nutanix-ctx.arsinfo.it:9440/")));
-        //testService(provider.client(getCredentials("https://nutanix-esxi.arsinfo.it:9440/")));
+        testService(provider.client(getCredentials("https://nutanix.arsinfo.it:9440/")));
+        testService(provider.client(getCredentials("https://nutanix-prod.arsinfo.it:9440/")));
+        testService(provider.client(getCredentials("https://nutanix-ntx.arsinfo.it:9440/")));
+        testService(provider.client(getCredentials("https://nutanix-ctx.arsinfo.it:9440/")));
+        testService(provider.client(getCredentials("https://nutanix-esxi.arsinfo.it:9440/")));
 
     }
 
@@ -62,10 +62,13 @@ public class NutanixApiClientServiceV3TestIT {
             System.out.println("external->dataServicesIp->"+cluster.externalDataServicesIp);
             System.out.println("external->clusterIp->"+cluster.externalIp);
             System.out.println("internal->subnet->"+cluster.internalSubnet);
+            System.out.println("smtpServer->"+cluster.smtpServer);
             System.out.println("----------");
             clusterExternalSubnetMap.put(cluster.uuid, cluster.externalSubnet);
             clusterInternalSubnetMap.put(cluster.uuid, cluster.internalSubnet);
         }
+        System.out.println(clusterInternalSubnetMap);
+        System.out.println(clusterExternalSubnetMap);
         for (Host host : service.getHosts()) {
             System.out.println("----------Host---------");
             System.out.println("name->"+host.name);
@@ -81,41 +84,39 @@ public class NutanixApiClientServiceV3TestIT {
 
         List<String> addresses = new ArrayList<>();
         Map<String, List<String>> vlanIpMap = new HashMap<>();
-        Set<String> vmwithduplicatedipaddress = new HashSet<>();
-        for (VM vm : service.getVMS()) {
-            if (!vm.powerState.equalsIgnoreCase("ON")) {
-                continue;
-            }
-            System.out.println("------------VM-------------");
-            System.out.println("name->"+vm.name);
-            System.out.println("uuid->"+vm.uuid);
-            System.out.println("powerState->"+vm.powerState);
-            //String extNet = clusterExternalSubnetMap.get(vm.clusterUuid);
-            //String intNet = clusterInternalSubnetMap.get(vm.clusterUuid);
-            for (VMNic nic : vm.nics) {
-                if (!vlanIpMap.containsKey(nic.name)) {
-                    vlanIpMap.put(nic.name, new ArrayList<>());
+        Set<String> vmWithDuplicatedIpAddress = new HashSet<>();
+        try {
+            for (VM vm : service.getVMS()) {
+                if (!vm.powerState.equalsIgnoreCase("ON")) {
+                    continue;
                 }
-                System.out.println(nic);
-//                Assert.assertTrue(nic.isConnected);
-                Assert.assertEquals(nic.vlanMode,"ACCESS");
-                Assert.assertEquals(nic.nicType,"NORMAL_NIC");
-                Assert.assertEquals(nic.kind,"subnet");
-                vlanIpMap.get(nic.name).addAll(nic.ipList);
-                for (String ipAddress : nic.ipList) {
-                    if (addresses.contains(ipAddress)) {
-                        vmwithduplicatedipaddress.add(vm.uuid);
+                System.out.println("------------VM-------------");
+                System.out.println("name->" + vm.name);
+                System.out.println("uuid->" + vm.uuid);
+                System.out.println("powerState->" + vm.powerState);
+                for (VMNic nic : vm.nics) {
+                    if (!vlanIpMap.containsKey(nic.name)) {
+                        vlanIpMap.put(nic.name, new ArrayList<>());
                     }
-                    //Assert.assertFalse(Utils.isIpInSubnet(ipAddress,intNet));
-                    //Assert.assertFalse(Utils.isIpInSubnet(ipAddress,extNet));
-                    //Assert.assertFalse(addresses.contains(ipAddress));
-                    addresses.add(ipAddress);
+                    System.out.println(nic);
+                  Assert.assertEquals(nic.vlanMode, "ACCESS");
+                    Assert.assertEquals(nic.nicType, "NORMAL_NIC");
+                    Assert.assertEquals(nic.kind, "subnet");
+                    vlanIpMap.get(nic.name).addAll(nic.ipList);
+                    for (String ipAddress : nic.ipList) {
+                        if (addresses.contains(ipAddress)) {
+                            vmWithDuplicatedIpAddress.add(vm.uuid);
+                        }
+                        addresses.add(ipAddress);
+                    }
                 }
+                System.out.println("----------");
             }
-            System.out.println("----------");
+            System.out.println(vmWithDuplicatedIpAddress);
+            System.out.println(vlanIpMap);
+        } catch (NutanixApiException e) {
+            Assert.assertEquals(403, e.getCode());
         }
-        System.out.println(vmwithduplicatedipaddress);
-        System.out.println(vlanIpMap);
     }
     @Test
     public void testApiServiceVmGet() throws NutanixApiException {

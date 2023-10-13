@@ -27,6 +27,7 @@ import org.opennms.nutanix.client.v3.api.AlertsApi;
 import org.opennms.nutanix.client.v3.api.ClustersApi;
 import org.opennms.nutanix.client.v3.api.HostsApi;
 import org.opennms.nutanix.client.v3.api.VmsApi;
+import org.opennms.nutanix.client.v3.handler.ApiException;
 import org.opennms.nutanix.client.v3.model.AlertIntentResource;
 import org.opennms.nutanix.client.v3.model.AlertListIntentResponse;
 import org.opennms.nutanix.client.v3.model.AlertListMetadata;
@@ -82,6 +83,8 @@ public class V3ApiClientService implements ApiClientService {
                 total = vmListIntentResponse.getMetadata().getTotalMatches();
                 vmListIntentResponse.getEntities().forEach(vm -> vms.add(getFromVmIntentResource(vm)));
                 offset+=vmListIntentResponse.getEntities().size();
+            } catch (ApiException e) {
+                throw new NutanixApiException(e.getMessage(),e,e.getCode(),e.getResponseHeaders(),e.getResponseBody());
             } catch (Exception e) {
                 throw new NutanixApiException(e.getMessage(), e);
             }
@@ -94,6 +97,8 @@ public class V3ApiClientService implements ApiClientService {
         VmsApi vmsApi = new VmsApi(apiClient);
         try {
             return getFromVmIntentResponse(vmsApi.vmsUuidGet(uuid));
+        } catch (ApiException e) {
+            throw new NutanixApiException(e.getMessage(),e,e.getCode(),e.getResponseHeaders(),e.getResponseBody());
         } catch (Exception e) {
             throw new NutanixApiException(e.getMessage(), e);
         }
@@ -204,6 +209,8 @@ public class V3ApiClientService implements ApiClientService {
                 total = hostListIntentResponse.getMetadata().getTotalMatches();
                 hostListIntentResponse.getEntities().forEach(host -> hosts.add(getFromHostIntentResource(host)));
                 offset+= hostListIntentResponse.getEntities().size();
+            } catch (ApiException e) {
+                throw new NutanixApiException(e.getMessage(),e,e.getCode(),e.getResponseHeaders(),e.getResponseBody());
             } catch (Exception e) {
                 throw new NutanixApiException(e.getMessage(), e);
             }
@@ -217,6 +224,8 @@ public class V3ApiClientService implements ApiClientService {
         HostsApi hostsApi = new HostsApi(apiClient);
         try {
             return getFromHostIntentResponse(hostsApi.hostsUuidGet(uuid));
+        } catch (ApiException e) {
+            throw new NutanixApiException(e.getMessage(),e,e.getCode(),e.getResponseHeaders(),e.getResponseBody());
         } catch (Exception e) {
             throw new NutanixApiException(e.getMessage(), e);
         }
@@ -292,6 +301,8 @@ public class V3ApiClientService implements ApiClientService {
                 total = clustersListIntentResponse.getMetadata().getTotalMatches();
                 clustersListIntentResponse.getEntities().forEach(cluster -> clusters.add(getFromClusterIntentResource(cluster)));
                 offset+=clustersListIntentResponse.getEntities().size();
+            } catch (ApiException e) {
+                throw new NutanixApiException(e.getMessage(),e,e.getCode(),e.getResponseHeaders(),e.getResponseBody());
             } catch (Exception e) {
                 throw new NutanixApiException(e.getMessage(), e);
             }
@@ -304,6 +315,8 @@ public class V3ApiClientService implements ApiClientService {
         ClustersApi clustersApi = new ClustersApi(apiClient);
         try {
             return getFromClusterIntentResponse(clustersApi.clustersUuidGet(uuid));
+        } catch (ApiException e) {
+            throw new NutanixApiException(e.getMessage(),e,e.getCode(),e.getResponseHeaders(),e.getResponseBody());
         } catch (Exception e) {
             throw new NutanixApiException(e.getMessage(), e);
         }
@@ -352,9 +365,23 @@ public class V3ApiClientService implements ApiClientService {
     }
 
     private ClusterSmtpServer getFromClusterSmtpServer(SmtpServer smtpServer) {
+        if (smtpServer == null)
+            return ClusterSmtpServer.builder().build();
+        if (smtpServer.getServer() == null )
+            return ClusterSmtpServer.builder()
+                    .withType(smtpServer.getType())
+                    .withEmailAddress(smtpServer.getEmailAddress())
+                    .build();
+        if (smtpServer.getServer().getAddress() == null )
+            return ClusterSmtpServer.builder()
+                    .withType(smtpServer.getType())
+                    .withEmailAddress(smtpServer.getEmailAddress())
+                    .withName(smtpServer.getServer().getName())
+                    .build();
         return ClusterSmtpServer.builder()
                 .withType(smtpServer.getType())
                 .withEmailAddress(smtpServer.getEmailAddress())
+                .withName(smtpServer.getServer().getName())
                 .withIp(smtpServer.getServer().getAddress().getIp())
                 .withFqdn(smtpServer.getServer().getAddress().getFqdn())
                 .withIsBackup(smtpServer.getServer().getAddress().isIsBackup())
@@ -454,6 +481,8 @@ public class V3ApiClientService implements ApiClientService {
                 total = alertsListIntentResponse.getMetadata().getTotalMatches();
                 alertsListIntentResponse.getEntities().forEach(alert -> alerts.add(getFromAlertIntentResource(alert)));
                 offset+=alertsListIntentResponse.getEntities().size();
+            } catch (ApiException e) {
+                throw new NutanixApiException(e.getMessage(),e,e.getCode(),e.getResponseHeaders(),e.getResponseBody());
             } catch (Exception e) {
                 throw new NutanixApiException(e.getMessage(), e);
             }
@@ -462,8 +491,7 @@ public class V3ApiClientService implements ApiClientService {
 
     @Override
     public MetricsCluster getClusterMetric(String uuid) throws NutanixApiException {
-        throw new NutanixApiException("not supported");
-
+        throw new NutanixApiException("Cluster Metric Retrievial not supported, enable SNMP", new UnsupportedOperationException());
     }
 
     private Alert getFromAlertIntentResource(AlertIntentResource alert) {
