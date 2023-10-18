@@ -807,6 +807,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
                     .setKey("nic."+nicIndex+".isConnected")
                     .setValue(String.valueOf(nic.isConnected))
                     .build());
+            nicIndex++;
             ipaddresses.addAll(nic.ipList);
             nic.ipList.forEach(ip -> ipAddressToNicMap.put(ip, nic));
         }
