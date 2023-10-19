@@ -35,13 +35,19 @@ public class ListVMCommand implements Action {
 
         final var table = new ShellTable()
                 .size(session.getTerminal().getWidth() - 1)
-                .column(new Col("Uuid").maxSize(24).bold(true))
-                .column(new Col("Name").maxSize(24));
+                .column(new Col("Uuid").maxSize(36).bold(true))
+                .column(new Col("Name").maxSize(24))
+                .column(new Col("PowerState").maxSize(12))
+                .column(new Col("ClusterName").maxSize(24))
+                .column(new Col("HostName").maxSize(24));
 
         for (final var vm : client.get().getVMS()) {
             final var row = table.addRow();
             row.addContent(vm.uuid);
             row.addContent(vm.name);
+            row.addContent(vm.powerState);
+            row.addContent(vm.clusterName);
+            row.addContent(vm.hostName);
         }
 
         table.print(System.out, true);

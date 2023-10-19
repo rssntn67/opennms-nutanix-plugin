@@ -35,13 +35,20 @@ public class ListClusterCommand implements Action {
 
         final var table = new ShellTable()
                 .size(session.getTerminal().getWidth() - 1)
-                .column(new Col("Uuid").maxSize(24).bold(true))
-                .column(new Col("Name").maxSize(24));
+                .column(new Col("Uuid").maxSize(36).bold(true))
+                .column(new Col("Name").maxSize(24))
+                .column(new Col("IsAvailable").maxSize(12))
+                .column(new Col("OperationMode").maxSize(12))
+                .column(new Col("ExternalIp").maxSize(24));
 
-        for (final var vm : client.get().getClusters()) {
+        for (final var cluster : client.get().getClusters()) {
             final var row = table.addRow();
-            row.addContent(vm.uuid);
-            row.addContent(vm.name);
+            row.addContent(cluster.uuid);
+            row.addContent(cluster.name);
+            row.addContent(cluster.isAvailable);
+            row.addContent(cluster.operationMode);
+            row.addContent(cluster.externalIp);
+            row.addContent();
         }
 
         table.print(System.out, true);
