@@ -853,11 +853,14 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
             }
         }
         if (request.importVms) {
+            LOG.debug("handleRequest: matchVm=?", request.matchVM );
             for (VM vm: apiClientService.getVMS()) {
                 if (!request.importAllVms && !vm.powerState.equalsIgnoreCase("ON"))
                     continue;
-                if (request.matchVM != null && !Pattern.compile(request.matchVM).matcher(vm.name).matches())
+                if (request.matchVM != null && !Pattern.compile(request.matchVM).matcher(vm.name).find()) {
+                    LOG.info("handleRequest: {} do not match RE {}", vm.name, request.matchVM);
                     continue;
+                }
                 try {
                     requisition.addNode(getVMNode(vm, context, clusterUuidToInternalMap.get(vm.clusterUuid)));
                 } catch (UnknownHostException e) {

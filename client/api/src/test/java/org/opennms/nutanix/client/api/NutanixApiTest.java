@@ -30,6 +30,7 @@ package org.opennms.nutanix.client.api;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.regex.Pattern;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -48,5 +49,12 @@ public class NutanixApiTest {
         Assert.assertTrue(vero);
         boolean falso = Utils.isIpInSubnet("10.62.30.166", "10.63.30.0/255.255.255.0");
         Assert.assertFalse(falso);
+    }
+
+    @Test
+    public void testRe() {
+        Assert.assertTrue(Pattern.compile("[ABe][SE-][\\d]").matcher("PVW-CTXLIC-BE1").find());
+        Assert.assertTrue(Pattern.compile("[ABe][SE-][\\d]").matcher("PVW-CTXLIC-AS4").find());
+        Assert.assertTrue(Pattern.compile("[ABe][SE-][\\d]").matcher("PVW-CTXLIe-4").find());
     }
 }
