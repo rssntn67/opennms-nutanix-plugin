@@ -40,7 +40,6 @@ public class AddConnectionCommand implements Action {
     @Argument(index = 4, name = "length", description = "Nutanix Prism API object retrivial length defaults to 20")
     public int length = 20;
 
-
     @Override
     public Object execute() {
         if (this.connectionManager.getConnection(this.alias).isPresent()) {
@@ -55,7 +54,8 @@ public class AddConnectionCommand implements Action {
                                 this.username,
                                 this.password,
                         this.ignoreSslCertificateValidation,
-                        this.length
+                        this.length,
+                        null
         );
         System.err.println("saving: " + connection);
 

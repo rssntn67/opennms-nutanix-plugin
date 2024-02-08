@@ -123,7 +123,6 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
 
         try {
             return this.handleRequest(new RequestContext(request));
-
         } catch (NutanixApiException e) {
             LOG.error("Nutanix Prism communication failed", e);
             throw new RuntimeException("Nutanix prism communication failed", e);
@@ -853,7 +852,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
             }
         }
         if (request.importVms) {
-            LOG.debug("handleRequest: matchVm=?", request.matchVM );
+            LOG.debug("handleRequest: matchVm= {} ", request.matchVM );
             for (VM vm: apiClientService.getVMS()) {
                 if (!request.importAllVms && !vm.powerState.equalsIgnoreCase("ON"))
                     continue;

@@ -70,4 +70,8 @@ public interface Connection {
 
     void delete();
 
+    void setConnectionPool(String connectionPool);
+
+    String getConnectionPool();
+
 }

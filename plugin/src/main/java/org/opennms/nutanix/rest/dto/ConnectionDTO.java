@@ -14,5 +14,6 @@ public class ConnectionDTO {
 
     private Integer length;
     private Boolean ignoreSslCertificateValidation;
+    private String connectionPool;
 
 }

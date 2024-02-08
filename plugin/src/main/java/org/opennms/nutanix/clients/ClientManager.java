@@ -17,8 +17,8 @@ public class ClientManager {
 
     private final ApiClientProvider clientProvider;
 
-    public ClientManager(ApiClientProvider providerA) {
-        clientProvider = Objects.requireNonNull(providerA);
+    public ClientManager(ApiClientProvider provider) {
+        clientProvider = Objects.requireNonNull(provider);
     }
     public Optional<ConnectionValidationError> validate(final ApiClientCredentials credentials) {
         boolean validated = clientProvider.validate(credentials);
@@ -30,7 +30,7 @@ public class ClientManager {
     }
 
 
-    public ApiClientService getClient(ApiClientCredentials credentials) throws NutanixApiException{
+        public ApiClientService getClient(ApiClientCredentials credentials) throws NutanixApiException{
         return clientProvider.client(credentials);
     }
 }

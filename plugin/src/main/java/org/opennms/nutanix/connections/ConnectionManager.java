@@ -1,6 +1,8 @@
 package org.opennms.nutanix.connections;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -12,8 +14,8 @@ import org.opennms.integration.api.v1.runtime.RuntimeInfo;
 import org.opennms.integration.api.v1.scv.Credentials;
 import org.opennms.integration.api.v1.scv.SecureCredentialsVault;
 import org.opennms.integration.api.v1.scv.immutables.ImmutableCredentials;
-import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
+import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.clients.ClientManager;
 
@@ -32,7 +34,7 @@ public class ConnectionManager {
     public static final String USERNAME_KEY = "username";
     public static final String PASSWORD_KEY = "password";
 
-
+    public static final String CONN_POOL_KEY = "connectionPool";
 
 
     private final RuntimeInfo runtimeInfo;
@@ -63,6 +65,21 @@ public class ConnectionManager {
                 .collect(Collectors.toSet());
     }
 
+    public List<Optional<Connection>> getConnectionPool(final String alias) {
+        Optional<Connection> main = getConnection(alias);
+        if (main.isEmpty() || Strings.isNullOrEmpty(main.get().getConnectionPool()))
+            return new ArrayList<>();
+        return getAliases()
+            .stream()
+            .filter(filteredAlias -> !alias.equals(filteredAlias))
+            .map(this::getConnection)
+            .filter(connection ->
+                    connection.isPresent() &&
+                    !Strings.isNullOrEmpty(connection.get().getConnectionPool()) &&
+                    main.get().getConnectionPool().equals(connection.get().getConnectionPool()))
+            .collect(Collectors.toList());
+    }
+
     /**
      * Returns a connection config for the given alias.
      *
@@ -76,8 +93,8 @@ public class ConnectionManager {
         if (credentials == null) {
             return Optional.empty();
         }
-
-        return Optional.of(new ConnectionImpl(alias, ConnectionManager.fromStore(credentials)));
+        ConnectionImpl conn = new ConnectionImpl(alias, fromStore(credentials), getConnectionPoolFromStore(credentials));
+        return Optional.of(conn);
     }
 
     /**
@@ -90,7 +107,7 @@ public class ConnectionManager {
      * @param ignoreSslCerticateValidation          ignore Ssl Certificate Validation
      * @param length         number of object retrieved by the api client
      */
-    public Connection newConnection(final String alias, final String prismUrl, final String username, final String password, final boolean ignoreSslCerticateValidation, final int length) {
+    public Connection newConnection(final String alias, final String prismUrl, final String username, final String password, final boolean ignoreSslCerticateValidation, final int length, final String connectionPool) {
         this.ensureCore();
 
         return new ConnectionImpl(alias, ApiClientCredentials.builder()
@@ -99,7 +116,8 @@ public class ConnectionManager {
                 .withPassword(password)
                 .withIgnoreSslCertificateValidation(ignoreSslCerticateValidation)
                 .withLength(length)
-                .build());
+                .build(),
+                connectionPool);
     }
 
     /**
@@ -140,6 +158,13 @@ public class ConnectionManager {
                 .withIgnoreSslCertificateValidation(connection.isIgnoreSslCertificateValidation())
                 .withLength(connection.getLength())
                 .build();
+    }
+
+    private static String getConnectionPoolFromStore(final Credentials credentials) {
+        if (Strings.isNullOrEmpty(credentials.getAttribute(CONN_POOL_KEY))) {
+            return null;
+        }
+        return credentials.getAttribute(CONN_POOL_KEY);
     }
 
     private static ApiClientCredentials fromStore(final Credentials credentials) {
@@ -184,11 +209,14 @@ public class ConnectionManager {
     private class ConnectionImpl implements Connection {
         private final String alias;
 
+        private String connectionPool;
+
         private ApiClientCredentials credentials;
 
-        private ConnectionImpl(final String alias, final ApiClientCredentials credentials) {
+        private ConnectionImpl(final String alias, final ApiClientCredentials credentials, final String connectionPool) {
             this.alias = Objects.requireNonNull(alias).toLowerCase();
             this.credentials = Objects.requireNonNull(credentials);
+            this.connectionPool = connectionPool;
         }
 
         @Override
@@ -270,14 +298,24 @@ public class ConnectionManager {
             ConnectionManager.this.vault.deleteCredentials(PREFIX + this.alias);
         }
 
+        @Override
+        public void setConnectionPool(String connectionPool) {
+            this.connectionPool=connectionPool;
+        }
+
+        @Override
+        public String getConnectionPool() {
+            return connectionPool;
+        }
+
         private Credentials asCredentials() {
             Map<String,String> credentialMap = new HashMap<>();
             credentialMap.put(PRISM_URL_KEY, this.credentials.prismUrl);
             credentialMap.put(IGNORE_SSL_CERTIFICATE_VALIDATION_KEY, String.valueOf(this.credentials.ignoreSslCertificateValidation));
             credentialMap.put(LENGTH_KEY, this.credentials.length.toString());
+            if (this.connectionPool != null)
+                credentialMap.put(CONN_POOL_KEY, this.connectionPool);
             return new ImmutableCredentials(this.credentials.username, this.credentials.password, credentialMap);
-
-
         }
 
         @Override
@@ -289,7 +327,8 @@ public class ConnectionManager {
                               .add("password", "******")
                               .add(IGNORE_SSL_CERTIFICATE_VALIDATION_KEY, this.credentials.ignoreSslCertificateValidation)
                               .add(LENGTH_KEY, this.credentials.length)
-                    .toString();
+                              .add(CONN_POOL_KEY, this.connectionPool)
+                        .toString();
         }
     }
 

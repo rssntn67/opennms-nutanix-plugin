@@ -83,7 +83,8 @@ public class NutanixRestServiceImpl implements NutanixRestService {
                 connectionDTO.getUsername(),
                 connectionDTO.getPassword(),
                 connectionDTO.getIgnoreSslCertificateValidation(),
-                connectionDTO.getLength()
+                connectionDTO.getLength(),
+                connectionDTO.getConnectionPool()
         );
 
         if (!skipValidation) {
@@ -123,6 +124,7 @@ public class NutanixRestServiceImpl implements NutanixRestService {
         connection.get().setPassword(connectionDTO.getPassword());
         connection.get().setIgnoreSslCertificateValidation(connectionDTO.getIgnoreSslCertificateValidation());
         connection.get().setLength(connectionDTO.getLength());
+        connection.get().setConnectionPool(connectionDTO.getConnectionPool());
 
         if (!skipValidation) {
             final var error = connection.get().validate();

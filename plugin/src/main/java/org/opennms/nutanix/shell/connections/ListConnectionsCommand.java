@@ -24,6 +24,7 @@ public class ListConnectionsCommand implements Action {
         final var table = new ShellTable()
                 .size(session.getTerminal().getWidth() - 1)
                 .column(new Col("alias").maxSize(36))
+                .column(new Col("pool").maxSize(24))
                 .column(new Col("prismUrl").maxSize(72))
                 .column(new Col("username").maxSize(36))
                 .column(new Col("password").maxSize(36))
@@ -36,6 +37,7 @@ public class ListConnectionsCommand implements Action {
                                       .forEach(connection -> {
                                           final var row = table.addRow();
                                           row.addContent(connection.getAlias());
+                                          row.addContent(connection.getConnectionPool());
                                           row.addContent(connection.getPrismUrl());
                                           row.addContent(connection.getUsername());
                                           row.addContent("*****");
