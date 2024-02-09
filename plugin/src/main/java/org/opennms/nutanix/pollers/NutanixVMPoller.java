@@ -5,14 +5,15 @@ import org.opennms.integration.api.v1.pollers.Status;
 import org.opennms.integration.api.v1.pollers.immutables.ImmutablePollerResult;
 import org.opennms.nutanix.client.api.model.VM;
 import org.opennms.nutanix.clients.ClientManager;
+import org.opennms.nutanix.connections.ConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class NutanixVMPoller extends NutanixVMAbstractPoller {
 
     private static final Logger LOG = LoggerFactory.getLogger(NutanixVMPoller.class);
-    public NutanixVMPoller(ClientManager clientManager) {
-        super(clientManager);
+    public NutanixVMPoller(final ConnectionManager connectionManager, final ClientManager clientManager) {
+        super(connectionManager,clientManager);
     }
 
     protected PollerResult poll(final VM vm) {

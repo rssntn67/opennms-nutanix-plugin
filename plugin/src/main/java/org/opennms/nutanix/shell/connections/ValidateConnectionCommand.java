@@ -5,6 +5,7 @@ import org.apache.karaf.shell.api.action.Argument;
 import org.apache.karaf.shell.api.action.Command;
 import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
+import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
 
 @Command(scope = "opennms-nutanix", name = "connection-validate", description = "Validate a connection", detailedDescription = "Validate an existing connection to a nutanix prism")
@@ -13,6 +14,9 @@ public class ValidateConnectionCommand implements Action {
 
     @Reference
     private ConnectionManager connectionManager;
+
+    @Reference
+    private ClientManager clientManager;
 
     @Argument(name = "alias", description = "Alias", required = true)
     public String alias = null;
@@ -25,7 +29,7 @@ public class ValidateConnectionCommand implements Action {
             return null;
         }
 
-        final var error = connection.get().validate();
+        final var error = clientManager.validate(connection.get());
         if (error.isPresent()) {
             System.err.println("Connection invalid: " + error.get().message);
         } else {

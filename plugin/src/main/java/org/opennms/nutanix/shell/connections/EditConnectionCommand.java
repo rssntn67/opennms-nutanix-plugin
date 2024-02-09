@@ -6,6 +6,7 @@ import org.apache.karaf.shell.api.action.Command;
 import org.apache.karaf.shell.api.action.Option;
 import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
+import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
 
 @Command(scope = "opennms-nutanix", name = "connection-edit", description = "Edit a connection", detailedDescription = "Edit an existing connection to a nutanix prism")
@@ -14,6 +15,9 @@ public class EditConnectionCommand implements Action {
 
     @Reference
     private ConnectionManager connectionManager;
+
+    @Reference
+    private ClientManager clientManager;
 
     @Option(name="-f", aliases="--force", description="Skip validation and save the connection as-is")
     public boolean skipValidation = false;
@@ -56,7 +60,7 @@ public class EditConnectionCommand implements Action {
 
 
         if (!this.skipValidation) {
-            final var error = connection.get().validate();
+            final var error = clientManager.validate(connection.get());
             if (error.isPresent()) {
                 System.err.println("Failed to validate credentials: " + error.get().message);
                 return null;

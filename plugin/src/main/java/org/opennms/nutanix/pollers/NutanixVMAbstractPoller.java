@@ -9,12 +9,13 @@ import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Entity;
 import org.opennms.nutanix.client.api.model.VM;
 import org.opennms.nutanix.clients.ClientManager;
+import org.opennms.nutanix.connections.ConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class NutanixVMAbstractPoller extends NutanixAbstractPoller {
-    protected NutanixVMAbstractPoller(final ClientManager clientManager) {
-        super(clientManager);
+    protected NutanixVMAbstractPoller(final ConnectionManager connectionManager, final ClientManager clientManager) {
+        super(connectionManager,clientManager);
     }
 
     private static final Logger LOG = LoggerFactory.getLogger(NutanixVMAbstractPoller.class);

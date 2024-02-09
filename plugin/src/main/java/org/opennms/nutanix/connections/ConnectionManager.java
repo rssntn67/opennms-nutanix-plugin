@@ -15,9 +15,6 @@ import org.opennms.integration.api.v1.scv.Credentials;
 import org.opennms.integration.api.v1.scv.SecureCredentialsVault;
 import org.opennms.integration.api.v1.scv.immutables.ImmutableCredentials;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
-import org.opennms.nutanix.client.api.ApiClientService;
-import org.opennms.nutanix.client.api.NutanixApiException;
-import org.opennms.nutanix.clients.ClientManager;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
@@ -41,14 +38,10 @@ public class ConnectionManager {
 
     private final SecureCredentialsVault vault;
 
-    private final ClientManager clientManager;
-
     public ConnectionManager(final RuntimeInfo runtimeInfo,
-                             final SecureCredentialsVault vault,
-                             final ClientManager clientManager) {
+                             final SecureCredentialsVault vault) {
         this.runtimeInfo = Objects.requireNonNull(runtimeInfo);
         this.vault = Objects.requireNonNull(vault);
-        this.clientManager = Objects.requireNonNull(clientManager);
     }
 
     /**
@@ -65,18 +58,16 @@ public class ConnectionManager {
                 .collect(Collectors.toSet());
     }
 
-    public List<Optional<Connection>> getConnectionPool(final String alias) {
-        Optional<Connection> main = getConnection(alias);
-        if (main.isEmpty() || Strings.isNullOrEmpty(main.get().getConnectionPool()))
+    public List<Optional<Connection>> getConnectionPool(final String poolName) {
+        if (Strings.isNullOrEmpty(poolName))
             return new ArrayList<>();
         return getAliases()
             .stream()
-            .filter(filteredAlias -> !alias.equals(filteredAlias))
             .map(this::getConnection)
             .filter(connection ->
                     connection.isPresent() &&
                     !Strings.isNullOrEmpty(connection.get().getConnectionPool()) &&
-                    main.get().getConnectionPool().equals(connection.get().getConnectionPool()))
+                    poolName.equals(connection.get().getConnectionPool()))
             .collect(Collectors.toList());
     }
 
@@ -137,29 +128,6 @@ public class ConnectionManager {
         connection.get().delete();
         return true;
     }
-
-    public Optional<ApiClientService> getClient(final String alias) throws NutanixApiException {
-        this.ensureCore();
-
-        final var connection = this.getConnection(alias);
-        if (connection.isEmpty()) {
-            return Optional.empty();
-        }
-
-        return Optional.of(this.clientManager.getClient(asNutanixCredentials(connection.get())));
-    }
-
-
-    private static ApiClientCredentials asNutanixCredentials(Connection connection) {
-        return ApiClientCredentials.builder()
-                .withUsername(connection.getUsername())
-                .withPassword(connection.getPassword())
-                .withPrismUrl(connection.getPrismUrl())
-                .withIgnoreSslCertificateValidation(connection.isIgnoreSslCertificateValidation())
-                .withLength(connection.getLength())
-                .build();
-    }
-
     private static String getConnectionPoolFromStore(final Credentials credentials) {
         if (Strings.isNullOrEmpty(credentials.getAttribute(CONN_POOL_KEY))) {
             return null;
@@ -286,11 +254,6 @@ public class ConnectionManager {
         public void save() {
             // Purge cached client with old credentials
             ConnectionManager.this.vault.setCredentials(PREFIX + this.alias, this.asCredentials());
-        }
-
-        @Override
-        public Optional<ConnectionValidationError> validate() {
-            return ConnectionManager.this.clientManager.validate(ConnectionManager.asNutanixCredentials(this));
         }
 
         @Override

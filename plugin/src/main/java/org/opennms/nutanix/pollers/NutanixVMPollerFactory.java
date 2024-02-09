@@ -7,11 +7,11 @@ public class NutanixVMPollerFactory extends NutanixAbstractPoller.Factory<Nutani
 
     public NutanixVMPollerFactory(final ClientManager clientManager,
                                   final ConnectionManager connectionManager) {
-        super(clientManager, connectionManager, NutanixVMPoller.class);
+        super(connectionManager, clientManager, NutanixVMPoller.class);
     }
 
     @Override
-    protected NutanixVMPoller createPoller(final ClientManager clientManager) {
-        return new NutanixVMPoller(clientManager);
+    protected NutanixVMPoller createPoller(final ConnectionManager connectionManager, final ClientManager clientManager) {
+        return new NutanixVMPoller(connectionManager, clientManager);
     }
 }

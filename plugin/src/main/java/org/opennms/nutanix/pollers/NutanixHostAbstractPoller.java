@@ -10,6 +10,7 @@ import org.opennms.nutanix.client.api.internal.Utils;
 import org.opennms.nutanix.client.api.model.Entity;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.clients.ClientManager;
+import org.opennms.nutanix.connections.ConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +18,8 @@ public abstract class NutanixHostAbstractPoller extends NutanixAbstractPoller {
 
     private static final Logger LOG = LoggerFactory.getLogger(NutanixHostAbstractPoller.class);
 
-    protected NutanixHostAbstractPoller(final ClientManager clientManager) {
-        super(clientManager);
+    protected NutanixHostAbstractPoller(final ConnectionManager connectionManager, final ClientManager clientManager) {
+        super(connectionManager,clientManager);
     }
 
     protected abstract PollerResult poll(final Host host) throws NutanixApiException;

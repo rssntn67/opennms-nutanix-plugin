@@ -19,7 +19,6 @@ import org.opennms.integration.api.v1.config.requisition.immutables.ImmutableReq
 import org.opennms.integration.api.v1.dao.NodeDao;
 import org.opennms.integration.api.v1.requisition.RequisitionProvider;
 import org.opennms.integration.api.v1.requisition.RequisitionRequest;
-import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.internal.Utils;
@@ -68,10 +67,10 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
 
     private final ConnectionManager connectionManager;
 
-    public NutanixRequisitionProvider(NodeDao nodeDao, ClientManager clientManager, ConnectionManager connectionManager) {
+    public NutanixRequisitionProvider(NodeDao nodeDao, ConnectionManager connectionManager, ClientManager clientManager) {
         this.nodeDao = Objects.requireNonNull(nodeDao);
-        this.clientManager = Objects.requireNonNull(clientManager);
         this.connectionManager = Objects.requireNonNull(connectionManager);
+        this.clientManager = Objects.requireNonNull(clientManager);
     }
 
     @Override
@@ -84,6 +83,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
         final var alias = Objects.requireNonNull(parameters.get(PARAMETER_ALIAS), "Missing requisition parameter: alias");
         final var location = Objects.requireNonNullElse(parameters.get(PARAMETER_LOCATION), nodeDao.getDefaultLocationName());
 
+        //FIXME
         final var connection = this.connectionManager.getConnection(alias)
                 .orElseThrow(() -> new NullPointerException("Connection not found for alias: " + alias));
 
@@ -880,32 +880,18 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
 
         private String foreignSource;
 
-        private String alias;
+        private Connection connection;
 
-        private String prismUrl;
-
-        private String username;
-
-        private String password;
-
-        private boolean ignoreSslCertificateValidation;
         private String location;
 
         private String matchVM;
-
-        private int length;
 
         public Request() {
         }
 
         public Request(final Connection connection) {
-            this.alias = Objects.requireNonNull(connection.getAlias());
-            this.prismUrl = Objects.requireNonNull(connection.getPrismUrl());
-            this.username = Objects.requireNonNull(connection.getUsername());
-            this.password = Objects.requireNonNull(connection.getPassword());
-            this.ignoreSslCertificateValidation = connection.isIgnoreSslCertificateValidation();
-            this.length = connection.getLength();
-            this.foreignSource = String.format("%s-%s", TYPE, this.alias);
+            this.connection = Objects.requireNonNull(connection);
+            this.foreignSource = String.format("%s-%s", TYPE, this.connection.getAlias());
         }
 
 
@@ -920,17 +906,11 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
         }
 
         public ApiClientService getClient() throws NutanixApiException {
-            return clientManager.getClient(ApiClientCredentials.builder()
-                    .withPrismUrl(this.request.prismUrl)
-                    .withUsername(this.request.username)
-                    .withPassword(this.request.password)
-                    .withIgnoreSslCertificateValidation(this.request.ignoreSslCertificateValidation)
-                    .withLength(this.request.length)
-                    .build());
+            return clientManager.getClient(request.connection);
         }
 
         public String getAlias() {
-            return this.request.alias;
+            return this.request.connection.getAlias();
         }
 
         public String getLocation() {

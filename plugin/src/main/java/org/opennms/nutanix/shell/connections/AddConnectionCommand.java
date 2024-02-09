@@ -6,6 +6,7 @@ import org.apache.karaf.shell.api.action.Command;
 import org.apache.karaf.shell.api.action.Option;
 import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
+import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
 
 @Command(scope = "opennms-nutanix", name = "connection-add", description = "Add a connection", detailedDescription = "Add a connection to a nutanix prism")
@@ -14,6 +15,9 @@ public class AddConnectionCommand implements Action {
 
     @Reference
     private ConnectionManager connectionManager;
+
+    @Reference
+    private ClientManager clientManager;
 
     @Option(name = "-t", aliases = "--test", description = "Dry run mode, test the credentials but do not save them")
     boolean dryRun = false;
@@ -60,7 +64,7 @@ public class AddConnectionCommand implements Action {
         System.err.println("saving: " + connection);
 
         if (!this.skipValidation) {
-            final var error = connection.validate();
+            final var error = clientManager.validate(connection);
             if (error.isPresent()) {
                 System.err.println("Failed to validate credentials: " + error.get().message);
                 return null;

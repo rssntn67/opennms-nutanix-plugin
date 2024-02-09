@@ -7,11 +7,11 @@ public class NutanixHostPollerFactory extends NutanixHostAbstractPoller.Factory<
 
     public NutanixHostPollerFactory(final ClientManager clientManager,
                                     final ConnectionManager connectionManager) {
-        super(clientManager, connectionManager, NutanixHostPoller.class);
+        super(connectionManager, clientManager, NutanixHostPoller.class);
     }
 
     @Override
-    protected NutanixHostPoller createPoller(final ClientManager clientManager) {
-        return new NutanixHostPoller(clientManager);
+    protected NutanixHostPoller createPoller(final ConnectionManager connectionManager, final ClientManager clientManager) {
+        return new NutanixHostPoller(connectionManager, clientManager);
     }
 }

@@ -9,6 +9,7 @@ import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.apache.karaf.shell.api.console.Session;
 import org.apache.karaf.shell.support.table.Col;
 import org.apache.karaf.shell.support.table.ShellTable;
+import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
 
 @Command(scope = "opennms-nutanix", name = "list-vms", description = "List Nutanix Cluster VM", detailedDescription = "List all Nutanix Cluster Virtual Machine")
@@ -19,6 +20,9 @@ public class ListVMCommand implements Action {
     private ConnectionManager connectionManager;
 
     @Reference
+    private ClientManager clientManager;
+
+    @Reference
     private Session session;
 
     @Argument(name = "alias", description = "Connection alias", required = true)
@@ -27,8 +31,8 @@ public class ListVMCommand implements Action {
 
     @Override
     public Object execute() throws Exception {
-        final var client = this.connectionManager.getClient(this.alias);
-        if (client.isEmpty()) {
+        final var connection = this.connectionManager.getConnection(this.alias);
+        if (connection.isEmpty()) {
             System.err.println("No connection with alias " + this.alias);
             return null;
         }
@@ -41,7 +45,13 @@ public class ListVMCommand implements Action {
                 .column(new Col("ClusterName").maxSize(24))
                 .column(new Col("HostName").maxSize(24));
 
-        for (final var vm : client.get().getVMS()) {
+        final var connectionValidationError = clientManager.validate(connection.get());
+        if (connectionValidationError.isPresent()) {
+            System.err.println("Validation Error for connection with alias " + this.alias);
+            return null;
+        }
+
+        for (final var vm : clientManager.getClient(connection.get()).getVMS()) {
             final var row = table.addRow();
             row.addContent(vm.uuid);
             row.addContent(vm.name);

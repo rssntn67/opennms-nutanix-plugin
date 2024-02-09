@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.ws.rs.core.Response;
 
 import org.opennms.nutanix.client.api.NutanixApiException;
+import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
 import org.opennms.nutanix.rest.api.NutanixRestService;
 import org.opennms.nutanix.rest.dto.ClusterDTO;
@@ -20,33 +21,36 @@ public class NutanixRestServiceImpl implements NutanixRestService {
 
     private final ConnectionManager connectionManager;
 
-    public NutanixRestServiceImpl(final ConnectionManager connectionManager) {
+    private final ClientManager clientManager;
+
+    public NutanixRestServiceImpl(final ConnectionManager connectionManager, final ClientManager clientManager) {
         this.connectionManager = Objects.requireNonNull(connectionManager);
+        this.clientManager = Objects.requireNonNull(clientManager);
     }
 
     @Override
     public List<ClusterDTO> getClusters(final String alias) throws NutanixApiException {
-        final var client = this.connectionManager.getClient(alias)
+        final var connection = this.connectionManager.getConnection(alias)
                                                  .orElseThrow(null);
-        return client.getClusters().stream()
+        return this.clientManager.getClient(connection).getClusters().stream()
                      .map(Mapper.NUTANIX_INSTANCE::sourceToTarget)
                      .collect(Collectors.toList());
     }
 
     @Override
     public List<HostDTO> getHosts(final String alias) throws NutanixApiException {
-        final var client = this.connectionManager.getClient(alias)
+        final var connection = this.connectionManager.getConnection(alias)
                 .orElseThrow(null);
-        return client.getHosts().stream()
+        return this.clientManager.getClient(connection).getHosts().stream()
                 .map(Mapper.NUTANIX_INSTANCE::sourceToTarget)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<VMDTO> getVms(final String alias) throws NutanixApiException {
-        final var client = this.connectionManager.getClient(alias)
+        final var connection = this.connectionManager.getConnection(alias)
                 .orElseThrow(null);
-        return client.getVMS().stream()
+        return this.clientManager.getClient(connection).getVMS().stream()
                 .map(Mapper.NUTANIX_INSTANCE::sourceToTarget)
                 .collect(Collectors.toList());
     }
@@ -88,7 +92,7 @@ public class NutanixRestServiceImpl implements NutanixRestService {
         );
 
         if (!skipValidation) {
-            final var error = connection.validate();
+            final var error = this.clientManager.validate(connection);
             if (error.isPresent()) {
                 return Response.status(Response.Status.BAD_REQUEST)
                                .entity(String.format("Failed to validate credentials: %s", error.get().message))
@@ -127,7 +131,7 @@ public class NutanixRestServiceImpl implements NutanixRestService {
         connection.get().setConnectionPool(connectionDTO.getConnectionPool());
 
         if (!skipValidation) {
-            final var error = connection.get().validate();
+            final var error = this.clientManager.validate(connection.get());
             if (error.isPresent()) {
                 return Response.status(Response.Status.BAD_REQUEST)
                                .entity(String.format("Failed to validate credentials: %s", error.get().message))
@@ -147,7 +151,7 @@ public class NutanixRestServiceImpl implements NutanixRestService {
             final var response = new ConnectionStateDTO();
             response.setAlias(alias);
             response.setPrismUrl(connection.get().getPrismUrl());
-            response.setValid(connection.get().validate().isEmpty());
+            response.setValid(this.clientManager.validate(connection.get()).isEmpty());
 
             return Response.ok()
                            .entity(response)

@@ -2,8 +2,6 @@
 package org.opennms.nutanix.connections;
 
 
-import java.util.Optional;
-
 public interface Connection {
 
     int getLength();
@@ -61,12 +59,6 @@ public interface Connection {
      * Save the altered connection config in the underlying store.
      */
     void save();
-
-    /**
-     * Test the connection.
-     * @return The error, if any.
-     */
-    Optional<ConnectionValidationError> validate();
 
     void delete();
 

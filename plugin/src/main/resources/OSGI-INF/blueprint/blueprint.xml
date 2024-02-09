@@ -34,12 +34,12 @@
         <argument>
             <reference interface="org.opennms.integration.api.v1.scv.SecureCredentialsVault" availability="optional"/>
         </argument>
-        <argument ref="clientManager" />
     </bean>
     <service ref="connectionManager" interface="org.opennms.nutanix.connections.ConnectionManager"/>
 
     <bean id="nutanixEventService" class="org.opennms.nutanix.events.NutanixEventIngestor" destroy-method="destroy">
         <argument ref="connectionManager"/>
+        <argument ref="clientManager"/>
         <argument ref="nodeDao"/>
         <argument ref="eventForwarder"/>
         <argument value="${events.delay}"/>
@@ -54,14 +54,15 @@
     <!--    Requisition-->
     <bean id="nutanixRequisitionProvider" class="org.opennms.nutanix.requisition.NutanixRequisitionProvider">
         <argument ref="nodeDao"/>
-        <argument ref="clientManager"/>
         <argument ref="connectionManager"/>
+        <argument ref="clientManager"/>
     </bean>
     <service interface="org.opennms.integration.api.v1.requisition.RequisitionProvider" ref="nutanixRequisitionProvider" />
 
     <!--    Rest-->
     <bean id="nutanixRestService" class="org.opennms.nutanix.rest.impl.NutanixRestServiceImpl">
         <argument ref="connectionManager"/>
+        <argument ref="clientManager"/>
     </bean>
     <service interface="org.opennms.nutanix.rest.api.NutanixRestService" ref="nutanixRestService">
         <service-properties>

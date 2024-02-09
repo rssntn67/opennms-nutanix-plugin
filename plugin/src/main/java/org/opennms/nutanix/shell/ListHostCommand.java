@@ -12,6 +12,7 @@ import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.apache.karaf.shell.api.console.Session;
 import org.apache.karaf.shell.support.table.Col;
 import org.apache.karaf.shell.support.table.ShellTable;
+import org.opennms.nutanix.clients.ClientManager;
 import org.opennms.nutanix.connections.ConnectionManager;
 
 @Command(scope = "opennms-nutanix", name = "list-hosts", description = "List Nutanix Cluster Hosts", detailedDescription = "List all Nutanix Cluster hosts")
@@ -22,6 +23,9 @@ public class ListHostCommand implements Action {
     private ConnectionManager connectionManager;
 
     @Reference
+    private ClientManager clientManager;
+
+    @Reference
     private Session session;
 
     @Argument(name = "alias", description = "Connection alias", required = true)
@@ -30,8 +34,8 @@ public class ListHostCommand implements Action {
 
     @Override
     public Object execute() throws Exception {
-        final var client = this.connectionManager.getClient(this.alias);
-        if (client.isEmpty()) {
+        final var connection = this.connectionManager.getConnection(this.alias);
+        if (connection.isEmpty()) {
             System.err.println("No connection with alias " + this.alias);
             return null;
         }
@@ -44,11 +48,17 @@ public class ListHostCommand implements Action {
                 .column(new Col("ClusterName").maxSize(24))
                 .column(new Col("HypervisorIp").maxSize(24));
         Map<String,String> uuidToNameClusterMap = new HashMap<>();
-        for (final var cluster : client.get().getClusters()) {
+        for (final var cluster : clientManager.getClient(connection.get()).getClusters()) {
             uuidToNameClusterMap.put(cluster.uuid, cluster.name);
         }
 
-        for (final var host : client.get().getHosts()) {
+        final var connectionValidationError = clientManager.validate(connection.get());
+        if (connectionValidationError.isPresent()) {
+            System.err.println("Validation Error for connection with alias " + this.alias);
+            return null;
+        }
+
+        for (final var host : clientManager.getClient(connection.get()).getHosts()) {
             final var row = table.addRow();
             row.addContent(host.uuid);
             row.addContent(host.name);

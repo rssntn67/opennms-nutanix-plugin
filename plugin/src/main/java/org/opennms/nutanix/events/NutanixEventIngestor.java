@@ -28,11 +28,13 @@ import org.opennms.integration.api.v1.model.Node;
 import org.opennms.integration.api.v1.model.Severity;
 import org.opennms.integration.api.v1.model.immutables.ImmutableEventParameter;
 import org.opennms.integration.api.v1.model.immutables.ImmutableInMemoryEvent;
-import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Alert;
 import org.opennms.nutanix.client.api.model.Entity;
+import org.opennms.nutanix.clients.ClientManager;
+import org.opennms.nutanix.connections.Connection;
 import org.opennms.nutanix.connections.ConnectionManager;
+import org.opennms.nutanix.connections.ConnectionValidationError;
 import org.opennms.nutanix.requisition.NutanixRequisitionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +58,7 @@ public class NutanixEventIngestor implements Runnable, HealthCheck {
             .build();
 
     private final ConnectionManager connectionManager;
+    private final ClientManager clientManager;
 
     private final NodeDao nodeDao;
 
@@ -102,10 +105,12 @@ public class NutanixEventIngestor implements Runnable, HealthCheck {
     }
 
     public NutanixEventIngestor(final ConnectionManager connectionManager,
+                                final ClientManager clientManager,
                                 final NodeDao nodeDao,
                                 final EventForwarder eventForwarder,
                                 final long delay) {
         this.connectionManager = Objects.requireNonNull(connectionManager);
+        this.clientManager = Objects.requireNonNull(clientManager);
         this.nodeDao = Objects.requireNonNull(nodeDao);
         this.eventForwarder = Objects.requireNonNull(eventForwarder);
         this.delay = delay;
@@ -137,29 +142,56 @@ public class NutanixEventIngestor implements Runnable, HealthCheck {
                 .map(RequisitionIdentifier::new)
                 .collect(Collectors.toSet());
 
-        Map<String, Set<RequisitionIdentifier>> uuidRequisitionIdentifierMap = new HashMap<>();
+        Map<String, Set<RequisitionIdentifier>> uuidMap = new HashMap<>();
         for (RequisitionIdentifier ri : requisitionIdentifiers) {
-            if (!uuidRequisitionIdentifierMap.containsKey(ri.uuid)) {
-                uuidRequisitionIdentifierMap.put(ri.uuid, new HashSet<>());
+            if (!uuidMap.containsKey(ri.uuid)) {
+                uuidMap.put(ri.uuid, new HashSet<>());
             }
-            uuidRequisitionIdentifierMap.get(ri.uuid).add(ri);
+            uuidMap.get(ri.uuid).add(ri);
         }
 
         for(final String alias : requisitionIdentifiers.stream().map(ri -> ri.alias).collect(Collectors.toSet())) {
-
-            try {
-                final Optional<ApiClientService> nutanixApiClientService = connectionManager.getClient(alias);
-
-                if (nutanixApiClientService.isPresent()) {
-                    try {
-                        processAlerts(lastPoll, now, nutanixApiClientService.get(), uuidRequisitionIdentifierMap);
-                    } catch (NutanixApiException e) {
-                        LOG.error("Cannot process alarms for alias='{}'", alias);
-                    }
-                }
-            } catch (NutanixApiException e) {
-                LOG.debug("Cannot create customer client for alias='{}'", alias);
+            Optional<Connection> connection = connectionManager.getConnection(alias);
+            if (connection.isEmpty()) {
+                LOG.error("no connection found for alias {}", alias);
+                continue;
             }
+            Optional<ConnectionValidationError> validateConnectionError = clientManager.validate(connection.get());
+            if (validateConnectionError.isPresent()) {
+                LOG.warn("connection validation error found for alias {}", alias);
+                //FIXME Use Others
+                connectionManager.getConnectionPool(connection.get().getConnectionPool()).forEach( opconn -> clientManager.validate(opconn.get()));
+
+                continue;
+
+            }
+
+            List<Alert> alerts = null;
+            try {
+                alerts  = clientManager.getClient(connection.get()).getAlerts();
+                LOG.debug("{} alert found.", alerts.size());
+            } catch (NutanixApiException e) {
+                LOG.error("Cannot process alarms for alias='{}'", alias);
+            }
+
+            int processed = 0;
+            int resolved = 0;
+            int ignored = 0;
+            assert alerts != null;
+            for (final Alert alert : alerts) {
+                if (alert.isResolved && !processedAlarmResolved.contains(alert.uuid)) {
+                    processedAlarmResolved.add(alert.uuid);
+                    processAlert(alert, NUTANIX_ALARM_RESOLVED_UEI, uuidMap);
+                    resolved++;
+                } else if (!alert.isResolved && !processedAlarm.contains(alert.uuid)){
+                    processedAlarm.add(alert.uuid);
+                    processAlert(alert, NUTANIX_ALARM_UEI, uuidMap);
+                    processed++;
+                } else {
+                    ignored++;
+                }
+            }
+            LOG.debug("{} alert raised, {} alert resolved, {} events ignored.", processed, resolved, ignored);
         }
 
         // interval start and end is inclusive
@@ -205,29 +237,6 @@ public class NutanixEventIngestor implements Runnable, HealthCheck {
         builder.setTime(Date.from(alert.creationTime.toInstant()));
 
         eventForwarder.sendSync(builder.build());
-    }
-
-    private void processAlerts(final Instant start, final Instant end, final ApiClientService client, Map<String, Set<RequisitionIdentifier>> uuidMap) throws NutanixApiException {
-        final List<Alert> alerts = client.getAlerts();
-        LOG.debug("{} alert found.", alerts.size());
-
-        int processed = 0;
-        int resolved = 0;
-        int ignored = 0;
-        for (final Alert alert : alerts) {
-            if (alert.isResolved && !processedAlarmResolved.contains(alert.uuid)) {
-                processedAlarmResolved.add(alert.uuid);
-                processAlert(alert, NUTANIX_ALARM_RESOLVED_UEI, uuidMap);
-                resolved++;
-            } else if (!alert.isResolved && !processedAlarm.contains(alert.uuid)){
-                processedAlarm.add(alert.uuid);
-                processAlert(alert, NUTANIX_ALARM_UEI, uuidMap);
-                processed++;
-            } else {
-                ignored++;
-            }
-        }
-        LOG.debug("{} alert raised, {} alert resolved, {} events ignored.", processed, resolved, ignored);
     }
     @Override
     public String getDescription() {
