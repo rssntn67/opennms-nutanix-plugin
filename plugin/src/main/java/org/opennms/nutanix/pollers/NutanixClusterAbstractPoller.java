@@ -28,7 +28,7 @@ public abstract class NutanixClusterAbstractPoller extends NutanixAbstractPoller
         final var type = context.getNutanixEntityType();
         if (type != Entity.EntityType.Cluster) {
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
-                    .setStatus(Status.Down)
+                    .setStatus(Status.Unknown)
                     .setReason("No Cluster Entity: " + type)
                     .build());
         }
@@ -38,7 +38,7 @@ public abstract class NutanixClusterAbstractPoller extends NutanixAbstractPoller
         if (cluster == null) {
             LOG.info("poll: no cluster with uuid: {}", uuid);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
-                                                                          .setStatus(Status.Down)
+                                                                          .setStatus(Status.Unknown)
                                                                           .setReason("No cluster with uuid " + uuid)
                                                                           .build());
         }

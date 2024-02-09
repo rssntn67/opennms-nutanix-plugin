@@ -31,7 +31,7 @@ public abstract class NutanixHostAbstractPoller extends NutanixAbstractPoller {
         if (type != Entity.EntityType.Host) {
             LOG.info("poll: EntityType is: {}", type);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
-                    .setStatus(Status.Down)
+                    .setStatus(Status.Unknown)
                     .setReason("No Host Entity: " + type)
                     .build());
         }
@@ -41,21 +41,21 @@ public abstract class NutanixHostAbstractPoller extends NutanixAbstractPoller {
         if (host == null) {
             LOG.info("poll: no host with uuid: {}", uuid);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
-                                                                          .setStatus(Status.Down)
+                                                                          .setStatus(Status.Unknown)
                                                                           .setReason("No Nutanix Host found with uuid: " + uuid)
                                                                           .build());
         }
         if (host.hypervisorIp == null) {
             LOG.info("poll: no hypervisorIp for host with uuid: {}", uuid);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
-                    .setStatus(Status.Down)
+                    .setStatus(Status.Unknown)
                     .setReason("No Hypervisor Ip found for Host with uuid: " + uuid)
                     .build());
         }
         if (!Objects.equals(Utils.getValidInetAddress(host.hypervisorIp), context.request.getAddress())) {
             LOG.info("poll: no valid hypervisorIp {} for host with uuid: {}",host.hypervisorIp,  uuid);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
-                    .setStatus(Status.Down)
+                    .setStatus(Status.Unknown)
                     .setReason("No Valid for Hypervisor Ip {} Found for Host with uuid: " + uuid)
                     .build());
         }

@@ -17,11 +17,11 @@ import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.model.Entity;
 import org.opennms.nutanix.clients.ClientManager;
-import org.opennms.nutanix.connections.Connection;
 import org.opennms.nutanix.connections.ConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 
 public abstract class NutanixAbstractPoller implements ServicePoller {
@@ -47,7 +47,7 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
         } catch (final NutanixApiException e) {
             LOG.warn("Nutanix prism communication failed", e);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
-                                                                          .setStatus(Status.Down)
+                                                                          .setStatus(Status.Unknown)
                                                                           .setReason(e.getMessage())
                                                                           .build());
         }
@@ -100,34 +100,46 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
     public class Context {
         public final PollerRequest request;
 
+        public final String alias;
+        public final String type;
+        public final String uuid;
+
         public Context(final PollerRequest request) {
             this.request = Objects.requireNonNull(request);
-        }
-
-        public Connection getConnection() throws NutanixApiException {
-
-            final var alias = Objects.requireNonNull(this.request.getPollerAttributes().get(ALIAS_KEY),
+            this.alias = Objects.requireNonNull(this.request.getPollerAttributes().get(ALIAS_KEY),
                     "Missing attribute: " + ALIAS_KEY);
-            LOG.debug("Context::alias: {}", alias);
-           return NutanixAbstractPoller.this.connectionManager.getConnection(alias)
-                    .orElseThrow(() -> new NutanixApiException("",new NullPointerException("Connection not found for alias: " + alias)));
+            this.uuid = Objects.requireNonNull(this.request.getPollerAttributes().get(UUID_KEY),
+                    "Missing attribute: " + UUID_KEY);
+            this.type = Objects.requireNonNull(this.request.getPollerAttributes().get(TYPE_KEY),
+                    "Missing attribute: " + TYPE_KEY);
         }
 
         public String getNutanixUuid() {
-            final var uuid= Objects.requireNonNull(this.request.getPollerAttributes().get(UUID_KEY),
-                    "Missing attribute: " + UUID_KEY);
-            LOG.debug("Context::getNutanixUuid: {}", uuid);
             return uuid;
         }
         public Entity.EntityType getNutanixEntityType() {
-            final var type = Objects.requireNonNull(this.request.getPollerAttributes().get(TYPE_KEY),
-                    "Missing attribute: " + TYPE_KEY);
-            LOG.debug("Context::getNutanixEntityType: {}", type);
             return Entity.EntityType.valueOf(type);
         }
 
         public ApiClientService client() throws NutanixApiException {
-            return NutanixAbstractPoller.this.clientManager.getClient(this.getConnection());
+            var connection =  NutanixAbstractPoller.this.connectionManager.getConnection(alias);
+            if (connection.isEmpty()) {
+                throw new NutanixApiException("No connection for alias", new NullPointerException("No connection found for "+ alias));
+            }
+            if (NutanixAbstractPoller.this.clientManager.validate(connection.get()).isEmpty()) {
+                return NutanixAbstractPoller.this.clientManager.getClient(connection.get());
+            }
+            if (Strings.isNullOrEmpty(connection.get().getConnectionPool())) {
+                throw new NutanixApiException("Connection for alias is not valid and no pool available", new NullPointerException("Connection is not valid for " + alias));
+            }
+            for (var poolMemberConnection: NutanixAbstractPoller.this.connectionManager.getConnectionPool(connection.get().getConnectionPool()) ) {
+                if (poolMemberConnection.isPresent()) {
+                    if (NutanixAbstractPoller.this.clientManager.validate(poolMemberConnection.get()).isEmpty()) {
+                        return NutanixAbstractPoller.this.clientManager.getClient(poolMemberConnection.get());
+                    }
+                }
+            }
+            throw new NutanixApiException("Connection for alias is not valid and no pool available", new NullPointerException("Connection is not valid for " + alias));
         }
     }
 }

@@ -24,7 +24,7 @@
 
         <service name="NutanixVM" interval="300000">
             <parameter key="alias" value="${nutanix:alias}"/>
-                <parameter key="uuid" value="${nutanix:uuid}"/>
+            <parameter key="uuid" value="${nutanix:uuid}"/>
             <parameter key="type" value="${nutanix:type}"/>
         </service>
 

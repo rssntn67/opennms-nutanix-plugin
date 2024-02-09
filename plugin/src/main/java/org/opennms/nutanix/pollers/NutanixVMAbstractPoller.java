@@ -29,7 +29,7 @@ public abstract class NutanixVMAbstractPoller extends NutanixAbstractPoller {
         if (type != Entity.EntityType.VirtualMachine) {
             LOG.info("poll: EntityType is: {}", type);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
-                    .setStatus(Status.Down)
+                    .setStatus(Status.Unknown)
                     .setReason("No VM Entity: " + type)
                     .build());
         }
@@ -39,7 +39,7 @@ public abstract class NutanixVMAbstractPoller extends NutanixAbstractPoller {
         if (vm == null) {
             LOG.info("poll: no VM with uuid: {}", uuid);
             return CompletableFuture.completedFuture(ImmutablePollerResult.newBuilder()
-                                                                          .setStatus(Status.Down)
+                                                                          .setStatus(Status.Unknown)
                                                                           .setReason("No Nutanix VM found with uuid: " + uuid)
                                                                           .build());
         }
