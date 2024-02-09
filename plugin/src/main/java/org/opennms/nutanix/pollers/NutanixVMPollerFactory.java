@@ -5,8 +5,8 @@ import org.opennms.nutanix.connections.ConnectionManager;
 
 public class NutanixVMPollerFactory extends NutanixAbstractPoller.Factory<NutanixVMPoller> {
 
-    public NutanixVMPollerFactory(final ClientManager clientManager,
-                                  final ConnectionManager connectionManager) {
+    public NutanixVMPollerFactory(final ConnectionManager connectionManager,
+                                  final ClientManager clientManager) {
         super(connectionManager, clientManager, NutanixVMPoller.class);
     }
 

@@ -5,8 +5,8 @@ import org.opennms.nutanix.connections.ConnectionManager;
 
 public class NutanixHostPollerFactory extends NutanixHostAbstractPoller.Factory<NutanixHostPoller> {
 
-    public NutanixHostPollerFactory(final ClientManager clientManager,
-                                    final ConnectionManager connectionManager) {
+    public NutanixHostPollerFactory(final ConnectionManager connectionManager,
+                                    final ClientManager clientManager) {
         super(connectionManager, clientManager, NutanixHostPoller.class);
     }
 
