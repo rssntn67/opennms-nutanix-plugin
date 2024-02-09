@@ -32,12 +32,12 @@ import org.opennms.nutanix.client.api.model.VM;
 import org.opennms.nutanix.client.api.model.VMDisk;
 import org.opennms.nutanix.client.api.model.VMNic;
 import org.opennms.nutanix.clients.ClientManager;
-import org.opennms.nutanix.connections.Connection;
 import org.opennms.nutanix.connections.ConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 
 import lombok.Getter;
 
@@ -83,12 +83,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
         final var alias = Objects.requireNonNull(parameters.get(PARAMETER_ALIAS), "Missing requisition parameter: alias");
         final var location = Objects.requireNonNullElse(parameters.get(PARAMETER_LOCATION), nodeDao.getDefaultLocationName());
 
-        //FIXME
-        final var connection = this.connectionManager.getConnection(alias)
-                .orElseThrow(() -> new NullPointerException("Connection not found for alias: " + alias));
-
-        final var request = new Request(connection);
-        request.location=location;
+        final var request = new Request(alias,location);
 
         if (parameters.containsKey(PARAMETER_FOREIGN_SOURCE)) {
             request.foreignSource=parameters.get(PARAMETER_FOREIGN_SOURCE);
@@ -834,7 +829,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
         final var requisition = ImmutableRequisition.newBuilder()
                 .setForeignSource(context.request.foreignSource);
 
-        ApiClientService apiClientService = context.getClient();
+        ApiClientService apiClientService = context.client();
         Map<String,String> clusterUuidToNameMap = new HashMap<>();
         Map<String,String> clusterUuidToInternalMap = new HashMap<>();
 
@@ -871,6 +866,7 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
     }
     public static class Request implements RequisitionRequest {
 
+        private String alias;
         private boolean importVms = true;
         private boolean importHosts = true;
 
@@ -880,8 +876,6 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
 
         private String foreignSource;
 
-        private Connection connection;
-
         private String location;
 
         private String matchVM;
@@ -889,12 +883,11 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
         public Request() {
         }
 
-        public Request(final Connection connection) {
-            this.connection = Objects.requireNonNull(connection);
-            this.foreignSource = String.format("%s-%s", TYPE, this.connection.getAlias());
+        public Request(String alias, String location) {
+            this.alias = Objects.requireNonNull(alias);
+            this.location = Objects.requireNonNull(location);
+            this.foreignSource = String.format("%s-%s", TYPE, alias);
         }
-
-
     }
 
     @Getter
@@ -905,12 +898,33 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
             this.request = Objects.requireNonNull(request);
         }
 
-        public ApiClientService getClient() throws NutanixApiException {
-            return clientManager.getClient(request.connection);
+        public ApiClientService client() throws NutanixApiException {
+            var connection =  connectionManager.getConnection(request.alias);
+            if (connection.isEmpty()) {
+                throw new NutanixApiException("No connection for alias", new NullPointerException("No connection found for "+ request.alias));
+            }
+            if (clientManager.validate(connection.get()).isEmpty()) {
+                LOG.info("Using Default Connection Alias {}", request.alias);
+                return clientManager.getClient(connection.get());
+            }
+            if (Strings.isNullOrEmpty(connection.get().getConnectionPool())) {
+                throw new NutanixApiException("Connection for alias is not valid and no pool available", new NullPointerException("Connection is not valid for " + request.alias));
+            }
+            for (var poolMemberConnection: connectionManager.getConnectionPool(connection.get().getConnectionPool()) ) {
+                if (poolMemberConnection.isPresent()) {
+                    if (clientManager.validate(poolMemberConnection.get()).isEmpty()) {
+                        LOG.info("Using Pooled Connection {} with Alias {}",
+                                poolMemberConnection.get().getConnectionPool(),
+                                poolMemberConnection.get().getAlias());
+                        return clientManager.getClient(poolMemberConnection.get());
+                    }
+                }
+            }
+            throw new NutanixApiException("Connection for alias is not valid and no pool available", new NullPointerException("Connection is not valid for " + request.alias));
         }
 
         public String getAlias() {
-            return this.request.connection.getAlias();
+            return this.request.alias;
         }
 
         public String getLocation() {

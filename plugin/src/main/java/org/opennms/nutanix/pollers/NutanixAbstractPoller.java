@@ -127,6 +127,7 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
                 throw new NutanixApiException("No connection for alias", new NullPointerException("No connection found for "+ alias));
             }
             if (NutanixAbstractPoller.this.clientManager.validate(connection.get()).isEmpty()) {
+                LOG.info("Using Default Connection Alias {}", connection.get().getAlias());
                 return NutanixAbstractPoller.this.clientManager.getClient(connection.get());
             }
             if (Strings.isNullOrEmpty(connection.get().getConnectionPool())) {
@@ -135,6 +136,9 @@ public abstract class NutanixAbstractPoller implements ServicePoller {
             for (var poolMemberConnection: NutanixAbstractPoller.this.connectionManager.getConnectionPool(connection.get().getConnectionPool()) ) {
                 if (poolMemberConnection.isPresent()) {
                     if (NutanixAbstractPoller.this.clientManager.validate(poolMemberConnection.get()).isEmpty()) {
+                        LOG.info("Using Pooled Connection {} with Alias {}",
+                                poolMemberConnection.get().getConnectionPool(),
+                                poolMemberConnection.get().getAlias());
                         return NutanixAbstractPoller.this.clientManager.getClient(poolMemberConnection.get());
                     }
                 }
