@@ -1,6 +1,7 @@
 package org.opennms.nutanix.events;
 
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +16,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import org.opennms.integration.api.v1.config.events.AlarmType;
+import org.opennms.integration.api.v1.dao.AlarmDao;
 import org.opennms.integration.api.v1.dao.NodeDao;
 import org.opennms.integration.api.v1.events.EventForwarder;
 import org.opennms.integration.api.v1.health.Context;
@@ -22,6 +25,7 @@ import org.opennms.integration.api.v1.health.HealthCheck;
 import org.opennms.integration.api.v1.health.Response;
 import org.opennms.integration.api.v1.health.Status;
 import org.opennms.integration.api.v1.health.immutables.ImmutableResponse;
+import org.opennms.integration.api.v1.model.Alarm;
 import org.opennms.integration.api.v1.model.MetaData;
 import org.opennms.integration.api.v1.model.Node;
 import org.opennms.integration.api.v1.model.Severity;
@@ -46,9 +50,6 @@ public class NutanixEventIngestor implements Runnable, HealthCheck {
     public static final String NUTANIX_ALARM_UEI = "uei.opennms.org/plugin/nutanix/alert";
     public static final String NUTANIX_ALARM_RESOLVED_UEI = "uei.opennms.org/plugin/nutanix/alertResolved";
 
-    private final Set<String> processedAlarm = new HashSet<>();
-    private final Set<String> processedAlarmResolved = new HashSet<>();
-
     private final static Map<String, Severity> SEVERITY_MAP = ImmutableMap.<String, Severity>builder()
             .put("critical", Severity.MAJOR)
             .put("warning", Severity.MINOR)
@@ -60,6 +61,7 @@ public class NutanixEventIngestor implements Runnable, HealthCheck {
     private final ClientManager clientManager;
 
     private final NodeDao nodeDao;
+    private final AlarmDao alarmDao;
 
     private final EventForwarder eventForwarder;
 
@@ -68,6 +70,8 @@ public class NutanixEventIngestor implements Runnable, HealthCheck {
     private ScheduledFuture<?> scheduledFuture;
 
     private final long delay;
+
+    private final int retrieve_days;
 
     private static class RequisitionIdentifier {
         private final String foreignSource;
@@ -106,15 +110,20 @@ public class NutanixEventIngestor implements Runnable, HealthCheck {
     public NutanixEventIngestor(final ConnectionManager connectionManager,
                                 final ClientManager clientManager,
                                 final NodeDao nodeDao,
+                                final AlarmDao alarmDao,
                                 final EventForwarder eventForwarder,
-                                final long delay) {
+                                final long delay,
+                                final int retrieve_days) {
         this.connectionManager = Objects.requireNonNull(connectionManager);
         this.clientManager = Objects.requireNonNull(clientManager);
         this.nodeDao = Objects.requireNonNull(nodeDao);
+        this.alarmDao = Objects.requireNonNull(alarmDao);
         this.eventForwarder = Objects.requireNonNull(eventForwarder);
         this.delay = delay;
+        this.retrieve_days = retrieve_days;
 
         LOG.debug("Nutanix Event Ingestor is initializing (delay = {}ms).", delay);
+        LOG.debug("Nutanix Event Ingestor is initializing (days = {}ms).", delay);
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(this, this.delay, this.delay, TimeUnit.MILLISECONDS);
     }
@@ -152,7 +161,7 @@ public class NutanixEventIngestor implements Runnable, HealthCheck {
 
     @Override
     public void run() {
-        LOG.debug("Nutanix Event Ingestor is polling for events.");
+        LOG.debug("run: getting events...");
 
         final Instant now = Instant.now();
 
@@ -174,9 +183,17 @@ public class NutanixEventIngestor implements Runnable, HealthCheck {
             uuidMap.get(ri.uuid).add(ri);
         }
 
+        Map<String, AlarmType> ntxAlarms =
+                alarmDao.getAlarms().stream()
+                        .filter(a -> a.getReductionKey().equals(NUTANIX_ALARM_UEI))
+                        .collect(Collectors.toMap(a->a.getReductionKey().substring(a.getReductionKey().lastIndexOf(":")+1),
+                                Alarm::getType));
+        LOG.debug("run:  nutanix alarm {}", ntxAlarms);
+        LOG.info("run: found {} nutanix alarm", ntxAlarms.size());
         for(final String alias : requisitionIdentifiers.stream().map(ri -> ri.alias).collect(Collectors.toSet())) {
             try {
-                processAlerts(client(alias).getAlerts(), uuidMap);
+                LOG.info("run: process alert for alias: {}", alias);
+                processAlerts(client(alias).getAlerts(), uuidMap, ntxAlarms);
             } catch (NutanixApiException e) {
                 LOG.error("Cannot process alarms for alias='{}'. {}", alias, e.getMessage(),e);
             }
@@ -184,27 +201,34 @@ public class NutanixEventIngestor implements Runnable, HealthCheck {
 
         // interval start and end is inclusive
         lastPoll = now.plus(1, ChronoUnit.MILLIS);
+        LOG.debug("run: events got");
     }
 
-    private void processAlerts(final List<Alert> alerts, final Map<String, Set<RequisitionIdentifier>> uuidMap) {
+    private void processAlerts(final List<Alert> alerts, final Map<String, Set<RequisitionIdentifier>> uuidMap, Map<String,AlarmType> ntxAlarms) {
         int processed = 0;
         int resolved = 0;
         int ignored = 0;
         assert alerts != null;
+        OffsetDateTime before = OffsetDateTime.now().minusDays(retrieve_days);
+
         for (final Alert alert : alerts) {
-            if (alert.isResolved && !processedAlarmResolved.contains(alert.uuid)) {
-                processedAlarmResolved.add(alert.uuid);
+            if (alert.creationTime.isBefore(before)) {
+                continue;
+            }
+            if (alert.isResolved && ntxAlarms.containsKey(alert.uuid) && ntxAlarms.get(alert.uuid).equals(AlarmType.PROBLEM)) {
                 processAlert(alert, NUTANIX_ALARM_RESOLVED_UEI, uuidMap);
                 resolved++;
-            } else if (!alert.isResolved && !processedAlarm.contains(alert.uuid)){
-                processedAlarm.add(alert.uuid);
+            } else if (!alert.isResolved && !ntxAlarms.containsKey(alert.uuid)){
+                processAlert(alert, NUTANIX_ALARM_UEI, uuidMap);
+                processed++;
+            } else if (!alert.isResolved && ntxAlarms.containsKey(alert.uuid) && ntxAlarms.get(alert.uuid).equals(AlarmType.RESOLUTION)){
                 processAlert(alert, NUTANIX_ALARM_UEI, uuidMap);
                 processed++;
             } else {
                 ignored++;
             }
         }
-        LOG.debug("{} alert raised, {} alert resolved, {} events ignored.", processed, resolved, ignored);
+        LOG.info("{} event raised, {} event resolved, {} events ignored.", processed, resolved, ignored);
 
     }
     private void processAlert(final Alert alert, final String uei, final Map<String, Set<RequisitionIdentifier>> uuidMap) {

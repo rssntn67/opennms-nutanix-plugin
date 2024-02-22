@@ -28,6 +28,20 @@ public class Alert {
         this.affectedEntities = builder.affectedEntity;
     }
 
+    @Override
+    public String toString() {
+        return "Alert{" +
+                "uuid='" + uuid + '\'' +
+                ", severity='" + severity + '\'' +
+                ", alertType='" + alertType + '\'' +
+                ", message='" + message + '\'' +
+                ", descr='" + descr + '\'' +
+                ", affectedEntities=" + affectedEntities +
+                ", isResolved=" + isResolved +
+                ", creationTime=" + creationTime +
+                '}';
+    }
+
     public static class Builder {
         private String uuid;
         private String severity;

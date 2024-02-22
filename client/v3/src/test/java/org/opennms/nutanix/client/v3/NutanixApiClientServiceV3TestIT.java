@@ -1,5 +1,6 @@
 package org.opennms.nutanix.client.v3;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import org.opennms.nutanix.client.api.ApiClientCredentials;
 import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.NutanixApiException;
 import org.opennms.nutanix.client.api.internal.Utils;
+import org.opennms.nutanix.client.api.model.Alert;
 import org.opennms.nutanix.client.api.model.Cluster;
 import org.opennms.nutanix.client.api.model.Host;
 import org.opennms.nutanix.client.api.model.VM;
@@ -141,6 +143,19 @@ public class NutanixApiClientServiceV3TestIT {
         ApiClientService service = provider.client(getCredentials("https://nutanix.arsinfo.it:9440/"));
         Cluster cluster = service.getCluster("00059dd3-26be-0d72-5228-ac1f6b357222");
         Assert.assertTrue(cluster.isAvailable);
+    }
+
+    @Test
+    public void testApiProviderGetAlert() throws NutanixApiException {
+        V3ApiClientProvider provider = new V3ApiClientProvider();
+        ApiClientService service = provider.client(getCredentials("https://nutanix.arsinfo.it:9440/"));
+        OffsetDateTime offsetDateTimeYesterday = OffsetDateTime.now().minusDays(1);
+        for (Alert alert: service.getAlerts()) {
+            if (alert.creationTime.isAfter(offsetDateTimeYesterday))
+System.out.println(alert.uuid +  alert.creationTime + "->" + offsetDateTimeYesterday);
+            else
+System.out.println(alert.uuid +  alert.creationTime + "<-" + offsetDateTimeYesterday);
+        }
     }
 
 }
