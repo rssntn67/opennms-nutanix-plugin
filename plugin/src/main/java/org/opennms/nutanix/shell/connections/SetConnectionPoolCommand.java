@@ -7,9 +7,9 @@ import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.opennms.nutanix.connections.ConnectionManager;
 
-@Command(scope = "opennms-nutanix", name = "add-connection-pool", description = "set a pool to connection", detailedDescription = "set a pool to an existing connection to a nutanix prism")
+@Command(scope = "opennms-nutanix", name = "set-connection-pool", description = "set a pool to existing connection", detailedDescription = "set a pool to an existing connection to a nutanix prism")
 @Service
-public class AddConnectionPoolCommand implements Action {
+public class SetConnectionPoolCommand implements Action {
 
     @Reference
     private ConnectionManager connectionManager;
