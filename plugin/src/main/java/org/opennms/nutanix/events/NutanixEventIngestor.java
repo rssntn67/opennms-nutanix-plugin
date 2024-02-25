@@ -123,7 +123,7 @@ public class NutanixEventIngestor implements Runnable, HealthCheck {
         this.retrieve_days = retrieve_days;
 
         LOG.debug("Nutanix Event Ingestor is initializing (delay = {}ms).", delay);
-        LOG.debug("Nutanix Event Ingestor is initializing (days = {}ms).", delay);
+        LOG.debug("Nutanix Event Ingestor is initializing (days = {}).", retrieve_days);
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(this, this.delay, this.delay, TimeUnit.MILLISECONDS);
     }
@@ -185,11 +185,10 @@ public class NutanixEventIngestor implements Runnable, HealthCheck {
 
         Map<String, AlarmType> ntxAlarms =
                 alarmDao.getAlarms().stream()
-                        .filter(a -> a.getReductionKey().equals(NUTANIX_ALARM_UEI))
+                        .filter(a -> a.getReductionKey().startsWith(NUTANIX_ALARM_UEI+":"))
                         .collect(Collectors.toMap(a->a.getReductionKey().substring(a.getReductionKey().lastIndexOf(":")+1),
                                 Alarm::getType));
-        LOG.debug("run:  nutanix alarm {}", ntxAlarms);
-        LOG.info("run: found {} nutanix alarm", ntxAlarms.size());
+        LOG.info("run: found {} nutanix alarm on opennms", ntxAlarms.size());
         for(final String alias : requisitionIdentifiers.stream().map(ri -> ri.alias).collect(Collectors.toSet())) {
             try {
                 LOG.info("run: process alert for alias: {}", alias);
