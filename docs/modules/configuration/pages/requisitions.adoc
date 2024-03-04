@@ -28,7 +28,7 @@ You can specify an additional parameter, `importVms` (default value true), to im
 You can specify an additional parameter, `importHosts` (default value true), to import or not the hosts.
 You can specify an additional parameter, `importClusters` (default value true), to import or not the clusters.
 
-You can specify an additional parameter, `importAllVms` (default value false), to import or not all the vms.
+You can specify an additional parameter, `importALLVms` (default value false), to import or not all the vms.
 
 The following example creates a VM ONLY POWERED ON requisition named `My-Cluster-VMS-Requisition`.
 
