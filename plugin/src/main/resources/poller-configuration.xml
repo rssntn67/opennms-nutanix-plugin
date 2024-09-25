@@ -1,6 +1,6 @@
 <poller-configuration xmlns="http://xmlns.opennms.org/xsd/config/poller/api">
     <package name="nutanix">
-        <filter>IPADDR != '255.255.255.255'</filter>
+        <filter>catincMonitorNutanix</filter>
 
         <rrd step="300">
             <rra>RRA:AVERAGE:0.5:1:2016</rra>
