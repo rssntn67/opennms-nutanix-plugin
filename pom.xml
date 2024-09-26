@@ -45,6 +45,7 @@
 
         <!-- Used by plugin-->
         <guava.version>33.1.0-jre</guava.version>
+        <org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
         <lombok.version>1.18.24</lombok.version>
 
         <!-- Used by v3 client and plugin-->
@@ -60,7 +61,6 @@
         <osgi.compendium.version>5.0.0</osgi.compendium.version>
         <osgi.enterprise.version>5.0.0</osgi.enterprise.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
-        <org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
     </properties>
 
     <version>1.0.5-SNAPSHOT</version>
