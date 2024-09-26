@@ -21,7 +21,7 @@ public class V3ApiClientProvider implements V3ClientProvider {
         apiClient.setBasePath(credentials.prismUrl+"/api/nutanix/v3");
         apiClient.setUsername(credentials.username);
         apiClient.setPassword(credentials.password);
-        apiClient.setIgnoreSslCertificateValidation(credentials.ignoreSslCertificateValidation);
+//        apiClient.setIgnoreSslCertificateValidation(credentials.ignoreSslCertificateValidation);
         apiClient.setPageSize(credentials.length);
         return apiClient;
     }
