@@ -56,7 +56,7 @@
                         <configuration>
                             <inputSpec>${project.basedir}/src/build/resources/swagger.json</inputSpec>
                             <language>java</language>
-                            <library>okhttp-gson</library>
+                            <library>okhttp4-gson</library>
                             <apiPackage>org.opennms.nutanix.client.v3.api</apiPackage>
                             <modelPackage>org.opennms.nutanix.client.v3.model</modelPackage>
                             <invokerPackage>org.opennms.nutanix.client.v3.handler</invokerPackage>
@@ -96,24 +96,24 @@
             <version>${swagger.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.squareup.okhttp</groupId>
+            <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>${okhttp-version}</version>
+            <version>${okhttp.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.squareup.okhttp</groupId>
+            <groupId>com.squareup.okhttp3</groupId>
             <artifactId>logging-interceptor</artifactId>
-            <version>${okhttp-version}</version>
+            <version>${okhttp.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>${gson-version}</version>
+            <version>${gson.version}</version>
         </dependency>
         <dependency>
             <groupId>io.gsonfire</groupId>
             <artifactId>gson-fire</artifactId>
-            <version>${gson-fire-version}</version>
+            <version>${gson.fire.version}</version>
         </dependency>
 
         <dependency>
@@ -132,10 +132,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <properties>
-        <okhttp-version>2.7.5</okhttp-version>
-        <gson-version>2.8.1</gson-version>
-        <gson-fire-version>1.8.3</gson-fire-version>
-    </properties>
-
 </project>
