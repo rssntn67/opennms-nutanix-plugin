@@ -146,7 +146,7 @@ public class NutanixApiV3TestIT {
         apiClient.setPassword(System.getenv("NTX_PASS"));
         apiClient.setDebugging(true);
         apiClient.setIgnoreSslCertificateValidation(true);
-        apiClient.setPageSize(20);
+        apiClient.setLength(20);
         return apiClient;
 
     }
@@ -164,7 +164,7 @@ public class NutanixApiV3TestIT {
         VmsApi vmsApi = new VmsApi(apiClient);
         int offset = 0;
         try {
-            VmListMetadata body = new VmListMetadata().length(apiClient.getPageSize()).offset(offset).filter("vm_name==ELEWEB-ASTEST");
+            VmListMetadata body = new VmListMetadata().length(apiClient.getLength()).offset(offset).filter("vm_name==ELEWEB-ASTEST");
             VmListIntentResponse vmListIntentResponse = vmsApi.vmsListPost(body);
             System.out.println(vmListIntentResponse);
         }  catch (ApiException e) {
@@ -193,7 +193,7 @@ public class NutanixApiV3TestIT {
         List<VmIntentResource> errorVms = new ArrayList<>();
         int total;
             do {
-                VmListMetadata body = new VmListMetadata().length(apiClient.getPageSize()).offset(offset);
+                VmListMetadata body = new VmListMetadata().length(apiClient.getLength()).offset(offset);
                 try {
                     VmListIntentResponse vmListIntentResponse = vmsApi.vmsListPost(body);
                     total = vmListIntentResponse.getMetadata().getTotalMatches();

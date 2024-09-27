@@ -76,7 +76,7 @@ public class V3ApiClientService implements ApiClientService {
         int offset = 0;
         int total;
         do {
-            VmListMetadata body = new VmListMetadata().length(apiClient.getPageSize()).offset(offset);
+            VmListMetadata body = new VmListMetadata().length(apiClient.getLength()).offset(offset);
             try {
                 VmListIntentResponse vmListIntentResponse = vmsApi.vmsListPost(body);
 
@@ -202,7 +202,7 @@ public class V3ApiClientService implements ApiClientService {
         int offset = 0;
         int total;
         do {
-            HostListMetadata body = new HostListMetadata().length(apiClient.getPageSize()).offset(offset);
+            HostListMetadata body = new HostListMetadata().length(apiClient.getLength()).offset(offset);
             try {
                 HostListIntentResponse hostListIntentResponse = hostsApi.hostsListPost(body);
 
@@ -294,7 +294,7 @@ public class V3ApiClientService implements ApiClientService {
         int offset = 0;
         int total;
         do {
-            ClusterListMetadata body = new ClusterListMetadata().length(apiClient.getPageSize()).offset(offset);
+            ClusterListMetadata body = new ClusterListMetadata().length(apiClient.getLength()).offset(offset);
             try {
                 ClusterListIntentResponse clustersListIntentResponse = clustersApi.clustersListPost(body);
 
@@ -474,7 +474,7 @@ public class V3ApiClientService implements ApiClientService {
         int offset = 0;
         int total;
         do {
-            AlertListMetadata body = new AlertListMetadata().length(apiClient.getPageSize()).offset(offset);
+            AlertListMetadata body = new AlertListMetadata().length(apiClient.getLength()).offset(offset);
             try {
                 AlertListIntentResponse alertsListIntentResponse = alertsApi.alertsListPost(body);
 

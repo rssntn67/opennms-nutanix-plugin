@@ -4,11 +4,11 @@ public class ApiClientExtension extends org.opennms.nutanix.client.v3.handler.Ap
 
     int pageSize = 30;
     boolean ignoreSslCertificateValidation = false;
-    public Integer getPageSize() {
+    public Integer getLength() {
         return pageSize;
     }
 
-    public void setPageSize(Integer length) {
+    public void setLength(Integer length) {
         this.pageSize = length;
     }
 
