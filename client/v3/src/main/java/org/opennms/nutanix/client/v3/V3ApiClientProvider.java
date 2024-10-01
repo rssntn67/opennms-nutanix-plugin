@@ -1,8 +1,8 @@
 package org.opennms.nutanix.client.v3;
 
+import org.opennms.nutanix.client.api.ApiClientProvider;
 import org.opennms.nutanix.client.api.ApiClientService;
 import org.opennms.nutanix.client.api.ApiClientCredentials;
-import org.opennms.nutanix.client.api.V3ClientProvider;
 import org.opennms.nutanix.client.api.model.ApiVersion;
 import org.opennms.nutanix.client.v3.api.VersionsApi;
 import org.opennms.nutanix.client.v3.handler.ApiException;
@@ -10,7 +10,7 @@ import org.opennms.nutanix.client.v3.model.Versions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class V3ApiClientProvider implements V3ClientProvider {
+public class V3ApiClientProvider implements ApiClientProvider {
     private static final Logger LOG = LoggerFactory.getLogger(V3ApiClientProvider.class);
 
     public V3ApiClientProvider() {

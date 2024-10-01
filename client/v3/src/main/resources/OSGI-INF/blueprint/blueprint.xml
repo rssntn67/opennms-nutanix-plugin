@@ -1,4 +1,4 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
     <bean id="clientProvider" class="org.opennms.nutanix.client.v3.V3ApiClientProvider"/>
-    <service ref="clientProvider" interface="org.opennms.nutanix.client.api.V3ClientProvider"/>
+    <service ref="clientProvider" interface="org.opennms.nutanix.client.api.ApiClientProvider"/>
 </blueprint>

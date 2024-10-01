@@ -14,7 +14,7 @@
     <reference id="nodeDao" interface="org.opennms.integration.api.v1.dao.NodeDao" availability="optional"/>
     <reference id="alarmDao" interface="org.opennms.integration.api.v1.dao.AlarmDao" availability="optional"/>
     <reference id="eventForwarder" interface="org.opennms.integration.api.v1.events.EventForwarder" availability="optional"/>
-    <reference id="clientProvider" interface="org.opennms.nutanix.client.api.V3ClientProvider" />
+    <reference id="clientProvider" interface="org.opennms.nutanix.client.api.ApiClientProvider" />
 
     <cm:property-placeholder id="nutanixProperties" persistent-id="org.opennms.nutanix" update-strategy="reload">
         <cm:default-properties>
