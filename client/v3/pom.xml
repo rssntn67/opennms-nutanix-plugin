@@ -75,6 +75,32 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.coderplus.maven.plugins</groupId>
+                <artifactId>copy-rename-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-file</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <fileSets>
+                                <fileSet>
+                                    <sourceFile>${basedir}/src/source-files/JSON.java</sourceFile>
+                                    <destinationFile>${basedir}/target/generated-sources/swagger/src/main/java/org/opennms/nutanix/client/v3/handler/JSON.java</destinationFile>
+                                </fileSet>
+                                <fileSet>
+                                    <sourceFile>${basedir}/src/source-files/ISO8601Utils.java</sourceFile>
+                                    <destinationFile>${basedir}/target/generated-sources/swagger/src/main/java/org/opennms/nutanix/client/v3/handler/ISO8601Utils.java</destinationFile>
+                                </fileSet>
+                            </fileSets>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
