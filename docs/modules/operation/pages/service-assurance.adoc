@@ -8,3 +8,6 @@ Various service monitors will be bound to the imported Nutanix entities in OpenN
 ## Hosts
 
 ## Clusters
+
+By default Service Assurance is disabled, if you want to let opennms Monitor Nutanix Entities you need to add to the node a category MonitorNutanix
+This can be done using a Policy for the Requisition imports Nutanix Nodes.
