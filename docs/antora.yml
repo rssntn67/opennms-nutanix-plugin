@@ -1,5 +1,5 @@
 name: nutanix
-version: '1.0.4-SNAPSHOT'
+version: '3.0.0-SNAPSHOT'
 title: OpenNMS Nutanix Plugin
 nav:
   - modules/ROOT/nav.adoc

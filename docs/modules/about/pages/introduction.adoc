@@ -5,7 +5,7 @@ The OpenNMS Nutanix Plugin lets you monitor the status and collect events and pe
 
 After installing the plugin, you must use the Nutanix Prism URLs and associated API keys to add connections.
 After that, you can import the Nutanix entities into an OpenNMS requisition.
-Services will be bound for VM, hosts, and disks.
+Services will be bound for VM, hosts, and clusters.
 It then collects these events and associates them with nodes in OpenNMS, as well as collecting performance metrics.
 The next section gives a brief overview of basic Nutanix terminology.
 Installation and configuration procedures follow in the next sections.

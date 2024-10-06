@@ -7,6 +7,4 @@ Various service monitors will be bound to the imported Nutanix entities in OpenN
 
 ## Hosts
 
-## Disks
-
 ## Clusters
