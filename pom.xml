@@ -50,7 +50,6 @@
         <!-- Used by plugin-->
         <guava.version>33.1.0-jre</guava.version>
         <org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
-        <lombok.version>1.18.24</lombok.version>
 
         <!-- Used by v3 client and plugin-->
         <jackson.version>2.15.2</jackson.version>

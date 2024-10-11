@@ -23,6 +23,11 @@ public class NutanixRestServiceImpl implements NutanixRestService {
 
     private final ClientManager clientManager;
 
+    @Override
+    public Response ping() {
+        return Response.ok("pong").build();
+    }
+
     public NutanixRestServiceImpl(final ConnectionManager connectionManager, final ClientManager clientManager) {
         this.connectionManager = Objects.requireNonNull(connectionManager);
         this.clientManager = Objects.requireNonNull(clientManager);

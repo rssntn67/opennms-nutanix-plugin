@@ -25,6 +25,9 @@ import org.opennms.nutanix.rest.dto.VMDTO;
 public interface NutanixRestService {
 
     @GET
+    @Path("/ping")
+    Response ping();
+    @GET
     @Path("/connections")
     @Produces(value = {MediaType.APPLICATION_JSON})
     List<ConnectionListElementDTO> getConnectionList() throws NutanixApiException;

@@ -39,8 +39,6 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 
-import lombok.Getter;
-
 public class NutanixRequisitionProvider implements RequisitionProvider {
 
     public final static String TYPE = "nutanix";
@@ -890,7 +888,6 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
         }
     }
 
-    @Getter
     public class RequestContext {
         private final Request request;
 
@@ -929,6 +926,10 @@ public class NutanixRequisitionProvider implements RequisitionProvider {
 
         public String getLocation() {
             return this.request.location;
+        }
+
+        public Request getRequest() {
+            return request;
         }
     }
 
