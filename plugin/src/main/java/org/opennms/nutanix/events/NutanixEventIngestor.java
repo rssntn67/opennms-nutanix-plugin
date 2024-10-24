@@ -124,8 +124,9 @@ public class NutanixEventIngestor implements Runnable, HealthCheck {
 
         LOG.debug("Nutanix Event Ingestor is initializing (delay = {}ms).", delay);
         LOG.debug("Nutanix Event Ingestor is initializing (days = {}).", retrieve_days);
-        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(this, this.delay, this.delay, TimeUnit.MILLISECONDS);
+        try (ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor()) {
+            scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(this, this.delay, this.delay, TimeUnit.MILLISECONDS);
+        }
     }
 
     public void destroy() {
