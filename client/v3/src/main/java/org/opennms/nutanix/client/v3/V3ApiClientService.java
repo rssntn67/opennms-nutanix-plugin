@@ -1,8 +1,7 @@
 package org.opennms.nutanix.client.v3;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -394,7 +393,7 @@ public class V3ApiClientService implements ApiClientService {
 
     private List<ClusterHttpProxy> getFromClusterHttpProxyList(List<ClusterNetworkEntity> httpProxyList) {
         if (httpProxyList == null) {
-            return new ArrayList<>(Collections.singletonList(ClusterHttpProxy.builder().build()));
+            return new ArrayList<>();
         }
         return
                 httpProxyList
