@@ -484,6 +484,9 @@ public class V3ApiClientService implements ApiClientService {
                 AlertListIntentResponse alertsListIntentResponse = alertsApi.alertsListPost(body);
 
                 total = alertsListIntentResponse.getMetadata().getTotalMatches();
+                if (alertsListIntentResponse.getEntities() == null) {
+                    break;
+                }
                 alertsListIntentResponse.getEntities().forEach(alert -> alerts.add(getFromAlertIntentResource(alert)));
                 offset+=alertsListIntentResponse.getEntities().size();
             } catch (ApiException e) {

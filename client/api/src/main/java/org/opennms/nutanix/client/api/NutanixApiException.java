@@ -16,6 +16,19 @@ public class NutanixApiException extends Exception {
         this.responseBody = responseBody;
     }
 
+    @Override
+    public String getMessage() {
+        String msg = super.getMessage();
+        if (code != 0) {
+            StringBuilder sb = new StringBuilder();
+            if (msg != null && !msg.isEmpty()) sb.append(msg).append(" ");
+            sb.append("[HTTP ").append(code).append("]");
+            if (responseBody != null && !responseBody.isEmpty()) sb.append(" ").append(responseBody);
+            return sb.toString();
+        }
+        return msg;
+    }
+
     public NutanixApiException(String message, Throwable throwable) {
         super(message,throwable);
     }
